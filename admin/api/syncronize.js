@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const axios = require('axios')
+const isReachable = require('is-reachable')
 
 const router = Router()
 
@@ -8,8 +9,23 @@ const syncAllServer = async (ports) => {
 
   await Promise.all(ports.map(async (port, index) => {
     console.log(`Synchronize server ${port}`)
-    await axios.post(`http://localhost:${port}/api/sync`).then(res => {
-      result[index] = res.data
+
+    await isReachable(`http://localhost:${port}`).then(async (reachable) => {
+      if (reachable) {
+        await axios.post(`http://localhost:${port}/api/sync`).then(res => {
+          result[index] = {
+            active: true,
+            server: `http://localhost:${port}`,
+            data: res.data
+          }
+        })
+      } else {
+        result[index] = {
+          active: false,
+          server: `http://localhost:${port}`,
+          data: []
+        }
+      }
     })
   }))
 
@@ -17,13 +33,12 @@ const syncAllServer = async (ports) => {
 }
 
 /* GET users listing. */
-router.post('/sync', (req, res, next) => {
+router.post('/sync', (req, res) => {
   console.log('Trigger server 8010 & 8020 to synchronization new components')
   syncAllServer(['8010', '8020']).then(server => {
 
     console.log('Synchronization complete')
     res.json({
-      success: true,
       server: server
     })
   })

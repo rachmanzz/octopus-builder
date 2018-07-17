@@ -9,7 +9,7 @@
       "host": "0.0.0.0",
       "port": "8000"
     }
-   },
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
@@ -19,9 +19,15 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "bootstrap": "4.1.1",
+    "bootstrap-vue": "^2.0.0-rc.11",
     "cross-env": "^5.0.1",
     "express": "^4.15.3",
+    "glob": "^7.1.2",
+    "is-reachable": "^2.4.0",
+    "node-sass": "^4.9.2",
     "nuxt": "latest",
+    "sass-loader": "^7.0.3",
     "source-map-support": "^0.4.15"
   },
   "devDependencies": {
