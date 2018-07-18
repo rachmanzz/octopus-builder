@@ -14,6 +14,9 @@
       <li v-if="data.publish" class="nav-item">
         <div class="btn btn-success">Publish</div>
       </li>
+      <li v-else-if="data.save" class="nav-item">
+        <div class="btn btn-success">Save</div>
+      </li>
       <li v-else-if="data.refresh" class="nav-item">
         <div class="btn btn-primary">Refresh</div>
       </li>

@@ -31,7 +31,7 @@ export default {
     return {
       navbar: {
         title: 'Editor',
-        publish: true
+        save: true
       },
       status: {},
       content: '<!-- do stuff -->',
