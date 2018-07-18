@@ -104,6 +104,17 @@ body {
   padding: 1rem;
   overflow-x: hidden;
   overflow-y: scroll;
+  background-color: #fafafa;
+  position: relative;
+
+  // &-inner {
+  //   position: absolute;
+  //   top: 50%;
+  //   left: 50%;
+  //   transform-origin: 0 0;
+  //   transform: scale(.6) translate(-50%, -50%);
+  //   width: 100%;
+  // }
 }
 .smooth-dnd {
   &-container {
@@ -117,6 +128,7 @@ body {
     background-color: #ffffff;
     cursor: all-scroll;
     overflow: hidden;
+    transform: scale(1);
   }
   &-item {
     padding: 1rem;
