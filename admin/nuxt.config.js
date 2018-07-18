@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'spa',
   /*
   ** Headers of the page
   */
@@ -25,6 +26,10 @@ module.exports = {
   */
   modules: [
     'bootstrap-vue/nuxt'
+  ],
+  // Plugins
+  plugins: [
+    { src: '~plugins/vuex.js', ssr: false }
   ],
   /*
   ** Add axios globally

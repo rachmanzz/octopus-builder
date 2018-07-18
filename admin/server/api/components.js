@@ -1,27 +1,10 @@
 import fs from 'fs'
-import path from 'path'
 import glob from 'glob'
 import { Router } from 'express'
 
 const router = Router()
 
 /* GET users listing. */
-const allFilesSync = (dir, type = '', fileList = []) => {
-  fs.readdirSync(dir).forEach(file => {
-    if (file === '.git') return
-
-    const filePath = path.join(dir, file)
-
-    fileList.push(
-      fs.statSync(filePath).isDirectory()
-        ? { [file]: allFilesSync(filePath, type) }
-        : file
-    )
-  })
-
-  return fileList
-}
-
 router.get('/components/list', (req, res) => {
   glob('./core/**/*.vue', {}, (er, files) => {
     const allFiles = []
@@ -39,6 +22,36 @@ router.get('/components/list', (req, res) => {
     })
 
     res.json(allFiles)
+  })
+})
+
+router.post('/components/read', (req, res) => {
+  const { path } = req.body
+
+  fs.readFile(path, (err, data) => {
+    if (err) {
+      res.send(err)
+    }
+
+    res.send(data)
+  })
+})
+
+router.post('/components/write', (req, res) => {
+  const { path, string } = req.body
+
+  fs.writeFile(path, string, (err) => {
+    if (err) {
+      res.json({
+        success: false,
+        data: err
+      })
+    }
+
+    res.send({
+      success: true,
+      data: path
+    })
   })
 })
 
