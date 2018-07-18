@@ -3,28 +3,20 @@
     <Navbar :data="navbar"/>
     <div class="content-flex">
       <div class="studio">
-        <div :style="{ 'display': 'flex', 'justifyContent': 'stretch', 'marginTop': '50px', 'marginRight': '50px' }">
-          <div :style="{'marginLeft': '50px', 'flex': '1'}">
-            <Container :group-name="'1'" :get-child-payload="getChildPayload2" @drop="onDrop('items2', $event)">            
-              <Draggable v-for="item in items2" :key="item.id">
-                <div class="draggable-item">
-                  {{item.data}}
-                </div>
-              </Draggable>
-            </Container>
-          </div>	
-        </div>
+        <Container group-name="studio" :get-child-payload="targetElement" @drop="onDrop('target', $event)">            
+          <Draggable v-for="item in target" :key="item.id">
+            <component :is="item.component"/>
+          </Draggable>
+        </Container>
       </div>
       <div class="secondary">
-        <div :style="{'marginLeft': '50px', 'flex': '1'}">
-          <Container :behaviour="'copy'" :group-name="'1'" :get-child-payload="getChildPayload1">            
-            <Draggable v-for="item in items1" :key="item.id">
-              <div class="draggable-item">
-                {{item.data}}
-              </div>
-            </Draggable>
-          </Container>
-        </div>
+        <Container :behaviour="'copy'" group-name="studio" :get-child-payload="sourceElement">
+          <Draggable v-for="item in source" :key="item.id">
+            <div class="smooth-dnd-item">
+              {{item.data}}
+            </div>
+          </Draggable>
+        </Container>
       </div>
     </div>
   </div>
@@ -47,25 +39,33 @@ export default {
       navbar: {
         title: 'Studio'
       },
-      items1: this.generateItems(15, i => ({
-        id: '1' + i,
-        data: `Source Draggable - ${i}`
-      })),
-      items2: this.generateItems(15, i => ({
-        id: '2' + i,
-        data: `Draggable 2 - ${i}`
-      }))
+      source: [{
+        data: 'Banner',
+        component: () => import('~/core/global/Banner.vue')
+      }, {
+        data: 'Tagline',
+        component: () => import('~/core/global/Tagline.vue')
+      }, {
+        data: 'Counter',
+        component: () => import('~/core/global/Counter.vue')
+      }],
+      target: []
     }
   },
   methods: {
+    getComponent (path) {
+      return ({
+        component: import(`${path}`)
+      })
+    },
     onDrop (collection, dropResult) {
       this[collection] = this.applyDrag(this[collection], dropResult)
     },
-    getChildPayload1 (index) {
-      return this.items1[index]
+    sourceElement (index) {
+      return this.source[index]
     },
-    getChildPayload2 (index) {
-      return this.items2[index]
+    targetElement (index) {
+      return this.target[index]
     },
     applyDrag (arr, dragResult) {
       const { removedIndex, addedIndex, payload } = dragResult
@@ -82,13 +82,6 @@ export default {
         result.splice(addedIndex, 0, itemToAdd)
       }
 
-      return result
-    },
-    generateItems (count, creator) {
-      const result = []
-      for (let i = 0; i < count; i++) {
-        result.push(creator(i))
-      }
       return result
     }
   }
