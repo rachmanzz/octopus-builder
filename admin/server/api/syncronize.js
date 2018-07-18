@@ -1,6 +1,6 @@
-const { Router } = require('express')
-const axios = require('axios')
-const isReachable = require('is-reachable')
+import { Router } from 'express'
+import axios from 'axios'
+import isReachable from 'is-reachable'
 
 const router = Router()
 
@@ -44,4 +44,4 @@ router.post('/sync', (req, res) => {
   })
 })
 
-module.exports = router
+export default router

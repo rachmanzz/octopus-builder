@@ -3,7 +3,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'Page Builder',
+    title: 'starter',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -35,7 +35,7 @@ module.exports = {
     ** Run ESLINT on save
     */
     extend (config, ctx) {
-      if (ctx.isDev && ctx.isClient) {
+      if (ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -53,11 +53,7 @@ module.exports = {
         config.module.rules.forEach(rule => changeLoaderOptions(rule.use))
       }
     }
-  },
-  serverMiddleware: [
-    // API middleware
-    '~/api/index.js'
-  ]
+  }
 }
 
 const changeLoaderOptions = (loaders) => {

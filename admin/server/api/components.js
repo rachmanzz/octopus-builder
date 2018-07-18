@@ -1,7 +1,7 @@
-const fs = require('fs')
-const path = require('path')
-const glob = require('glob')
-const { Router } = require('express')
+import fs from 'fs'
+import path from 'path'
+import glob from 'glob'
+import { Router } from 'express'
 
 const router = Router()
 
@@ -42,4 +42,4 @@ router.get('/components/list', (req, res) => {
   })
 })
 
-module.exports = router
+export default router
