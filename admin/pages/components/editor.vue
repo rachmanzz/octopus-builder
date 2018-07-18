@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="content">
+    <Navbar :data="navbar" />
     <Monaco
       :width="editorWidth"
       :height="editorHeight"
@@ -10,20 +11,29 @@
       @codeChange="onCodeChange"
       >
     </Monaco>
-    <button @click="save">Save</button>
+    <Status :data="status" />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import Monaco from 'monaco-editor-forvue'
+import Navbar from '~/components/Navbar.vue'
+import Status from '~/components/Status.vue'
 
 export default {
   components: {
-    Monaco
+    Monaco,
+    Navbar,
+    Status
   },
   data () {
     return {
+      navbar: {
+        title: 'Editor',
+        publish: true
+      },
+      status: {},
       content: '<!-- do stuff -->',
       contentChanged: '',
       editorWidth: 0,
@@ -43,12 +53,13 @@ export default {
       path: path['path']
     }).then(res => {
       this.file = path
+      this.navbar.title = path.fileName
       this.editor.setValue(res.data)
     })
 
     if (process.browser) {
-      this.editorWidth = window.innerWidth - 80
-      this.editorHeight = 500
+      this.editorWidth = window.innerWidth - 250
+      this.editorHeight = window.innerHeight - (57 * 2)
     }
   },
   methods: {

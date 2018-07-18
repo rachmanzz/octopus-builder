@@ -9,76 +9,88 @@ body {
   width: 100%;
 }
 .menu {
-  width: 80px;
+  width: 250px;
   height: 100vh;
   background-color: #ffffff;
   z-index: 100;
   border-right: 1px solid #e5e6e9;
 
-  &-item {
-    width: 80px;
-    height: 80px;
+  &-title {
+    width: 100%;
+    border-bottom: 1px solid #EAEAEA;
+    background-color: #527eff;
+    padding: 1rem;
+    text-align: center;
+    color: #ffffff;
+    font-weight: 500;
+    letter-spacing: .4rem;
+  }
+  &-avatar {
+    width: 100%;
+    height: 250px;
     display: flex;
     align-items: center;
-    flex-direction: column;
     justify-content: center;
-    border-bottom: 1px solid #EAEAEA;
+    flex-direction: column;
+  }
+  &-link {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: .8rem 2rem;
+    color: #979ba7;
+    transition: all .3s ease-in-out;
+    border-right: 4px solid transparent;
 
-    span {
-      color: #d1d1d3;
-      font-size: 1.8rem;
-      line-height: 0;
-      transition: all .2s ease-in-out;
-
-      &.menu-title {
-        font-size: .8rem;
-        margin-top: 10px;
-        margin-bottom: 6px;
-      }
+    &_active {
+      border-color: #527eff;
+      color: #527eff;
     }
     &:hover {
+      border-color: #b3c5fc;
+      color: #527eff;
       text-decoration: none;
-    }
-    &:hover span {
-      color: #30a6d4;
     }
   }
 }
-.secondary {
-  width: 300px;
-  height: 100vh;
-  background-color: #F3F4F6;
-  z-index: 100;
+.avatar {
+  &-image {
+    margin-bottom: 1rem;
 
-  &-item {
-    width: 100%;
-    padding: 1rem;
-    border-bottom: 1px solid #e5e6e9;
-    font-size: .8rem;
-    display: block;
-    position: relative;
-    cursor: pointer;
-    color: #8b8b8b;
-    transition: all .2s ease-in-out;
-
-    &:hover {
-      background-color: #ffffff;
-      text-decoration: none;
+    img {
+      width: 100px;
+      height: 100px;
     }
   }
-  &-title {
-    width: 100%;
-    padding: 1rem;
-    border-bottom: 1px solid #e5e6e9;
+  &-name {
+    font-size: 1rem;
     text-transform: uppercase;
+    color: #2d3344;
     font-weight: 500;
-    color: #757575;
+  }
+}
+.navbar {
+  border-bottom: 1px solid #DEDEDE;
+
+  .nav {
+    &-title {
+      font-weight: 500;
+      text-transform: uppercase;
+      color: #2d3344;
+    }
+  }
+  &-bottom {
+    border-bottom: 0;
+    border-top: 1px solid #DEDEDE;
   }
 }
 .content {
-  width: calc(100vw - 80px - 300px);
-  padding: 1rem;
-  border-left: 1px solid #e5e6e9;
+  width: calc(100vw - 250px);
+  height: calc(100vh - 40px);
+  background-color: #ffffff;
   z-index: 120;
-  box-shadow: 8px 0px 20px 0px rgba(31, 30, 30, 0.51);
+
+  &-inner {
+    padding: 1rem;
+  }
 }

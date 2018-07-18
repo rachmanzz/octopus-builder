@@ -1,16 +1,16 @@
 <template>
   <div class="main">
-    <MainMenu />
+    <Sidebar />
     <nuxt />
   </div>
 </template>
 
 <script>
-import MainMenu from '~/components/MainMenu.vue'
+import Sidebar from '~/components/Sidebar.vue'
 
 export default {
   components: {
-    MainMenu
+    Sidebar
   }
 }
 </script>

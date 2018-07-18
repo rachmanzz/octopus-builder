@@ -1,10 +1,9 @@
 <template>
-  <section class="main">
-    <SecondaryMenu :data="secondary"/>
-    <div class="content">
-      <button @click="refreshList">Refresh</button>
+  <div class="content">
+    <Navbar :data="navbar"/>
+    <div class="content-inner">
       <div class="row">
-        <div class="col-4" v-for="item in components" :key="item.key" @click="openEditor(item)">
+        <div class="col-3" v-for="item in components" :key="item.key" @click="openEditor(item)">
           <div class="card">
             <div class="card-body">
               {{ item.fileName }}
@@ -13,27 +12,31 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
 import axios from '~/plugins/axios'
-import SecondaryMenu from '~/components/SecondaryMenu.vue'
+import Navbar from '~/components/Navbar.vue'
 
 export default {
   components: {
-    SecondaryMenu
+    Navbar
   },
   data () {
     return {
-      secondary: {
-        title: 'Sync Components',
+      navbar: {
+        title: 'All Components',
+        refresh: true,
         menu: [{
           url: '/components/',
           title: 'Components'
         }, {
           url: '/components/publish',
           title: 'Publish'
+        }, {
+          url: '/components/server',
+          title: 'Server'
         }]
       },
       components: []

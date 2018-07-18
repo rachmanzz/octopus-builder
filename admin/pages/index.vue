@@ -1,22 +1,22 @@
 <template>
-  <section class="main">
-    <SecondaryMenu :data="secondary"/>
-    <div class="content">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, sunt veritatis sit nesciunt architecto nihil eius dolores magni voluptates ea qui. Ullam velit porro blanditiis. Sed nobis ipsa adipisci fugit.
+  <div class="content">
+    <Navbar :data="navbar" />
+    <div class="content-inner">
+      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sint eligendi repellendus dolorum facere minus nemo omnis ut delectus aperiam iste magni, doloribus natus non placeat hic, officiis voluptatem, quaerat dignissimos?
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
-import SecondaryMenu from '~/components/SecondaryMenu.vue'
+import Navbar from '~/components/Navbar.vue'
 
 export default {
   components: {
-    SecondaryMenu
+    Navbar
   },
   data () {
     return {
-      secondary: {
+      navbar: {
         title: 'Home',
         menu: [{
           url: '/',
