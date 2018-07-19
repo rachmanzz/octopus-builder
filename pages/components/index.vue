@@ -3,8 +3,8 @@
     <Navbar :data="navbar"/>
     <div class="content-inner">
       <div class="row">
-        <div class="col-3" v-for="item in components" :key="item.key" @click="openEditor(item)">
-          <div class="card">
+        <div class="col-3" v-for="item in components" :key="item.key">
+          <div class="card" @click="openEditor(item)">
             <div class="card-body">
               {{ item.fileName }}
             </div>
@@ -70,3 +70,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.card {
+  cursor: pointer;
+}
+</style>

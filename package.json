@@ -29,6 +29,7 @@
     "monaco-editor-forvue": "^1.0.3",
     "node-sass": "^4.9.2",
     "nuxt": "1.4.0",
+    "panzoom": "^5.0.0",
     "sass-loader": "^7.0.3",
     "source-map-support": "0.5.5",
     "vue-loader": "13.7.2",

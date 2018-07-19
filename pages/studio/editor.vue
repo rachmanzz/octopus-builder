@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import panzoom from 'panzoom'
 import { Container, Draggable } from 'vue-smooth-dnd'
 import Navbar from '~/components/Navbar.vue'
 import Secondary from '~/components/Secondary.vue'
@@ -52,6 +53,11 @@ export default {
         component: () => import('~/core/global/Counter.vue')
       }],
       target: []
+    }
+  },
+  mounted () {
+    if (process.browser) {
+      panzoom(document.querySelector('.studio-inner'))
     }
   },
   methods: {

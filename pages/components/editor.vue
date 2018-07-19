@@ -42,21 +42,6 @@ export default {
     }
   },
   mounted () {
-    const query = this.$route.query['file']
-    const path = this.$store.state.allFiles[query]
-
-    if (!path) {
-      this.$router.push('/components')
-    }
-
-    axios.post('/api/components/read', {
-      path: path['path']
-    }).then(res => {
-      this.file = path
-      this.navbar.title = path.fileName
-      this.editor.setValue(res.data)
-    })
-
     if (process.browser) {
       this.editorWidth = window.innerWidth - 250
       this.editorHeight = window.innerHeight - (57 * 2)
@@ -65,6 +50,21 @@ export default {
   methods: {
     onMounted (editor) {
       this.editor = editor
+
+      const query = this.$route.query['file']
+      const path = this.$store.state.allFiles[query]
+
+      if (!path) {
+        this.$router.push('/components')
+      } else {
+        axios.post('/api/components/read', {
+          path: path['path']
+        }).then(res => {
+          this.file = path
+          this.navbar.title = path.fileName
+          editor.setValue(res.data)
+        })
+      }
     },
     onCodeChange (editor) {
       this.contentChanged = editor.getValue()

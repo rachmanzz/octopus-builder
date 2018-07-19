@@ -101,20 +101,16 @@ body {
 .studio {
   width: calc(100vw - 500px);
   height: calc(100vh - 57px);
-  padding: 1rem;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  // padding: 1rem;
+  overflow: hidden;
+  // overflow-y: scroll;
   background-color: #fafafa;
   position: relative;
+  cursor: all-scroll;
 
-  // &-inner {
-  //   position: absolute;
-  //   top: 50%;
-  //   left: 50%;
-  //   transform-origin: 0 0;
-  //   transform: scale(.6) translate(-50%, -50%);
-  //   width: 100%;
-  // }
+  &-inner {
+    border: 1px solid #ABABAB;
+  }
 }
 .smooth-dnd {
   &-container {

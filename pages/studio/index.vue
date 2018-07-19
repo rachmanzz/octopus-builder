@@ -4,7 +4,7 @@
     <div class="content-inner">
       <div class="row">
         <div class="col-4">
-          <div class="card">
+          <div class="card" @click="openBuilder(item)">
             <div class="card-body">
               Home Page
             </div>
@@ -28,6 +28,17 @@ export default {
         title: 'Studio'
       }
     }
+  },
+  methods: {
+    openBuilder (file) {
+      this.$router.push(`/studio/editor`)
+    }
   }
 }
 </script>
+
+<style lang="scss">
+.card {
+  cursor: pointer;
+}
+</style>
