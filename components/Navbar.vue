@@ -12,13 +12,13 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <li v-if="data.publish" class="nav-item">
-        <div class="btn btn-success">Publish</div>
-      </li>
-      <li v-else-if="data.save" class="nav-item">
-        <div class="btn btn-success">Save</div>
+        <div class="btn btn-success" @click="triggerPublish">Publish</div>
       </li>
       <li v-else-if="data.refresh" class="nav-item">
-        <div class="btn btn-primary">Refresh</div>
+        <div class="btn btn-primary" @click="triggerRefresh">Refresh</div>
+      </li>
+      <li  v-else-if="data.save" class="nav-item">
+        <div class="btn btn-success" @click="triggerSave">Save</div>
       </li>
       <li v-else class="nav-item">
         <div class="nav-link">&nbsp;</div>
@@ -29,7 +29,18 @@
 
 <script>
 export default {
-  props: ['data']
+  props: ['data', 'publish', 'refresh', 'save'],
+  methods: {
+    triggerPublish () {
+      this.publish()
+    },
+    triggerRefresh () {
+      this.refresh()
+    },
+    triggerSave () {
+      this.save()
+    }
+  }
 }
 </script>
 

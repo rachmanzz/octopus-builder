@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Navbar :data="navbar" />
+    <Navbar :data="navbar" :save="onSave" />
     <Monaco
       :width="editorWidth"
       :height="editorHeight"
@@ -33,7 +33,9 @@ export default {
         title: 'Editor',
         save: true
       },
-      status: {},
+      status: {
+        onLoading: true
+      },
       content: '<!-- do stuff -->',
       contentChanged: '',
       editorWidth: 0,
@@ -62,6 +64,8 @@ export default {
         }).then(res => {
           this.file = path
           this.navbar.title = path.fileName
+          this.status['onLoading'] = false
+
           editor.setValue(res.data)
         })
       }
@@ -69,7 +73,7 @@ export default {
     onCodeChange (editor) {
       this.contentChanged = editor.getValue()
     },
-    save () {
+    onSave () {
       axios.post('/api/components/write', {
         path: this.file['path'],
         string: this.contentChanged

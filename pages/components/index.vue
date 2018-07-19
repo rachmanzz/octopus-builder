@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Navbar :data="navbar"/>
+    <Navbar :data="navbar" :refresh="refreshList"/>
     <div class="content-inner">
       <div class="row">
         <div class="col-3" v-for="item in components" :key="item.key">

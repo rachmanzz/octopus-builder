@@ -1,0 +1,15 @@
+.navbar {
+  border-bottom: 1px solid #DEDEDE;
+
+  .nav {
+    &-title {
+      font-weight: 500;
+      text-transform: uppercase;
+      color: #2d3344;
+    }
+  }
+  &-bottom {
+    border-bottom: 0;
+    border-top: 1px solid #DEDEDE;
+  }
+}

@@ -1,0 +1,33 @@
+.properties {
+  width: 250px;
+  height: calc(100vh - 57px);
+  background-color: #ffffff;
+  z-index: 100;
+  border-left: 1px solid #e5e6e9;
+  
+  .card {
+    border: 0;
+
+    &-header {
+      padding: .8rem;
+      text-align: center;
+      background-color: #ffffff;
+      border-top: 1px solid #e5e6e9;
+      border-radius: 0;
+      text-transform: uppercase;
+      font-size: .8rem;
+      font-weight: 500;
+      cursor: pointer;
+      
+    }
+    &-body {
+      padding: .5rem;
+    }
+    .smooth-dnd-container {
+      height: 400px;
+    }
+    &:first-child .card-header {
+      border-top: 0;
+    }
+  }
+}

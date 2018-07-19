@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Navbar :data="navbar"/>
+    <Navbar :data="navbar" :save="onSave"/>
     <div class="content-flex">
       <div class="studio">
         <div class="studio-inner">
@@ -32,10 +32,20 @@
       <div class="properties">
         <div role="tablist">
           <b-card no-body>
-            <b-card-header header-tag="header" role="tab" v-b-toggle.accordion1>
+            <b-card-header header-tag="header" role="tab" v-b-toggle.layouts>
               Layouts
             </b-card-header>
-            <b-collapse id="accordion1" visible accordion="my-accordion" role="tabpanel">
+            <b-collapse id="layouts" accordion="editor-collapse" role="tabpanel">
+              <b-card-body>
+                no layout
+              </b-card-body>
+            </b-collapse>
+          </b-card>
+          <b-card no-body>
+            <b-card-header header-tag="header" role="tab" v-b-toggle.components>
+              Components
+            </b-card-header>
+            <b-collapse id="components" visible accordion="editor-collapse" role="tabpanel">
               <b-card-body>
                 <Container
                   :behaviour="'copy'"
@@ -46,22 +56,10 @@
                 >
                   <Draggable v-for="item in source" :key="item.id">
                     <div class="smooth-dnd-item">
-                      {{item.data}}
+                      {{ item.data }}
                     </div>
                   </Draggable>
                 </Container>
-              </b-card-body>
-            </b-collapse>
-          </b-card>
-          <b-card no-body>
-            <b-card-header header-tag="header" role="tab" v-b-toggle.accordion2>
-              Components
-            </b-card-header>
-            <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
-              <b-card-body>
-                <p class="card-text">
-                  Beatae et eos minus nulla sint inventore, repellat quidem, reiciendis hic adipisci quod laudantium odio voluptate modi a. Debitis dignissimos nostrum voluptatem.
-                </p>
               </b-card-body>
             </b-collapse>
           </b-card>
@@ -84,7 +82,8 @@ export default {
   data () {
     return {
       navbar: {
-        title: 'Studio'
+        title: 'Studio',
+        save: true
       },
       source: [{
         data: 'Banner',
@@ -100,6 +99,44 @@ export default {
     }
   },
   methods: {
+    getProps (child) {
+      const props = []
+
+      child.forEach(item => {
+        props.push({
+          name: child.dataset ? child.dataset['octName'] : '',
+          className: item.className,
+          tagName: item.tagName,
+          source: item.src,
+          width: item.clientWidth,
+          height: item.clientHeight,
+          html: item.innerHTML,
+          text: item.innerText
+        })
+      })
+
+      return props
+    },
+    async getElement () {
+      const component = []
+
+      document.querySelectorAll('.studio-inner .component-item').forEach(item => {
+        let child = item.childNodes[1]
+
+        component.push({
+          component: child.dataset ? child.dataset['octName'] : '',
+          className: child.className,
+          props: this.getProps(child.childNodes)
+        })
+      })
+
+      return component
+    },
+    onSave () {
+      this.getElement().then(x => {
+        console.log(x)
+      })
+    },
     removeComponent (index) {
       this.target.splice(index, 1)
     },
