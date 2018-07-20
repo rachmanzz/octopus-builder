@@ -14,10 +14,10 @@
       <li v-if="data.publish" class="nav-item">
         <div class="btn btn-success" @click="triggerPublish">Publish</div>
       </li>
-      <li v-else-if="data.refresh" class="nav-item">
+      <li v-if="data.refresh" class="nav-item">
         <div class="btn btn-primary" @click="triggerRefresh">Refresh</div>
       </li>
-      <li  v-else-if="data.save" class="nav-item">
+      <li v-if="data.save" class="nav-item">
         <div class="btn btn-success" @click="triggerSave">Save</div>
       </li>
       <li v-else class="nav-item">
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  props: ['data', 'publish', 'refresh', 'save'],
+  props: ['data', 'publish', 'refresh', 'sync', 'save'],
   methods: {
     triggerPublish () {
       this.publish()

@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Navbar :data="navbar" :refresh="refreshList"/>
+    <Navbar :data="navbar" :publish="publishComponent"/>
     <div class="content-inner">
       <div class="row">
         <div class="col-3" v-for="item in components" :key="item.key">
@@ -27,7 +27,7 @@ export default {
     return {
       navbar: {
         title: 'All Components',
-        refresh: true,
+        publish: true,
         menu: [{
           url: '/components/',
           title: 'Components'
@@ -49,8 +49,13 @@ export default {
     openEditor (file) {
       this.$router.push(`/components/editor?file=${file.name.toLowerCase()}`)
     },
+    publishComponent () {
+      axios.post('/api/component/publish', this.$store.state.settings).then(res => {
+        console.log(res)
+      })
+    },
     getList () {
-      axios.get('/api/components/list').then(res => {
+      axios.get('/api/component').then(res => {
         const files = {}
 
         this.components = res.data
@@ -63,9 +68,6 @@ export default {
           data: files
         })
       })
-    },
-    refreshList () {
-      this.getList()
     }
   }
 }

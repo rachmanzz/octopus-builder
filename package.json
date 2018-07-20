@@ -32,6 +32,7 @@
     "panzoom": "^5.0.0",
     "read-yaml": "^1.1.0",
     "sass-loader": "^7.0.3",
+    "simple-git": "^1.96.0",
     "source-map-support": "0.5.5",
     "vue-loader": "13.7.2",
     "vue-smooth-dnd": "^0.2.1",

@@ -1,5 +1,6 @@
 name: Octopus
-repository: 'https://github.com/muhibbudins/octopus-repo'
+repository: 'git@github.com:muhibbudins/octopus-repo.git'
+branch: master
 clients:
   - name: client_1
     host: localhost
