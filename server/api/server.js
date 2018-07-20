@@ -1,5 +1,3 @@
-import fs from 'fs'
-import path from 'path'
 import isReachable from 'is-reachable'
 import config from '../lib/config'
 

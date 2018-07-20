@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
     <div class="menu-title">
-      BUILDER
+      {{ $store.state.settings.name || 'BUILDER' }}
     </div>
     <div class="menu-avatar">
       <div class="avatar-image">

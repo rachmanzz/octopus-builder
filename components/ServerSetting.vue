@@ -1,8 +1,18 @@
 <template>
   <b-card
-    header="Git Repository"
+    header="Application Settings"
     header-tag="header"
   >
+    <b-form-group
+      label="Application Name"
+      label-for="labelName">
+      <b-form-input id="labelName"
+        type="text"
+        v-model="config.name"
+        placeholder="Enter Name"
+        required>
+      </b-form-input>
+    </b-form-group>
     <b-form-group
       label="Global Repository"
       label-for="labelRepository"
@@ -14,7 +24,7 @@
         required>
       </b-form-input>
     </b-form-group>
-    <b-button type="submit" variant="success">Save</b-button>
+    <b-button type="submit" variant="success" @click="saveSetting">Save</b-button>
   </b-card>
 </template>
 
@@ -25,14 +35,22 @@ export default {
   data () {
     return {
       config: {
-        repository: ''
+        repository: '',
+        name: ''
       }
     }
   },
   mounted () {
-    axios.get('/api/server').then(res => {
+    axios.get('/api/settings').then(res => {
       this.config = res.data
     })
+  },
+  methods: {
+    saveSetting () {
+      axios.post('/api/settings', this.config).then(res => {
+        this.config = res.data
+      })
+    }
   }
 }
 </script>

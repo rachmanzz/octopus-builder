@@ -32,7 +32,8 @@ module.exports = {
   ],
   // Plugins
   plugins: [
-    { src: '~plugins/vuex.js', ssr: false }
+    { src: '~/plugins/vuex.js', ssr: false },
+    { src: '~/plugins/client-init.js', ssr: false }
   ],
   /*
   ** Add axios globally
@@ -69,8 +70,7 @@ const changeLoaderOptions = (loaders) => {
     for (const loader of loaders) {
       if (loader.loader === 'sass-loader') {
         Object.assign(loader.options, {
-          includePaths: ['./assets'],
-          // data: '@import "_imports";'
+          includePaths: ['./assets']
         })
       }
     }

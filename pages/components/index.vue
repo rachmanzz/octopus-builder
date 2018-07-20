@@ -59,7 +59,7 @@ export default {
           files[item.name.toLowerCase()] = item
         })
 
-        this.$store.commit('FILES', {
+        this.$store.commit('SET_FILES', {
           data: files
         })
       })
