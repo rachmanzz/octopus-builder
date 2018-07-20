@@ -2,12 +2,13 @@
   <div class="content">
     <Navbar :data="navbar" />
     <div class="content-inner">
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sint eligendi repellendus dolorum facere minus nemo omnis ut delectus aperiam iste magni, doloribus natus non placeat hic, officiis voluptatem, quaerat dignissimos?
+      <b-btn variant="success" @click="syncClients">Reload All Clients</b-btn>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import Navbar from '~/components/Navbar.vue'
 
 export default {
@@ -23,6 +24,13 @@ export default {
           title: 'Synchronize'
         }]
       }
+    }
+  },
+  methods: {
+    syncClients () {
+      axios.post('/api/synchronize', this.$store.state.settings).then(res => {
+        this.$snotify.success('Success reloading any clients')
+      })
     }
   }
 }

@@ -50,8 +50,9 @@ export default {
       this.$router.push(`/components/editor?file=${file.name.toLowerCase()}`)
     },
     publishComponent () {
+      this.$snotify.info('Publishing all components')
       axios.post('/api/component/publish', this.$store.state.settings).then(res => {
-        console.log(res)
+        this.$snotify.success('Publish all components success')
       })
     },
     getList () {

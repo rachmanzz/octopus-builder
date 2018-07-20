@@ -78,7 +78,8 @@ export default {
         path: this.file['path'],
         string: this.contentChanged
       }).then(res => {
-        console.log(res.data)
+        this.$snotify.success(`File ${this.file.fileName} saved`)
+        setTimeout(() => this.$router.push('/components'), 500)
       })
     }
   }

@@ -33,10 +33,11 @@ const syncAllServer = async (ports) => {
 }
 
 /* GET users listing. */
-router.post('/sync', (req, res) => {
-  console.log('Trigger server 8010 & 8020 to synchronization new components')
-  syncAllServer(['8010', '8020']).then(server => {
+router.post('/synchronize', (req, res) => {
+  const { clients } = req.body
+  const port = clients.map(item => item.port)
 
+  syncAllServer(port).then(server => {
     console.log('Synchronization complete')
     res.json({
       server: server
