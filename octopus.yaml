@@ -1,4 +1,4 @@
-repository: asdasda
+repository: https://github.com/muhibbudins/auto-sync-repo
 clients:
   - client_1:
       host: localhost
@@ -6,5 +6,3 @@ clients:
   - client_2:
       host: localhost
       port: 8020
-fooo:
-  foo: basdasd

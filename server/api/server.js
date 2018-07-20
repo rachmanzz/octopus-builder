@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import isReachable from 'is-reachable'
+import config from '../lib/config'
 
 import { Router } from 'express'
 
@@ -30,8 +31,8 @@ const serverStatus = async (server) => {
 
 /* GET users listing. */
 router.get('/server', (req, res) => {
-  fs.readFile(path.resolve('./config.json'), (e, data) => {
-    res.json(JSON.parse(data.toString()))
+  config.read().then(data => {
+    res.json(data)
   })
 })
 
