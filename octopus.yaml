@@ -1,0 +1,10 @@
+repository: asdasda
+clients:
+  - client_1:
+      host: localhost
+      port: 8010
+  - client_2:
+      host: localhost
+      port: 8020
+fooo:
+  foo: basdasd
