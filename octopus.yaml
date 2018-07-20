@@ -1,9 +1,6 @@
+name: Octopus
 repository: 'https://github.com/muhibbudins/octopus-repo'
 clients:
   - name: client_1
     host: localhost
     port: 8010
-  - name: client_2
-    host: localhost
-    port: 8020
-name: Octopus
