@@ -96,11 +96,30 @@ export default {
       })
     },
     removeComponent (item) {
-      axios.post('/api/component/remove', {
-        filePath: item.path
-      }).then(res => {
-        this.$snotify.success(`File ${res.data.data} removed`)
-        this.getList()
+      this.$swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#527eff',
+        cancelButtonColor: '#ababab',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          axios.post('/api/component/remove', {
+            filePath: item.path
+          }).then(res => {
+            axios.get('/api/component/map').then(res => {
+              this.$snotify.success('Mapping new components success')
+            })
+            this.$swal(
+              'Deleted!',
+              `File ${res.data.data} removed`,
+              'success'
+            )
+            this.getList()
+          })
+        }
       })
     },
     publishComponent () {
