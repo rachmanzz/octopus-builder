@@ -3,7 +3,6 @@ import glob from 'glob'
 import git from 'simple-git'
 import prettier from 'prettier'
 import { Router } from 'express'
-import { list } from '../../node_modules/postcss';
 
 const router = Router()
 
@@ -41,7 +40,7 @@ router.get('/component/map', (req, res) => {
     const string = `
       /**
        * THIS FILE IS AUTO-GENERATE WHEN
-       * BUILDER SAVE COMPONENTS ON CORE FOLDER
+       * BUTTON REFRESH ON BUILDER CLICKED
        */
       const list = [${listComponents}]
 
