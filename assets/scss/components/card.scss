@@ -1,4 +1,4 @@
-.card {
+.card:not(.card-default) {
   background: #FFFFFF;
   border: 0.5px solid #E0E0E0;
   box-sizing: border-box;

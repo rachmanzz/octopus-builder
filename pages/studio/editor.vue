@@ -31,7 +31,7 @@
       </div>
       <div class="properties">
         <div role="tablist">
-          <b-card no-body>
+          <b-card class="card-default" no-body>
             <b-card-header header-tag="header" role="tab" v-b-toggle.layouts>
               Layouts
             </b-card-header>
@@ -41,7 +41,7 @@
               </b-card-body>
             </b-collapse>
           </b-card>
-          <b-card no-body>
+          <b-card class="card-default" no-body>
             <b-card-header header-tag="header" role="tab" v-b-toggle.components>
               Components
             </b-card-header>
@@ -71,7 +71,7 @@
 
 <script>
 import axios from 'axios'
-import components from '~/lib/components.js'
+import importer from '~/lib/components.js'
 import { Container, Draggable } from 'vue-smooth-dnd'
 import Navbar from '~/components/Navbar.vue'
 
@@ -93,7 +93,7 @@ export default {
     }
   },
   mounted () {
-    this.source = components.list
+    this.source = importer
   },
   methods: {
     getProps (child) {

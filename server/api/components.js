@@ -1,8 +1,8 @@
 import fs from 'fs'
 import glob from 'glob'
+import rm from 'rimraf'
 import git from 'simple-git'
 import prettier from 'prettier'
-import rm from 'rimraf'
 import { Router } from 'express'
 
 const router = Router()
@@ -43,14 +43,15 @@ router.get('/component/map', (req, res) => {
        * THIS FILE IS AUTO-GENERATE WHEN
        * BUTTON REFRESH ON BUILDER CLICKED
        */
-      const list = [${listComponents}]
-
-      export default {
-        list
-      }
+      const listComponents = [${listComponents}]
+      export default listComponents
     `
 
-    fs.writeFileSync('./lib/components.js', prettier.format(string, { semi: false, singleQuote: true, parser: 'babylon' }))
+    fs.writeFileSync('./lib/components.js', prettier.format(string, {
+      semi: false,
+      singleQuote: true,
+      parser: 'babylon'
+    }))
 
     res.json({
       success: true,
