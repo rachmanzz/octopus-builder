@@ -1,4 +1,4 @@
-.card:not(.card-default) {
+.card {
   background: #FFFFFF;
   border: 0.5px solid #E0E0E0;
   box-sizing: border-box;
@@ -6,6 +6,11 @@
   border-radius: 20px;
   position: relative;
 
+  &.card-default {
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
   &:hover .card-remove {
     opacity: 1;
   }

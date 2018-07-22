@@ -9,7 +9,7 @@
               <div class="card-image" @click="openEditor(item)">
                 <img src="~/static/vue.svg" :alt="item.name">
               </div>
-              <div class="card-title">{{ item.name }}</div>
+              <div class="card-title" @click="openEditor(item)">{{ item.name }}</div>
               <div class="card-remove" @click="removeComponent(item)">
                 <span class="ion-trash-b"></span>
               </div>
