@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <Sidebar />
-    <nuxt />
+    <nuxt ref="page"/>
     <vue-snotify></vue-snotify>
   </div>
 </template>

@@ -30,6 +30,7 @@
     "node-sass": "^4.9.2",
     "nuxt": "1.4.0",
     "panzoom": "^5.0.0",
+    "prettier": "1.13.7",
     "read-yaml": "^1.1.0",
     "sass-loader": "^7.0.3",
     "simple-git": "^1.96.0",

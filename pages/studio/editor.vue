@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Navbar :data="navbar" :save="onSave"/>
+    <Navbar :data="navbar" :refresh="onRefresh" :save="onSave"/>
     <div class="content-flex">
       <div class="studio">
         <div class="studio-inner">
@@ -23,7 +23,9 @@
                     <i class="ion-trash-b"></i>
                   </span>
                 </div>
-                <component :is="item.component"/>
+                <keep-alive>
+                  <component :is="item.component"></component>
+                </keep-alive>
               </div>
             </Draggable>
           </Container>
@@ -70,6 +72,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+import components from '~/lib/components.js'
 import { Container, Draggable } from 'vue-smooth-dnd'
 import Navbar from '~/components/Navbar.vue'
 
@@ -83,20 +87,15 @@ export default {
     return {
       navbar: {
         title: 'Studio',
-        save: true
+        save: true,
+        refresh: true
       },
-      source: [{
-        data: 'Banner',
-        component: () => import('~/core/global/Banner.vue')
-      }, {
-        data: 'Tagline',
-        component: () => import('~/core/global/Tagline.vue')
-      }, {
-        data: 'Counter',
-        component: () => import('~/core/global/Counter.vue')
-      }],
+      source: [],
       target: []
     }
+  },
+  mounted () {
+    this.source = components.list
   },
   methods: {
     getProps (child) {
@@ -131,6 +130,14 @@ export default {
       })
 
       return component
+    },
+    onRefresh () {
+      axios.get('/api/component/map').then(res => {
+        this.$snotify.success('Mapping new components success')
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000)
+      })
     },
     onSave () {
       this.getElement().then(x => {
