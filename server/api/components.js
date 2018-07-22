@@ -38,8 +38,6 @@ router.get('/component/map', (req, res) => {
       }`
     }).join(',\n')
 
-    console.log(listComponents)
-
     const string = `
       /**
        * THIS FILE IS AUTO-GENERATE WHEN
