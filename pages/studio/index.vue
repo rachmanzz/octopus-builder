@@ -4,7 +4,7 @@
     <div class="content-inner">
       <div class="row">
         <div class="col-4">
-          <div class="card" @click="openBuilder(item)">
+          <div class="card" @click="openBuilder">
             <div class="card-body">
               Home Page
             </div>
