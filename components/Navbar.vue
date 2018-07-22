@@ -11,8 +11,11 @@
       <li class="nav-title">{{ data.title }}</li>
     </ul>
     <ul class="navbar-nav ml-auto">
+      <li v-if="data.create" class="nav-item">
+        <div class="btn btn-success" @click="triggerCreate">Create</div>
+      </li>
       <li v-if="data.publish" class="nav-item">
-        <div class="btn btn-success" @click="triggerPublish">Publish</div>
+        <div class="btn btn-info" @click="triggerPublish">Publish</div>
       </li>
       <li v-if="data.refresh" class="nav-item">
         <div class="btn btn-primary" @click="triggerRefresh">Refresh</div>
@@ -29,8 +32,11 @@
 
 <script>
 export default {
-  props: ['data', 'publish', 'refresh', 'sync', 'save'],
+  props: ['data', 'create', 'publish', 'refresh', 'sync', 'save'],
   methods: {
+    triggerCreate () {
+      this.create()
+    },
     triggerPublish () {
       this.publish()
     },

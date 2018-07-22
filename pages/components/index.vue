@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Navbar :data="navbar" :publish="publishComponent"/>
+    <Navbar :data="navbar" :create="createComponent" :publish="publishComponent"/>
     <div class="content-inner">
       <div class="row">
         <div class="col-3" v-for="item in components" :key="item.key">
@@ -27,6 +27,7 @@ export default {
     return {
       navbar: {
         title: 'All Components',
+        create: true,
         publish: true,
         menu: [{
           url: '/components/',
@@ -48,6 +49,9 @@ export default {
   methods: {
     openEditor (file) {
       this.$router.push(`/components/editor?file=${file.name.toLowerCase()}`)
+    },
+    createComponent () {
+      console.log('Create Component')
     },
     publishComponent () {
       this.$snotify.info('Publishing all components')
