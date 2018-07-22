@@ -12,6 +12,31 @@
         </div>
       </div>
     </div>
+    <b-modal v-model="modalCreate" centered hide-header hide-footer>
+      <b-form-group
+        label="File Name:"
+        label-for="fileName">
+        <b-form-input
+          id="fileName"
+          type="text"
+          v-model="form.fileName"
+          required
+          placeholder="Enter file name">
+        </b-form-input>
+      </b-form-group>
+      <b-form-group
+        label="File Path:"
+        label-for="filePath">
+        <b-form-input
+          id="filePath"
+          type="text"
+          v-model="form.filePath"
+          required
+          placeholder="Enter file Path">
+        </b-form-input>
+      </b-form-group>
+      <b-button variant="primary" @click="saveComponent">Submit</b-button>
+    </b-modal>
   </div>
 </template>
 
@@ -40,6 +65,11 @@ export default {
           title: 'Server'
         }]
       },
+      form: {
+        fileName: '',
+        filePath: '/global/'
+      },
+      modalCreate: false,
       components: []
     }
   },
@@ -51,7 +81,18 @@ export default {
       this.$router.push(`/components/editor?file=${file.name.toLowerCase()}`)
     },
     createComponent () {
-      console.log('Create Component')
+      this.modalCreate = !this.modalCreate
+    },
+    saveComponent () {
+      axios.post('/api/component/create', this.form).then(res => {
+        this.form = {
+          fileName: '',
+          filePath: '/global/'
+        }
+        this.modalCreate = !this.modalCreate
+        this.$snotify.success(`File ${res.data.data} created`)
+        this.getList()
+      })
     },
     publishComponent () {
       this.$snotify.info('Publishing all components')

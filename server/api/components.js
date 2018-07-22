@@ -94,6 +94,30 @@ router.put('/component', (req, res) => {
   })
 })
 
+router.post('/component/create', (req, res) => {
+  const { fileName, filePath } = req.body
+  const path = `./core${filePath}`
+  const file = `./core${filePath + fileName}.vue`
+
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path)
+  }
+
+  fs.writeFile(file, `<template>\n  <!-- do stuff -->\n</template>`, (err) => {
+    if (err) {
+      res.json({
+        success: false,
+        data: err
+      })
+    }
+
+    res.send({
+      success: true,
+      data: file
+    })
+  })
+})
+
 router.post('/component/publish', (req, res) => {
   const { repository, branch } = req.body
 
