@@ -2,6 +2,7 @@ import fs from 'fs'
 import glob from 'glob'
 import git from 'simple-git'
 import prettier from 'prettier'
+import rm from 'rimraf'
 import { Router } from 'express'
 
 const router = Router()
@@ -114,6 +115,24 @@ router.post('/component/create', (req, res) => {
     res.send({
       success: true,
       data: file
+    })
+  })
+})
+
+router.post('/component/remove', (req, res) => {
+  const { filePath } = req.body
+
+  rm(filePath, (err) => {
+    if (err) {
+      res.json({
+        success: false,
+        data: err
+      })
+    }
+
+    res.send({
+      success: true,
+      data: filePath
     })
   })
 })

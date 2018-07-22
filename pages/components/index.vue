@@ -4,10 +4,11 @@
     <div class="content-inner">
       <div class="row">
         <div class="col-3" v-for="item in components" :key="item.key">
-          <div class="card" @click="openEditor(item)">
-            <div class="card-body">
+          <div class="card">
+            <div class="card-body" @click="openEditor(item)">
               {{ item.fileName }}
             </div>
+            <span class="ion-trash-b" @click="removeComponent(item)"></span>
           </div>
         </div>
       </div>
@@ -91,6 +92,14 @@ export default {
         }
         this.modalCreate = !this.modalCreate
         this.$snotify.success(`File ${res.data.data} created`)
+        this.getList()
+      })
+    },
+    removeComponent (item) {
+      axios.post('/api/component/remove', {
+        filePath: item.path
+      }).then(res => {
+        this.$snotify.success(`File ${res.data.data} removed`)
         this.getList()
       })
     },
