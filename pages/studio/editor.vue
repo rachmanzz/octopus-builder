@@ -23,9 +23,7 @@
                     <i class="ion-trash-b"></i>
                   </span>
                 </div>
-                <keep-alive>
-                  <component :is="item.component"></component>
-                </keep-alive>
+                <component :is="item.component"></component>
               </div>
             </Draggable>
           </Container>
