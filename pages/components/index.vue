@@ -5,10 +5,15 @@
       <div class="row">
         <div class="col-3" v-for="item in components" :key="item.key">
           <div class="card">
-            <div class="card-body" @click="openEditor(item)">
-              {{ item.fileName }}
+            <div class="card-body">
+              <div class="card-image" @click="openEditor(item)">
+                <img src="~/static/vue.svg" :alt="item.name">
+              </div>
+              <div class="card-title">{{ item.name }}</div>
+              <div class="card-remove" @click="removeComponent(item)">
+                <span class="ion-trash-b"></span>
+              </div>
             </div>
-            <span class="ion-trash-b" @click="removeComponent(item)"></span>
           </div>
         </div>
       </div>
@@ -101,7 +106,7 @@ export default {
         text: "You won't be able to revert this!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#527eff',
+        confirmButtonColor: '#df4848',
         cancelButtonColor: '#ababab',
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
