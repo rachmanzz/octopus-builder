@@ -32,6 +32,26 @@ const syncAllServer = async (ports) => {
   return result
 }
 
+const renderAllServer = async (ports, source) => {
+  const result = []
+
+  await Promise.all(ports.map(async (port, index) => {
+    console.log(`Synchronize server ${port}`)
+
+    await axios.post(`http://localhost:${port}/api/render`, {
+      source: source
+    }).then(res => {
+      result[index] = {
+        active: true,
+        server: `http://localhost:${port}`,
+        data: res.data
+      }
+    })
+  }))
+
+  return result
+}
+
 /* GET users listing. */
 router.post('/synchronize', (req, res) => {
   const { clients } = req.body
@@ -41,6 +61,17 @@ router.post('/synchronize', (req, res) => {
     console.log('Synchronization complete')
     res.json({
       server: server
+    })
+  })
+})
+
+router.post('/render', (req, res) => {
+  const source = req.body
+
+  renderAllServer([8010], source).then(result => {
+    console.log('Synchronization complete')
+    res.json({
+      server: result
     })
   })
 })

@@ -67,7 +67,7 @@
       </div>
     </div>
   </div>
-</template>
+</template>x
 
 <script>
 import axios from 'axios'
@@ -96,38 +96,61 @@ export default {
     this.source = importer
   },
   methods: {
-    getProps (child) {
-      const props = []
+    generatePropsValue (element, data) {
+      let result = ''
+
+      if (data['octKey'] === 'image') {
+        result = element.src
+      } else {
+        result = element.innerText
+      }
+
+      return result
+    },
+    generateProps (parent, child) {
+      const props = {
+        key: parent.dataset['octProps'],
+        data: parent.dataset['octPropsKey'],
+        payload: {}
+      }
 
       child.forEach(item => {
-        props.push({
-          name: child.dataset ? child.dataset['octName'] : '',
-          className: item.className,
-          tagName: item.tagName,
-          source: item.src,
-          width: item.clientWidth,
-          height: item.clientHeight,
-          html: item.innerHTML,
-          text: item.innerText
-        })
+        props['payload'][item.dataset['octKey']] = this.generatePropsValue(item, item.dataset)
       })
 
       return props
     },
-    async getElement () {
+    async generateMap () {
+      const mapping = {
+        slug: 'page-1',
+        source: [],
+        pageClass: 'container',
+        components: [],
+        styles: []
+      }
       const component = []
 
       document.querySelectorAll('.studio-inner .component-item').forEach(item => {
-        let child = item.childNodes[1]
+        let element = item.childNodes[1]
 
         component.push({
-          component: child.dataset ? child.dataset['octName'] : '',
-          className: child.className,
-          props: this.getProps(child.childNodes)
+          title: element.dataset['octComponent'],
+          name: element.dataset['octComponent'],
+          path: 'global',
+          props: this.generateProps(element, element.childNodes)
         })
       })
 
-      return component
+      mapping['components'] = component
+
+      return mapping
+    },
+    onSave () {
+      this.generateMap().then(mapping => {
+        axios.post('/api/render', mapping).then(result => {
+          this.$snotify.success('Generate page success')
+        })
+      })
     },
     onRefresh () {
       axios.get('/api/component/map').then(res => {
@@ -135,11 +158,6 @@ export default {
         setTimeout(() => {
           window.location.reload()
         }, 2000)
-      })
-    },
-    onSave () {
-      this.getElement().then(x => {
-        console.log(x)
       })
     },
     removeComponent (index) {
