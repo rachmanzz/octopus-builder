@@ -15,7 +15,7 @@
             @drop="studioDrop('target', $event)"
           >
             <Draggable v-for="(item, key) in target" :key="key">
-              <div class="component-item" @click="setEditable(key)">
+              <div class="component-item" @click="setProperties(key)">
                 <div class="component-toolbar">
                   <span class="component-toolbar_item toolbar_handle">
                     <i class="ion-arrow-move"></i>
@@ -145,7 +145,7 @@ export default {
     setTarget (index) {
       return this.target[index]
     },
-    setEditable (key) {
+    setProperties (key) {
       return builder.setEditable(key)
     }
   }
