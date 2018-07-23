@@ -1,16 +1,16 @@
 <template>
   <div class="content">
-    <Navbar :data="navbar" :create="createComponent" :publish="publishComponent"/>
+    <Navbar :data="navbar" :create="create" :publish="publish"/>
     <div class="content-inner">
       <div class="row">
-        <div class="col-3" v-for="item in components" :key="item.key">
+        <div class="col-3 col-xl-2" v-for="item in components" :key="item.key">
           <div class="card">
             <div class="card-body">
-              <div class="card-image" @click="openEditor(item)">
+              <div class="card-image" @click="open(item)">
                 <img src="~/static/vue.svg" :alt="item.name">
               </div>
-              <div class="card-title" @click="openEditor(item)">{{ item.name }}</div>
-              <div class="card-remove" @click="removeComponent(item)">
+              <div class="card-title" @click="open(item)">{{ item.name }}</div>
+              <div class="card-remove" @click="remove(item)">
                 <span class="ion-trash-b"></span>
               </div>
             </div>
@@ -41,14 +41,14 @@
           placeholder="Enter file Path">
         </b-form-input>
       </b-form-group>
-      <b-button variant="primary" @click="saveComponent">Submit</b-button>
+      <b-button variant="primary" @click="save">Submit</b-button>
     </b-modal>
   </div>
 </template>
 
 <script>
 import axios from '~/plugins/axios'
-import Navbar from '~/components/Navbar.vue'
+import Navbar from '~/components/global/Navbar.vue'
 
 export default {
   components: {
@@ -80,16 +80,16 @@ export default {
     }
   },
   mounted () {
-    this.getList()
+    this.list()
   },
   methods: {
-    openEditor (file) {
+    open (file) {
       this.$router.push(`/components/editor?file=${file.name.toLowerCase()}`)
     },
-    createComponent () {
+    create () {
       this.modalCreate = !this.modalCreate
     },
-    saveComponent () {
+    save () {
       axios.post('/api/component/create', this.form).then(res => {
         this.form = {
           fileName: '',
@@ -97,10 +97,10 @@ export default {
         }
         this.modalCreate = !this.modalCreate
         this.$snotify.success(`File ${res.data.data} created`)
-        this.getList()
+        this.list()
       })
     },
-    removeComponent (item) {
+    remove (item) {
       this.$swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -122,18 +122,18 @@ export default {
               `File ${res.data.data} removed`,
               'success'
             )
-            this.getList()
+            this.list()
           })
         }
       })
     },
-    publishComponent () {
+    publish () {
       this.$snotify.info('Publishing all components')
       axios.post('/api/component/publish', this.$store.state.settings).then(res => {
         this.$snotify.success('Publish all components success')
       })
     },
-    getList () {
+    list () {
       axios.get('/api/component').then(res => {
         const files = {}
 

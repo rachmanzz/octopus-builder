@@ -9,7 +9,7 @@
 <script>
 import Vue from 'vue'
 import Snotify from 'vue-snotify'
-import Sidebar from '~/components/Sidebar.vue'
+import Sidebar from '~/components/global/Sidebar.vue'
 
 Vue.use(Snotify)
 

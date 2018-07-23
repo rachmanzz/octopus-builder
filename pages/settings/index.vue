@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import Navbar from '~/components/Navbar.vue'
-import ServerSetting from '~/components/ServerSetting.vue'
-import ServerClients from '~/components/ServerClients.vue'
+import Navbar from '~/components/global/Navbar.vue'
+import ServerSetting from '~/components/section/ServerSetting.vue'
+import ServerClients from '~/components/section/ServerClients.vue'
 
 export default {
   components: {

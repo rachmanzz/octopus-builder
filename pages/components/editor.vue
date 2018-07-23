@@ -18,8 +18,8 @@
 <script>
 import axios from 'axios'
 import Monaco from 'monaco-editor-forvue'
-import Navbar from '~/components/Navbar.vue'
-import Status from '~/components/Status.vue'
+import Navbar from '~/components/global/Navbar.vue'
+import Status from '~/components/global/Status.vue'
 
 export default {
   components: {
