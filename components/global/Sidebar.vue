@@ -40,7 +40,7 @@ export default {
         url: '/synchronize',
         title: 'Synchronize'
       }, {
-        url: '/settings/',
+        url: '/settings',
         title: 'Settings'
       }],
       currentURL: ''
