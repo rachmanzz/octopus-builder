@@ -1,6 +1,10 @@
 const state = {
   settings: [],
-  allFiles: []
+  allFiles: [],
+  properties: {
+    type: '',
+    payload: {}
+  }
 }
 
 export default state

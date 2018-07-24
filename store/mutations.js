@@ -4,6 +4,9 @@ const mutations = {
   },
   SET_FILES: (state, { data }) => {
     state.allFiles = data
+  },
+  SET_PROPERTIES: (state, data) => {
+    state.properties = data
   }
 }
 

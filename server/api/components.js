@@ -47,7 +47,7 @@ router.get('/component/map', (req, res) => {
       export default listComponents
     `
 
-    fs.writeFileSync('./lib/components.js', prettier.format(string, {
+    fs.writeFileSync('./lib/studioImporter.js', prettier.format(string, {
       semi: false,
       singleQuote: true,
       parser: 'babylon'

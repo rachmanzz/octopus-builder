@@ -15,7 +15,7 @@
             @drop="studioDrop('target', $event)"
           >
             <Draggable v-for="(item, key) in target" :key="key">
-              <div class="component-item" @click="setProperties(key)">
+              <div class="component-item" @click="setClick(key)">
                 <div class="component-toolbar">
                   <span class="component-toolbar_item toolbar_handle">
                     <i class="ion-arrow-move"></i>
@@ -71,16 +71,7 @@
           </b-card>
 
           <!-- Properties -->
-          <b-card class="card-default" no-body>
-            <b-card-header header-tag="header" role="tab" v-b-toggle.properties>
-              Properties
-            </b-card-header>
-            <b-collapse id="properties" accordion="editor-collapse" role="tabpanel">
-              <b-card-body>
-                Properties
-              </b-card-body>
-            </b-collapse>
-          </b-card>
+          <Properties />
 
         </div>
       </div>
@@ -94,13 +85,15 @@ import builder from '~/lib/studioBuilder.js'
 import importer from '~/lib/studioImporter.js'
 import extractor from '~/lib/studioExtractor.js'
 import Navbar from '~/components/global/Navbar.vue'
+import Properties from '~/components/studio/Properties.vue'
 import { Container, Draggable } from 'vue-smooth-dnd'
 
 export default {
   components: {
     Container,
     Draggable,
-    Navbar
+    Navbar,
+    Properties
   },
   data () {
     return {
@@ -118,7 +111,8 @@ export default {
   },
   methods: {
     save () {
-      extractor().then(mapping => {
+      extractor.generateMap().then(mapping => {
+        console.log(mapping)
         axios.post('/api/render', mapping).then(result => {
           this.$snotify.success('Generate page success')
         })
@@ -144,8 +138,44 @@ export default {
     setTarget (index) {
       return this.target[index]
     },
-    setProperties (key) {
+    setClick (key) {
+      this.setListener()
       return builder.setEditable(key)
+    },
+    setListener () {
+      document.querySelectorAll('[data-octopus]').forEach(element => {
+        if (element.dataset['octopus'].indexOf('type:') > -1) {
+          element.addEventListener('click', (e) => {
+            e.stopPropagation()
+            this.setProperties(e.target)
+          }, { once: true })
+        }
+      })
+    },
+    setProperties (element) {
+      const attrs = extractor.extractAttribute(element.dataset['octopus'])
+      const allowStyle = ['color', 'fontSize', 'width', 'height']
+      const filterStyle = (propStyle) => {
+        return Object.keys(propStyle).filter(key => allowStyle.includes(key)).reduce((obj, key) => {
+          obj[key] = propStyle[key]
+          return obj
+        }, {})
+      }
+
+      if (element.classList.value.indexOf('octopus_') === -1) {
+        element.classList.add(`octopus_${builder.uniqueID()}`)
+      }
+
+      this.$store.commit('SET_PROPERTIES', {
+        type: attrs.type,
+        payload: {
+          element: element.classList[1],
+          option: element.dataset['octopus'],
+          content: extractor.generatePropsValue(element, attrs.type),
+          style: JSON.stringify(filterStyle(window.getComputedStyle(element))),
+          protoStyle: element.dataset['octopusStyle']
+        }
+      })
     }
   }
 }

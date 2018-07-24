@@ -36,6 +36,7 @@
     "sass-loader": "^7.0.3",
     "simple-git": "^1.96.0",
     "source-map-support": "0.5.5",
+    "vue-color": "^2.4.6",
     "vue-loader": "13.7.2",
     "vue-smooth-dnd": "^0.2.1",
     "vue-snotify": "^3.2.0",
