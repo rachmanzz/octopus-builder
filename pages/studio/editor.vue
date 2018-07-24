@@ -112,10 +112,10 @@ export default {
   methods: {
     save () {
       extractor.generateMap().then(mapping => {
-        console.log(mapping)
-        axios.post('/api/render', mapping).then(result => {
-          this.$snotify.success('Generate page success')
-        })
+        console.log(JSON.stringify(mapping))
+        // axios.post('/api/render', mapping).then(result => {
+        //   this.$snotify.success('Generate page success')
+        // })
       })
     },
     refresh () {
