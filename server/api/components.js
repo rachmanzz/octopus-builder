@@ -33,7 +33,8 @@ router.get('/component/map', (req, res) => {
   getComponents().then(allFiles => {
     const listComponents = allFiles.map(item => {
       return `{
-        data: ${JSON.stringify(item.name)},
+        name: ${JSON.stringify(item.name)},
+        icon: 'far fa-image',
         component: () => import(${JSON.stringify(item.path.replace('./', '~/'))})
       }`
     }).join(',\n')

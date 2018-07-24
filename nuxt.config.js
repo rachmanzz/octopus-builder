@@ -12,7 +12,8 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', type: 'text/css', href: 'http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' }
+      { rel: 'stylesheet', type: 'text/css', href: 'http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' },
+      { rel: 'stylesheet', type: 'text/css', href: 'https://use.fontawesome.com/releases/v5.1.1/css/all.css' }
     ]
   },
   loading: {

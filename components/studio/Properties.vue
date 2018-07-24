@@ -3,7 +3,7 @@
     <b-card-header header-tag="header" role="tab" v-b-toggle.properties>
       Properties
     </b-card-header>
-    <b-collapse id="properties" accordion="editor-collapse" role="tabpanel">
+    <b-collapse id="properties" visible role="tabpanel">
       <b-card-body>
         <TextProperties v-if="$store.state.properties.type === 'text'" />
         <ImageProperties v-else-if="$store.state.properties.type === 'image'" />

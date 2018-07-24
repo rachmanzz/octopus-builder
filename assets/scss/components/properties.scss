@@ -1,9 +1,10 @@
 .properties {
-  width: 250px;
+  width: 300px;
   height: calc(100vh - 57px);
   background-color: #ffffff;
   z-index: 100;
   border-left: 1px solid #e5e6e9;
+  overflow-y: scroll;
   
   .card {
     border: 0;

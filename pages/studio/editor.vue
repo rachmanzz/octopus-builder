@@ -59,11 +59,11 @@
                   :get-child-payload="setSource"
                   drag-class="smooth-dnd-drag"
                   drop-class="smooth-dnd-drop"
+                  class="smooth-dnd-list"
                 >
-                  <Draggable v-for="item in source" :key="item.id">
-                    <div class="smooth-dnd-item">
-                      {{ item.data }}
-                    </div>
+                  <Draggable class="smooth-dnd-item" v-for="item in source" :key="item.id">
+                    <div class="smooth-dnd-icon" :class="item.icon" :title="item.name"></div>
+                    <div class="smooth-dnd-name">{{ item.name }}</div>
                   </Draggable>
                 </Container>
               </b-card-body>
