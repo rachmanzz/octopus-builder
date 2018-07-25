@@ -49,4 +49,18 @@
       color: #FFFFFF;
     }
   }
+  table {
+    tr > th {
+      font-weight: 700;
+      font-size: .8rem;
+      text-transform: uppercase;
+      color: #527dff;
+      border-top: 0;
+      border-bottom: 0;
+    }
+    tr > td {
+      font-weight: 400;
+      font-size: .95rem;
+    }
+  }
 }

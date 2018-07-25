@@ -1,20 +1,33 @@
 <template>
   <div class="content">
-    <Navbar :data="navbar" :create="create" :publish="publish"/>
+    <Navbar :data="navbar"/>
     <div class="content-inner">
-      <div class="row">
-        <div class="col-3 col-xl-2" v-for="item in components" :key="item.key">
-          <div class="card">
-            <div class="card-body">
-              <div class="card-image" @click="open(item)">
-                <img src="~/static/vue.svg" :alt="item.name">
-              </div>
-              <div class="card-title" @click="open(item)">{{ item.name }}</div>
-              <div class="card-remove" @click="remove(item)">
-                <span class="ion-trash-b"></span>
-              </div>
-            </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="mb-3">
+            <b-btn size="sm" variant="outline-success" @click="modalCreate = !modalCreate" class="mr-2">Create New</b-btn>
+            <b-btn size="sm" variant="outline-info" @click="publish('all')">Publish All</b-btn>
           </div>
+          <b-table
+            hover
+            :fields="fields"
+            :items="components"
+            @row-clicked="openDetail"
+          >
+            <template slot="status" slot-scope="data">
+              <div v-html="formatStatus(data.value)"></div>
+            </template>
+            <template slot="publish" slot-scope="data">
+              <b-btn class="btn-icon" size="sm" variant="info" @click.stop="publish(data)">
+                <span class="ion-share"></span>
+              </b-btn>
+            </template>
+            <template slot="remove" slot-scope="data">
+              <b-btn class="btn-icon" size="sm" variant="danger" @click.stop="remove(data)">
+                <span class="ion-trash-b"></span>
+              </b-btn>
+            </template>
+          </b-table>
         </div>
       </div>
     </div>
@@ -58,8 +71,6 @@ export default {
     return {
       navbar: {
         title: 'All Components',
-        create: true,
-        publish: true,
         menu: [{
           url: '/components/',
           title: 'Components'
@@ -76,6 +87,22 @@ export default {
         filePath: '/global/'
       },
       modalCreate: false,
+      fields: {
+        file: {
+          label: 'File Name',
+          sortable: true
+        },
+        status: {
+          label: 'Status',
+          sortable: true
+        },
+        publish: {
+          label: 'Publish'
+        },
+        remove: {
+          label: 'Remove'
+        }
+      },
       components: []
     }
   },
@@ -83,11 +110,9 @@ export default {
     this.list()
   },
   methods: {
-    open (file) {
-      this.$router.push(`/components/editor?file=${file.name.toLowerCase()}`)
-    },
-    create () {
-      this.modalCreate = !this.modalCreate
+    openDetail (record, index) {
+      const file = record.file.replace(/\..*$/g, '')
+      this.$router.push(`/components/editor?file=${file.toLowerCase()}`)
     },
     save () {
       axios.post('/api/component/create', this.form).then(res => {
@@ -100,7 +125,8 @@ export default {
         this.list()
       })
     },
-    remove (item) {
+    remove (data) {
+      const item = data.item
       this.$swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -108,7 +134,7 @@ export default {
         showCancelButton: true,
         confirmButtonColor: '#df4848',
         cancelButtonColor: '#ababab',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes, remove it!'
       }).then((result) => {
         if (result.value) {
           axios.post('/api/component/remove', {
@@ -127,11 +153,38 @@ export default {
         }
       })
     },
-    publish () {
-      this.$snotify.info('Publishing all components')
-      axios.post('/api/component/publish', this.$store.state.settings).then(res => {
-        this.$snotify.success('Publish all components success')
-      })
+    publish (data) {
+      const message = data === 'all' ? 'Publish all components' : `Publishing component ${data.item.name}`
+
+      const sendPublish = () => {
+        this.$snotify.info(message)
+        axios.post('/api/component/publish', this.$store.state.settings).then(res => {
+          this.$snotify.success(message + ' success')
+        })
+      }
+
+      if (data !== 'all') {
+        if (!data.item.status) {
+          this.$snotify.success(`File ${data.item.name} already published`)
+        } else {
+          this.$store.state.settings['file'] = data.item
+          sendPublish()
+        }
+      } else {
+        this.$swal({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#17a2b8',
+          cancelButtonColor: '#ababab',
+          confirmButtonText: 'Yes, publish it!'
+        }).then((result) => {
+          if (result.value) {
+            sendPublish()
+          }
+        })
+      }
     },
     list () {
       axios.get('/api/component').then(res => {
@@ -140,13 +193,23 @@ export default {
         this.components = res.data
 
         res.data.map((item, index) => {
-          files[item.name.toLowerCase()] = item
+          const before = item
+          before['publish'] = ''
+          before['remove'] = ''
+
+          files[item.name.toLowerCase()] = before
         })
 
         this.$store.commit('SET_FILES', {
           data: files
         })
       })
+    },
+    formatStatus (status) {
+      const stat = status || 'actived'
+      const name = stat.replace(/_/g, ' ')
+
+      return `<span class="comp-status comp-status-${stat}">${name}</span>`
     }
   }
 }
@@ -155,5 +218,34 @@ export default {
 <style lang="scss">
 .card {
   cursor: pointer;
+
+  table tr th:not(.sorting) {
+    width: 100px;
+  }
+}
+.comp-status {
+  color: #29a818;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: .8rem;
+
+  &-not_added {
+    color: #f55656;
+  }
+  &-conflicted {
+    color: #ebcd4c;
+  }
+  &-created {
+    color: #8bd479;
+  }
+  &-deleted {
+    color: #af2727;
+  }
+  &-modified {
+    color: #d4b52a;
+  }
+  &-renamed {
+    color: #e7cc34;
+  }
 }
 </style>

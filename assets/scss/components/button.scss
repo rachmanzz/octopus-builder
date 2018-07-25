@@ -3,4 +3,13 @@
   padding: .5rem 2.5rem;
   font-size: .9rem;
   text-transform: uppercase;
+
+  &-sm {
+    padding: .4rem 1rem;
+    font-size: .75rem;
+  }
+  &-icon {
+    padding: .2rem 1rem;
+    font-size: 1.2rem;
+  }
 }

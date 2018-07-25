@@ -13,14 +13,14 @@ const getComponents = () => {
       const allFiles = []
 
       await files.map(item => {
-        const fileName = item.split('/').pop()
-        const ext = fileName.split('.')
+        const name = item.split('/').pop()
+        const file = name.split('.')
 
         allFiles.push({
           path: item,
-          fileName: fileName,
-          name: ext[0],
-          ext: ext[1]
+          file: name,
+          name: file[0],
+          type: file[1]
         })
       })
 
@@ -125,11 +125,15 @@ router.post('/component/remove', (req, res) => {
 })
 
 router.post('/component/publish', (req, res) => {
-  const { repository, branch } = req.body
+  const { repository, branch, file } = req.body
+  const source = file ? file['path'].replace('/core', '') : './*'
+  const message = file
+    ? `Commit file ${file['file']} on branch ${branch} at ${new Date()} `
+    : `Latest commit on branch ${branch} at ${new Date()} `
 
   git('./core')
-    .add('./*')
-    .commit(`Latest commit on branch ${branch} at ${new Date()} `)
+    .add(source)
+    .commit(message)
     .push(repository, branch, () => {
       res.send({
         success: true,
