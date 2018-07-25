@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <Navbar :data="navbar"/>
-    <div class="content-inner">
+    <div class="container content-inner">
       <div class="card">
         <div class="card-body">
           <div class="mb-3">
@@ -70,17 +70,7 @@ export default {
   data () {
     return {
       navbar: {
-        title: 'All Components',
-        menu: [{
-          url: '/components/',
-          title: 'Components'
-        }, {
-          url: '/components/publish',
-          title: 'Publish'
-        }, {
-          url: '/components/server',
-          title: 'Server'
-        }]
+        title: 'All Components'
       },
       form: {
         fileName: '',

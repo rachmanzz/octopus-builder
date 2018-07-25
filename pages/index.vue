@@ -17,11 +17,7 @@ export default {
   data () {
     return {
       navbar: {
-        title: 'Home',
-        menu: [{
-          url: '/',
-          title: 'Home'
-        }]
+        title: 'Home'
       }
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <Navbar :data="navbar"/>
-    <div class="content-inner">
+    <div class="container content-inner">
       <div class="row">
         <div class="col-6">
           <ServerSetting />
