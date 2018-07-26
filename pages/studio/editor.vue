@@ -72,7 +72,9 @@ export default {
     }
   },
   mounted () {
-    new Builder() // eslint-disable-line
+    if (process.browser) {
+      new Builder() // eslint-disable-line
+    }
     this.source = importer
   },
   methods: {
