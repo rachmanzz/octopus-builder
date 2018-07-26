@@ -91,41 +91,6 @@ export default {
           window.location.reload()
         }, 2000)
       })
-    },
-    setListener () {
-      document.querySelectorAll('[data-octopus]').forEach(element => {
-        if (element.dataset['octopus'].indexOf('type:') > -1) {
-          element.addEventListener('click', (e) => {
-            e.stopPropagation()
-            this.setProperties(e.target)
-          }, { once: true })
-        }
-      })
-    },
-    setProperties (element) {
-      const attrs = extractor.extractAttribute(element.dataset['octopus'])
-      const allowStyle = ['color', 'fontSize', 'width', 'height']
-      const filterStyle = (propStyle) => {
-        return Object.keys(propStyle).filter(key => allowStyle.includes(key)).reduce((obj, key) => {
-          obj[key] = propStyle[key]
-          return obj
-        }, {})
-      }
-
-      if (element.classList.value.indexOf('octopus_') === -1) {
-        // element.classList.add(`octopus_${builder.uniqueID()}`)
-      }
-
-      this.$store.commit('SET_PROPERTIES', {
-        type: attrs.type,
-        payload: {
-          element: element.classList[1],
-          option: element.dataset['octopus'],
-          content: extractor.generatePropsValue(element, attrs.type),
-          style: JSON.stringify(filterStyle(window.getComputedStyle(element))),
-          protoStyle: element.dataset['octopusStyle']
-        }
-      })
     }
   }
 }
