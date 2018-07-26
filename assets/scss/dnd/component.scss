@@ -1,11 +1,12 @@
-.component {
-  &-item {
+.studio {
+  &-component {
     position: relative;
     border: 1px solid #FAFAFA;
     overflow: hidden;
+    background-color: #ffffff;
     border-radius: 8px;
 
-    &:hover > .component-toolbar {
+    &:hover > .studio-toolbar {
       opacity: 1;
     }
     &_active {
@@ -28,6 +29,19 @@
       font-size: 20px;
       padding: 0 .5rem;
       color: #ffffff;
+    }
+  }
+  &-inner {
+    .builder-item {
+      width: 100%;
+      height: 5px;
+      max-height: 5px;
+      background-color: #527eff;
+      margin: 0;
+
+      &> * {
+        display: none;
+      }
     }
   }
 }

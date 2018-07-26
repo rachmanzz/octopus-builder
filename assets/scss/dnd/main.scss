@@ -1,4 +1,4 @@
-.smooth-dnd {
+.builder {
   &-container {
     height: calc(100vh - 80px);
   }
@@ -31,5 +31,8 @@
   }
   &-name {
     font-size: .8rem;
+  }
+  &-component {
+    display: none;
   }
 }

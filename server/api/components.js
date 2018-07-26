@@ -91,7 +91,7 @@ router.post('/component/create', (req, res) => {
     fs.mkdirSync(path)
   }
 
-  fs.writeFile(file, `<template>\n  <!-- do stuff -->\n</template>`, (err) => {
+  fs.writeFile(file, `<template>\n<section>\n<!-- Do Stuff -->\n</section>\n</template>`, (err) => {
     if (err) {
       res.json({
         success: false,

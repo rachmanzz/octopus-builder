@@ -3,33 +3,7 @@
     <Navbar :data="navbar" :refresh="refresh" :save="save"/>
     <div class="content-flex">
       <div class="studio">
-        <div class="studio-inner">
-
-          <!-- Studio Workspace -->
-          <Container
-            group-name="studio"
-            :get-child-payload="setTarget"
-            :drag-handle-selector="`.toolbar_handle`"
-            drag-class="smooth-dnd-drag"
-            drop-class="smooth-dnd-drop"
-            @drop="studioDrop('target', $event)"
-          >
-            <Draggable v-for="(item, key) in target" :key="key">
-              <div class="component-item" @click="setClick(key)">
-                <div class="component-toolbar">
-                  <span class="component-toolbar_item toolbar_handle">
-                    <i class="ion-arrow-move"></i>
-                  </span>
-                  <span class="component-toolbar_item toolbar_delete" @click="studioRemove(key)">
-                    <i class="ion-trash-b"></i>
-                  </span>
-                </div>
-                <component :is="item.component"></component>
-              </div>
-            </Draggable>
-          </Container>
-
-        </div>
+        <div class="studio-inner"></div>
       </div>
       <div class="properties">
         <div role="tablist">
@@ -52,20 +26,14 @@
               Components
             </b-card-header>
             <b-collapse id="components" visible accordion="editor-collapse" role="tabpanel">
-              <b-card-body>
-                <Container
-                  :behaviour="'copy'"
-                  group-name="studio"
-                  :get-child-payload="setSource"
-                  drag-class="smooth-dnd-drag"
-                  drop-class="smooth-dnd-drop"
-                  class="smooth-dnd-list"
-                >
-                  <Draggable class="smooth-dnd-item" v-for="item in source" :key="item.id">
-                    <div class="smooth-dnd-icon" :class="item.icon" :title="item.name"></div>
-                    <div class="smooth-dnd-name">{{ item.name }}</div>
-                  </Draggable>
-                </Container>
+              <b-card-body class="builder-element">
+                <div class="builder-item" v-for="(item, key) in source" :key="key">
+                  <div class="builder-icon" :class="item.icon" :title="item.name"></div>
+                  <div class="builder-name">{{ item.name }}</div>
+                  <div class="builder-component">
+                    <component :is="item.component"></component>
+                  </div>
+                </div>
               </b-card-body>
             </b-collapse>
           </b-card>
@@ -81,17 +49,14 @@
 
 <script>
 import axios from 'axios'
-import builder from '~/lib/studioBuilder.js'
+import Builder from '~/lib/studioBuilder.js'
 import importer from '~/lib/studioImporter.js'
 import extractor from '~/lib/studioExtractor.js'
 import Navbar from '~/components/global/Navbar.vue'
 import Properties from '~/components/studio/Properties.vue'
-import { Container, Draggable } from 'vue-smooth-dnd'
 
 export default {
   components: {
-    Container,
-    Draggable,
     Navbar,
     Properties
   },
@@ -107,15 +72,16 @@ export default {
     }
   },
   mounted () {
+    new Builder() // eslint-disable-line
     this.source = importer
   },
   methods: {
     save () {
       extractor.generateMap().then(mapping => {
-        // console.log(JSON.stringify(mapping))
-        axios.post('/api/render', mapping).then(result => {
-          this.$snotify.success('Generate page success')
-        })
+        console.log(JSON.stringify(mapping))
+        // axios.post('/api/render', mapping).then(result => {
+        //   this.$snotify.success('Generate page success')
+        // })
       })
     },
     refresh () {
@@ -125,22 +91,6 @@ export default {
           window.location.reload()
         }, 2000)
       })
-    },
-    studioDrop (collection, dropResult) {
-      this[collection] = builder.setDrop(this[collection], dropResult)
-    },
-    studioRemove (index) {
-      this.target.splice(index, 1)
-    },
-    setSource (index) {
-      return this.source[index]
-    },
-    setTarget (index) {
-      return this.target[index]
-    },
-    setClick (key) {
-      this.setListener()
-      return builder.setEditable(key)
     },
     setListener () {
       document.querySelectorAll('[data-octopus]').forEach(element => {
@@ -163,7 +113,7 @@ export default {
       }
 
       if (element.classList.value.indexOf('octopus_') === -1) {
-        element.classList.add(`octopus_${builder.uniqueID()}`)
+        // element.classList.add(`octopus_${builder.uniqueID()}`)
       }
 
       this.$store.commit('SET_PROPERTIES', {
