@@ -1,8 +1,5 @@
 <template>
-  <b-card
-    header="Clients Server"
-    header-tag="header"
-  >
+  <b-card>
     <b-table bordered :fields="fields" :items="server"></b-table>
   </b-card>
 </template>

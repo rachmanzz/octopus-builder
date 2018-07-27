@@ -1,8 +1,5 @@
 <template>
-  <b-card
-    header="Application Settings"
-    header-tag="header"
-  >
+  <b-card>
     <b-form-group
       label="Application Name"
       label-for="labelName">
