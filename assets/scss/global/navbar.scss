@@ -8,6 +8,14 @@
       text-transform: uppercase;
       color: #ffffff;
     }
+    &-link {
+      padding: .4rem;
+
+      span {
+        color: #ffffff;
+        font-size: 1.4rem;
+      }
+    }
   }
   &-bottom {
     border-bottom: 0;

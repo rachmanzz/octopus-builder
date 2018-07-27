@@ -3,13 +3,16 @@
   height: 100vh;
   background-color: #ffffff;
   z-index: 100;
-  // border-right: 1px solid #e5e6e9;
+  transition: margin-left .3s ease-in-out;
 
+  &-hide {
+    margin-left: -250px;
+  }
   &-title {
     width: 100%;
     border-bottom: 1px solid #EAEAEA;
     background-color: #527eff;
-    padding: 1rem;
+    padding: 1.2rem;
     text-align: center;
     color: #ffffff;
     font-weight: 500;

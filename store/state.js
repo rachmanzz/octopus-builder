@@ -1,10 +1,11 @@
 const state = {
   settings: [],
-  allFiles: [],
+  files: [],
   properties: {
     type: '',
     payload: {}
-  }
+  },
+  sidebar: true
 }
 
 export default state

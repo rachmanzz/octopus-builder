@@ -3,10 +3,13 @@ const mutations = {
     state.settings = data
   },
   SET_FILES: (state, { data }) => {
-    state.allFiles = data
+    state.files = data
   },
   SET_PROPERTIES: (state, data) => {
     state.properties = data
+  },
+  SET_SIDEBAR: (state, data) => {
+    state.sidebar = data
   }
 }
 

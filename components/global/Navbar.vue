@@ -2,8 +2,8 @@
   <nav class="navbar navbar-expand-md navbar-light">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span class="ion-android-arrow-back"></span>
+        <a class="nav-link" href="#" @click="toggleSidebar">
+          <span class="ion-navicon-round"></span>
         </a>
       </li>
     </ul>
@@ -32,8 +32,17 @@
 
 <script>
 export default {
+  data () {
+    return {
+      sidebar: true
+    }
+  },
   props: ['data', 'create', 'publish', 'refresh', 'sync', 'save'],
   methods: {
+    toggleSidebar () {
+      this.$store.commit('SET_SIDEBAR', !this.sidebar)
+      this.sidebar = !this.sidebar
+    },
     triggerCreate () {
       this.create()
     },

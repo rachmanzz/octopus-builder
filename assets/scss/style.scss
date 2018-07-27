@@ -1,23 +1,19 @@
 @import
-
-  // Helper
-
   // Section
-  './section/content',
-  './section/studio',
+  './global/content',
+  './global/navbar',
+  './global/properties',
+  './global/sidebar',
+  './global/studio',
   
   // Drag & Drop
-  './dnd/main',
-  './dnd/component',
-  './dnd/toolbar',
+  './studio/main',
+  './studio/component',
 
   // Components
   './components/avatar',
   './components/button',
-  './components/card',
-  './components/sidebar',
-  './components/navbar',
-  './components/properties'
+  './components/card'
 
 ;
 @import "~vue-snotify/styles/material";

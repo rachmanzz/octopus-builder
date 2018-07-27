@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" v-bind:class="{ 'sidebar-hide': !$store.state.sidebar }">
     <div class="sidebar-title">
       {{ $store.state.settings.name || 'BUILDER' }}
     </div>

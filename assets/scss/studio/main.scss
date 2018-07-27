@@ -1,4 +1,11 @@
 .studio {
+  user-select: none;
+
+  &-layout {
+    width: 50%;
+    border: 1px solid #000;
+    padding: 1rem;
+  }
   &-component {
     position: relative;
     border: 1px solid #FAFAFA;
@@ -30,8 +37,16 @@
       padding: 0 .5rem;
       color: #ffffff;
     }
+    &_handle {
+      cursor: all-scroll;
+    }
+    &_delete {
+      cursor: pointer;
+    }
   }
   &-inner {
+    user-select: none;
+
     .builder-item {
       width: 100%;
       padding: 1rem;
@@ -55,6 +70,10 @@
       &> * {
         display: none;
       }
+    }
+    .col-4 {
+      padding: 3rem 0;
+      border-right: 1px solid #dedede;
     }
   }
 }
