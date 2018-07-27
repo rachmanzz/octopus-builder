@@ -1,0 +1,130 @@
+.studio {
+  user-select: none;
+
+  &-inner {
+    user-select: none;
+
+    .studio-source {
+      width: 100%;
+      padding: 1rem;
+      max-height: 10px;
+      background-color: transparent;
+      border: 0;
+      margin: 0;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1rem;
+        border-radius: 5px;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        background-color: #527eff;
+      }
+      &> * {
+        display: none;
+      }
+    }
+  }
+  &-canvas {
+    position: relative;
+    border: 1px dashed #b9bcc7;
+    overflow: hidden;
+    border-radius: 6px;
+    padding: .5rem;
+    margin-bottom: .2rem;
+
+    &:hover > .studio-toolbar {
+      opacity: 1;
+    }
+    &_active {
+      border-color: #527eff;
+    }
+    &_layout {
+      padding: 60px .5rem 20px .5rem;
+    }
+  }
+  &-toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: .5rem;
+    background-color: transparentize(#527eff, .2);
+    z-index: 100;
+    border-top-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+
+    &_item {
+      font-size: 20px;
+      padding: 0 .5rem;
+      color: #ffffff;
+    }
+    &_handle {
+      cursor: all-scroll;
+    }
+    &_delete {
+      cursor: pointer;
+    }
+  }
+  
+  /**
+   * Draggable Components
+   */
+  &-source {
+    float: left;
+    margin: .5rem;
+    width: calc(50% - 1rem);
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #e5e6e9;
+    cursor: all-scroll;
+    padding: 1.5rem;
+  }
+  &-icon {
+    font-size: 2.2rem;
+    margin-bottom: .5rem;
+  }
+  &-name {
+    font-size: .8rem;
+  }
+  &-component {
+    display: none;
+  }
+
+  /**
+   * Canvas style
+   */
+  [class*="row"] {
+    margin: 0;
+
+    &+ .studio-toolbar {
+      opacity: 1;
+      border-radius: 4px;
+      background-color: transparentize(#1e945d, .2);
+    }
+  }
+  [class*="col-"] {
+    padding: 0 .25rem;
+    overflow: hidden;
+    border-radius: 6px;
+    min-height: 100px;
+  }
+  .column-inner {
+    border: 1px dashed #b9bcc7;
+    padding: 1rem .3rem;
+    overflow: hidden;
+    border-radius: 6px;
+    min-height: 100px;
+
+    &> .studio-canvas {
+      border: 0;
+      padding: .2rem 0;
+      margin-bottom: .2rem;
+    }
+  }
+}
