@@ -217,8 +217,8 @@ export default {
       new Builder() // eslint-disable-line
 
       Extractor.generateMap().then(mapping => {
-        console.log(JSON.stringify(mapping))
-        // console.log(mapping)
+        // console.log(JSON.stringify(mapping))
+        console.log(mapping)
       })
     }
   },
