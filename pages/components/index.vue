@@ -31,7 +31,11 @@
         </div>
       </div>
     </div>
-    <b-modal v-model="modalCreate" centered hide-header hide-footer>
+    <b-modal
+      v-model="modalCreate"
+      title="New Components"
+      centered hide-footer
+    >
       <b-form-group
         label="File Name:"
         label-for="fileName">
