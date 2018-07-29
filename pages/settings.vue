@@ -93,7 +93,7 @@
               </div>
             </div>
             <div class="mt-4">
-              <b-btn size="sm" variant="outline-success" @click="saveSetting" class="mr-2">Save Setting</b-btn>
+              <b-btn size="sm" variant="outline-success" @click="saveSetting" class="mr-2">Save & Reload</b-btn>
             </div>
           </b-card>
         </div>
@@ -134,6 +134,11 @@ export default {
     saveSetting () {
       axios.post('/api/settings', this.config).then(res => {
         this.config = res.data
+        this.$snotify.success('All settings already saved')
+
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000)
       })
     }
   }

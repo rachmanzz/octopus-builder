@@ -11,6 +11,6 @@ clients:
   - name: Mobile
     host: localhost
     port: 8020
-  - name:
-    host:
-    port:
+  - name: null
+    host: null
+    port: null
