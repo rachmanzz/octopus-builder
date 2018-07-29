@@ -1,8 +1,10 @@
 <template>
-  <div class="main">
+  <div class="main main-flex">
     <Sidebar />
-    <nuxt />
-    <vue-snotify></vue-snotify>
+    <div class="main" v-bind:class="{ 'main-expand': !$store.state.sidebar }">
+      <nuxt />
+      <vue-snotify></vue-snotify>
+    </div>
   </div>
 </template>
 
