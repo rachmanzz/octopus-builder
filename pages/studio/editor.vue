@@ -57,20 +57,14 @@ export default {
 
     if (process.browser) {
       new Builder() // eslint-disable-line
-
-      Extractor.generateMap().then(mapping => {
-        // console.log(JSON.stringify(mapping))
-        console.log(mapping)
-      })
     }
   },
   methods: {
     save () {
       Extractor.generateMap().then(mapping => {
-        console.log(JSON.stringify(mapping))
-        // axios.post('/api/render', mapping).then(result => {
-        //   this.$snotify.success('Generate page success')
-        // })
+        axios.post('/api/render', mapping).then(result => {
+          this.$snotify.success('Generate page success')
+        })
       })
     },
     refresh () {

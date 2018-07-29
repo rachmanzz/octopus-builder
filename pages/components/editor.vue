@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content content-editor">
     <Navbar :data="navbar" :save="onSave" />
     <Monaco
       :width="editorWidth"
@@ -11,7 +11,6 @@
       @codeChange="onCodeChange"
       >
     </Monaco>
-    <Status :data="status" />
   </div>
 </template>
 
@@ -46,7 +45,7 @@ export default {
   mounted () {
     if (process.browser) {
       this.editorWidth = window.innerWidth - 250
-      this.editorHeight = window.innerHeight - (57 * 2)
+      this.editorHeight = window.innerHeight - 62
     }
   },
   methods: {

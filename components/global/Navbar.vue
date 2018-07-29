@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-light">
+  <nav class="navbar navbar-expand-md navbar-light fixed-top">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" href="#" @click="toggleSidebar">

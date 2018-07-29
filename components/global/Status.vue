@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-bottom navbar-expand-md navbar-light">
+  <nav class="navbar navbar-bottom navbar-expand-md navbar-light fixed-bottom">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" v-if="data.onLoading">
         <a class="nav-link" href="#">Loading ...</a>

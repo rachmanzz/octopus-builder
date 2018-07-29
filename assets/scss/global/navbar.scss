@@ -1,5 +1,6 @@
 .navbar {
   background-color: #638afd;
+  margin-left: 250px;
 
   .nav {
     &-title {
@@ -19,6 +20,7 @@
   &-bottom {
     border-bottom: 0;
     background-color: #ffffff;
+    z-index: 1030;
   }
   &-action .nav-item {
     .btn:first-child {

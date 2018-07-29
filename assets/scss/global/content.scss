@@ -20,8 +20,11 @@ body {
 }
 .content {
   width: 100%;
-  height: calc(100vh - 62px);
+  height: 100vh;
   z-index: 120;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-top: 70px;
 
   &-inner {
     padding: 2rem;
@@ -29,5 +32,8 @@ body {
   &-flex {
     display: flex;
     width: 100%;
+  }
+  &-editor {
+    padding-top: 62px;
   }
 }

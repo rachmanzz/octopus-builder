@@ -115,7 +115,7 @@ export default {
       return `<span class="comp-status comp-status-${stat}">${name}</span>`
     },
     publish (data) {
-      const message = data === 'all' ? 'Publish all components' : `Publishing component ${data.item.name}`
+      const message = data === 'all' ? 'Publish all clients' : `Publishing client ${data.item.name}`
 
       const sendPublish = () => {
         this.$snotify.info(message)
@@ -126,7 +126,7 @@ export default {
 
       if (data !== 'all') {
         if (!data.item.status) {
-          this.$snotify.success(`File ${data.item.name} already published`)
+          this.$snotify.success(`File ${data.item.name} already Published`)
         } else {
           this.$store.state.settings['file'] = data.item
           sendPublish()
@@ -139,7 +139,7 @@ export default {
           showCancelButton: true,
           confirmButtonColor: '#17a2b8',
           cancelButtonColor: '#ababab',
-          confirmButtonText: 'Yes, publish it!'
+          confirmButtonText: 'Yes, Publish it!'
         }).then((result) => {
           if (result.value) {
             sendPublish()
