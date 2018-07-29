@@ -84,13 +84,13 @@ export default {
     }
   },
   computed: {
-    watchTab () {
-      return this.$store.state.tabStep
+    properties () {
+      return this.$store.state.properties
     }
   },
   watch: {
-    watchTab (newValue) {
-      this.tabStep = newValue
+    properties (newValue, oldValue) {
+      this.tabStep = 1
     }
   }
 }

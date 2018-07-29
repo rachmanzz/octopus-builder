@@ -40,7 +40,7 @@
     &:hover > .studio-toolbar {
       opacity: 1;
     }
-    &_active {
+    &:hover {
       border-color: #527eff;
     }
     &_layout {
