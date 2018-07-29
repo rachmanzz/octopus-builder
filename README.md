@@ -1,6 +1,6 @@
 # Octopus Builder
 
-![preview.png](preview)
+![./preview.png](preview)
 
 Octopus are page builder and content management system with focus on centralize and micro-frontend architecture. We can make multiple client website with monolith or microservices architecture, but we stored any component on the server which is on builder.
 
