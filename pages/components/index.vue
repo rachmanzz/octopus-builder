@@ -2,7 +2,7 @@
   <div class="content">
     <Navbar :data="navbar"/>
     <div class="container content-inner">
-      <div class="card">
+      <div class="card card-table">
         <div class="card-body">
           <div class="mb-3">
             <b-btn size="sm" variant="outline-success" @click="modalCreate = !modalCreate" class="mr-2">Create New</b-btn>
@@ -18,12 +18,12 @@
               <div v-html="formatStatus(data.value)"></div>
             </template>
             <template slot="publish" slot-scope="data">
-              <b-btn class="btn-icon" size="sm" variant="info" @click.stop="publish(data)">
+              <b-btn class="btn-icon" size="sm" variant="outline-info" @click.stop="publish(data)">
                 <span class="ion-share"></span>
               </b-btn>
             </template>
             <template slot="remove" slot-scope="data">
-              <b-btn class="btn-icon" size="sm" variant="danger" @click.stop="remove(data)">
+              <b-btn class="btn-icon" size="sm" variant="outline-danger" @click.stop="remove(data)">
                 <span class="ion-trash-b"></span>
               </b-btn>
             </template>
@@ -54,7 +54,7 @@
           placeholder="Enter file Path">
         </b-form-input>
       </b-form-group>
-      <b-button variant="primary" @click="save">Submit</b-button>
+      <b-button variant="outline-primary" @click="save">Create File</b-button>
     </b-modal>
   </div>
 </template>
@@ -207,8 +207,6 @@ export default {
 
 <style lang="scss">
 .card {
-  cursor: pointer;
-
   table tr th:not(.sorting) {
     width: 100px;
   }

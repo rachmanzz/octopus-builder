@@ -4,6 +4,7 @@
   box-sizing: border-box;
   border-radius: 4px;
   position: relative;
+  padding: .6rem;
 
   &.card-default {
     border: 0;
@@ -16,6 +17,13 @@
   &:hover .card-image {
     filter: grayscale(0);
     opacity: .6;
+  }
+  &-link {
+    cursor: pointer;
+  }
+  &-table {
+    padding: 1rem;
+    padding-bottom: 0;
   }
   &-image {
     filter: grayscale(1);

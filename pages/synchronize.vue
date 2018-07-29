@@ -2,7 +2,7 @@
   <div class="content">
     <Navbar :data="navbar"/>
     <div class="container content-inner">
-      <div class="card">
+      <div class="card card-table">
         <div class="card-body">
           <div class="mb-3">
             <b-btn size="sm" variant="outline-success" @click="publish">Reload All Clients</b-btn>
@@ -153,8 +153,6 @@ export default {
 
 <style lang="scss">
 .card {
-  cursor: pointer;
-
   table tr th:not(.sorting) {
     width: 100px;
   }

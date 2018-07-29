@@ -3,31 +3,12 @@
     <Navbar :data="navbar" :refresh="refresh" :save="save"/>
     <div class="content-flex">
       <div class="studio">
-        <!-- <div class="studio-inner"></div> -->
-
-<div class="studio-inner"></div>
-
+        <div class="studio-inner"></div>
       </div>
-      <div class="properties" role="tablist">
-        <!-- Layouts -->
-        <b-card class="card-default" no-body>
-          <b-card-header header-tag="header" role="tab" v-b-toggle.layouts>
-            Layouts
-          </b-card-header>
-          <b-collapse id="layouts" accordion="editor-collapse" role="tabpanel">
-            <b-card-body>
-              no layout
-            </b-card-body>
-          </b-collapse>
-        </b-card>
-
-        <!-- Components -->
-        <b-card class="card-default" no-body>
-          <b-card-header header-tag="header" role="tab" v-b-toggle.components>
-            Components
-          </b-card-header>
-          <b-collapse id="components" visible accordion="editor-collapse" role="tabpanel">
-            <b-card-body class="studio-element">
+      <div class="properties">
+        <b-tabs v-model="tabStep">
+          <b-tab title="Layout" active>
+            <div class="studio-element">
               <div class="studio-source" v-for="(item, key) in source" :key="key">
                 <div class="studio-icon" :class="item.icon" :title="item.name"></div>
                 <div class="studio-name">{{ item.name }}</div>
@@ -35,12 +16,12 @@
                   <component :is="item.component"></component>
                 </div>
               </div>
-            </b-card-body>
-          </b-collapse>
-        </b-card>
-
-        <!-- Properties -->
-        <Properties />
+            </div>
+          </b-tab>
+          <b-tab title="Design">
+            <Properties />
+          </b-tab>
+        </b-tabs>
       </div>
     </div>
   </div>
@@ -67,7 +48,8 @@ export default {
         refresh: true
       },
       source: [],
-      target: []
+      target: [],
+      tabStep: 0
     }
   },
   mounted () {
@@ -98,6 +80,16 @@ export default {
           window.location.reload()
         }, 2000)
       })
+    }
+  },
+  computed: {
+    watchTab () {
+      return this.$store.state.tabStep
+    }
+  },
+  watch: {
+    watchTab (newValue) {
+      this.tabStep = newValue
     }
   }
 }

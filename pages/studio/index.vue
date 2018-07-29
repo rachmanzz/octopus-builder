@@ -1,10 +1,10 @@
 <template>
   <div class="content">
     <Navbar :data="navbar" />
-    <div class="content-inner">
+    <div class="container content-inner">
       <div class="row">
         <div class="col-4">
-          <div class="card" @click="openBuilder">
+          <div class="card card-link" @click="openBuilder">
             <div class="card-body">
               Home Page
             </div>
@@ -36,9 +36,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.card {
-  cursor: pointer;
-}
-</style>

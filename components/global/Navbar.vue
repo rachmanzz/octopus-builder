@@ -12,16 +12,16 @@
     </ul>
     <ul class="navbar-nav navbar-action ml-auto">
       <li v-if="data.create" class="nav-item">
-        <div class="btn btn-outline-success" @click="triggerCreate">Create</div>
+        <div class="btn btn-nav btn-outline-success" @click="triggerCreate">Create</div>
       </li>
       <li v-if="data.publish" class="nav-item">
-        <div class="btn btn-outline-info" @click="triggerPublish">Publish</div>
+        <div class="btn btn-nav btn-outline-info" @click="triggerPublish">Publish</div>
       </li>
       <li v-if="data.refresh" class="nav-item">
-        <div class="btn btn-outline-primary" @click="triggerRefresh">Refresh</div>
+        <div class="btn btn-nav btn-outline-primary" @click="triggerRefresh">Refresh</div>
       </li>
       <li v-if="data.save" class="nav-item">
-        <div class="btn btn-outline-success" @click="triggerSave">Save</div>
+        <div class="btn btn-nav btn-outline-success" @click="triggerSave">Save</div>
       </li>
       <li v-else class="nav-item">
         <div class="nav-link">&nbsp;</div>

@@ -1,14 +1,25 @@
-table {
-  tr > th {
-    font-weight: 700;
-    font-size: .8rem;
-    text-transform: uppercase;
-    color: #527dff;
-    border-top: 0;
-    border-bottom: 0;
+table,
+table.table-hover {
+  thead {
+    tr > th {
+      font-weight: 600;
+      font-size: .8rem;
+      text-transform: uppercase;
+      color: #527dff;
+      border-top: 0;
+      border-bottom: 0;
+    }
   }
-  tr > td {
-    font-weight: 400;
-    font-size: .95rem;
+  tbody {
+    tr:hover {
+      background-color: transparentize(#527dff, .95);
+    }
+    tr > td {
+      font-weight: 400;
+      font-size: .95rem;
+      vertical-align: middle;
+      border-color: #f1f1f1;
+      cursor: pointer;
+    }
   }
 }

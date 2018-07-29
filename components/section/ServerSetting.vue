@@ -13,7 +13,7 @@
     <b-form-group
       label="Global Repository"
       label-for="labelRepository"
-      description="We'll never share your email with anyone else.">
+      description="We use Git with SSH Key, don't forget to set SSH Key on your server.">
       <b-form-input id="labelRepository"
         type="text"
         v-model="config.repository"
@@ -21,7 +21,7 @@
         required>
       </b-form-input>
     </b-form-group>
-    <b-button type="submit" variant="success" @click="saveSetting">Save</b-button>
+    <b-btn size="sm" variant="outline-success" @click="saveSetting" class="mr-2">Save Setting</b-btn>
   </b-card>
 </template>
 
