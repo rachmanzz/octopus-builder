@@ -1,22 +1,15 @@
-# nuxt-express-template
+# Octopus Builder
 
-> Nuxt.js project
+![preview.png](preview)
 
-## Build Setup
+Octopus are page builder and content management system with focus on centralize and micro-frontend architecture. We can make multiple client website with monolith or microservices architecture, but we stored any component on the server which is on builder.
 
-``` bash
-# install dependencies
-$ npm install # Or yarn install
+So, we can focus on data and create reusable component cross server and clients., with configurable design or template.
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+## Author
 
-# build for production and launch server
-$ npm start
-```
+[Muhibbudin Suretno](https://github.com/muhibbudins) [muhibbudinsuretno1@gmail.com]
 
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+## License
 
-## Backpack
-
-We use [backpack](https://github.com/palmerhq/backpack) to watch and build the application, so you can use the latest ES6 features (module syntax, async/await, etc.).
+This project under MIT license
