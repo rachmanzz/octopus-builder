@@ -11,7 +11,7 @@
             <div class="studio-element">
               <div class="studio-source" v-for="(item, key) in source" :key="key">
                 <div class="studio-icon" :class="item.icon" :title="item.name"></div>
-                <div class="studio-name">{{ item.name }}</div>
+                <div class="studio-name">{{ convertText(item.name) }}</div>
                 <div class="studio-component">
                   <component :is="item.component"></component>
                 </div>
@@ -80,6 +80,13 @@ export default {
           window.location.reload()
         }, 2000)
       })
+    },
+    convertText (string) {
+      if (!string) {
+        return
+      }
+
+      return string.replace(/([A-Z]+)/g, ' $1').replace(/^ /, '').trim()
     }
   },
   computed: {

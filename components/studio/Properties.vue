@@ -2,7 +2,7 @@
   <section>
     <TextProperties v-if="proper.type === 'text'" />
     <ImageProperties v-else-if="proper.type === 'image'" />
-    <section v-else>
+    <section class="notice" v-else>
       Click element to set properties
     </section>
   </section>
@@ -37,3 +37,9 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+.notice {
+  padding: 1rem;
+  text-align: center;
+}
+</style>

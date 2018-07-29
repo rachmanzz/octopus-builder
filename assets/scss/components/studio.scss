@@ -84,13 +84,18 @@
     border: 1px solid #e5e6e9;
     cursor: all-scroll;
     padding: 1.5rem;
+    transition: border .2s ease-in-out;
+
+    &:hover {
+      border-color: #527eff;
+    }
   }
   &-icon {
     font-size: 2.2rem;
     margin-bottom: .5rem;
   }
   &-name {
-    font-size: .8rem;
+    font-size: .7rem;
   }
   &-component {
     display: none;

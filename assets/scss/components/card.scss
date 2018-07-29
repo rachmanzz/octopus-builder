@@ -11,15 +11,23 @@
     box-shadow: none;
     border-radius: 0;
   }
-  &:hover .card-remove {
-    opacity: 1;
-  }
-  &:hover .card-image {
-    filter: grayscale(0);
-    opacity: .6;
+  &:hover {
+    .card-remove {
+      opacity: 1;
+    }
+    .card-image {
+      filter: grayscale(0);
+      opacity: .6;
+    }
   }
   &-link {
     cursor: pointer;
+    border: 1px solid transparent;
+    transition: border .3s ease-in-out;
+
+    &:hover {
+      border-color: #527eff;
+    }
   }
   &-table {
     padding: 1rem;
