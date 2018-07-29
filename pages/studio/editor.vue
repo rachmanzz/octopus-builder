@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content content-editor">
     <Navbar :data="navbar" :refresh="refresh" :save="save"/>
     <div class="content-flex">
       <div class="studio">

@@ -16,7 +16,7 @@
       :key="item.key"
       :to="item.url"
       class="sidebar-link"
-      v-bind:class="{ 'sidebar-link_active': item.url === currentURL }"
+      v-bind:class="{ 'sidebar-link_active': matchPage(item.url) }"
     >
       {{ item.title }}
     </nuxt-link>
@@ -49,6 +49,19 @@ export default {
   mounted () {
     if (process.browser) {
       this.currentURL = window.location.pathname
+    }
+  },
+  methods: {
+    matchPage (url) {
+      if (this.currentURL === '/' && url === '/') {
+        return true
+      }
+
+      if (url !== '/' && this.currentURL.replace('/', '').indexOf(url.replace('/', '')) > -1) {
+        return true
+      }
+
+      return false
     }
   },
   watch: {
