@@ -1,7 +1,11 @@
 .navbar {
   background-color: #638afd;
   margin-left: 250px;
+  transition: margin-left .3s ease-in-out;
 
+  &-expand {
+    margin-left: 0
+  }
   .nav {
     &-title {
       font-weight: 500;

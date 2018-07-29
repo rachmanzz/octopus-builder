@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-light fixed-top">
+  <nav class="navbar navbar-expand-md navbar-light fixed-top" v-bind:class="{ 'navbar-expand': !$store.state.sidebar }">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" href="#" @click="toggleSidebar">
