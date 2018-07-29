@@ -2,12 +2,12 @@
   <section class="properties-item">
     <div v-if="editable">
       <b-form-group label="Image URL">
-        <b-form-textarea
+        <b-form-input
           rows="4"
           v-model="content"
           type="text"
           placeholder="Enter text">
-        </b-form-textarea>
+        </b-form-input>
       </b-form-group>
       <b-form-group label="Width" description="in pixels">
         <b-form-input
@@ -29,7 +29,7 @@
           placeholder="Enter text">
         </b-form-input>
       </b-form-group>
-      <b-btn variant="default" @click="setResponsive">Set Responsive</b-btn>
+      <b-btn size="sm" variant="outline-primary" @click="setResponsive">Set Responsive</b-btn>
     </div>
     <div v-else>
       Click element to set properties
@@ -72,6 +72,14 @@ export default {
       this.style = JSON.parse(payload.style)
     },
     updateValue (type, value) {
+      if (value !== 'auto' && !value.match(/%/g)) {
+        value = value.replace(/[^0-9,.]+/g, '')
+      }
+      if (type === 'width' || type === 'height') {
+        if (value.match(/^[0-9]*$/g)) {
+          value = value + 'px'
+        }
+      }
       this.updateElement({
         style: {
           attr: type,
@@ -85,6 +93,7 @@ export default {
       if (content) {
         el.src = content
       }
+      console.log(style)
       if (style) {
         el.style[style.attr] = style.value
       }
@@ -99,3 +108,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.btn {
+  padding: .8rem 1rem .6rem 1rem;
+}
+</style>

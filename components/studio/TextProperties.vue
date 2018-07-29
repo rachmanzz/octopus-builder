@@ -1,6 +1,14 @@
 <template>
   <section class="properties-item">
     <div v-if="editable">
+      <b-form-group label="Alignment">
+        <b-button-group>
+          <b-button size="sm" variant="outline-primary" @click="updateValue('text-align', 'left')">Left</b-button>
+          <b-button size="sm" variant="outline-primary" @click="updateValue('text-align', 'center')">Center</b-button>
+          <b-button size="sm" variant="outline-primary" @click="updateValue('text-align', 'right')">Right</b-button>
+          <b-button size="sm" variant="outline-primary" @click="updateValue('text-align', 'justify')">Justify</b-button>
+        </b-button-group>
+      </b-form-group>
       <b-form-group label="Content">
         <b-form-textarea
           rows="4"
@@ -17,11 +25,29 @@
       </b-form-group>
       <b-form-group label="Font Size">
         <b-form-select
+          v-model="sizeSelected"
           :options="size"
           @change="updateValue('size', $event)"
-          required>
+        >
         </b-form-select>
       </b-form-group>
+      <div v-if="hasEvent">
+        <b-form-group label="Event">
+          <b-form-select
+            v-model="eventSelected"
+            :options="event"
+          >
+          </b-form-select>
+        </b-form-group>
+        <b-form-group label="Event Payload">
+          <b-form-textarea
+            rows="4"
+            v-model="eventPayload"
+            type="text"
+            placeholder="Enter text">
+          </b-form-textarea>
+        </b-form-group>
+      </div>
     </div>
     <div v-else>
       Click element to set properties
@@ -59,21 +85,6 @@ export default {
   components: {
     Sketch
   },
-  computed: {
-    payload () {
-      return this.$store.state.properties
-    }
-  },
-  watch: {
-    payload (newValue, oldValue) {
-      this.createProperties(newValue)
-    },
-    content (newValue, oldValue) {
-      this.updateElement({
-        content: newValue
-      })
-    }
-  },
   data () {
     return {
       editable: false,
@@ -82,7 +93,12 @@ export default {
       element: '',
       content: '',
       style: '',
-      size: fontSize
+      size: fontSize,
+      sizeSelected: '16px',
+      event: [{ text: 'Click', value: 'click' }],
+      eventSelected: 'click',
+      eventPayload: '',
+      hasEvent: false
     }
   },
   methods: {
@@ -92,6 +108,7 @@ export default {
       this.element = payload.element
       this.content = payload.content
       this.style = JSON.parse(payload.style)
+      this.hasEvent = payload.tag === 'BUTTON'
     },
     updateValue (type, value) {
       if (type === 'color') {
@@ -114,6 +131,16 @@ export default {
           }
         })
       }
+
+      if (type === 'text-align') {
+        this.style['text-align'] = value
+        this.updateElement({
+          style: {
+            attr: 'textAlign',
+            value: value
+          }
+        })
+      }
     },
     updateElement ({ style, content }) {
       const el = document.querySelector(`.${this.element}`)
@@ -125,11 +152,29 @@ export default {
         el.style[style.attr] = style.value
       }
     }
+  },
+  computed: {
+    payload () {
+      return this.$store.state.properties
+    }
+  },
+  watch: {
+    payload (newValue, oldValue) {
+      this.createProperties(newValue)
+    },
+    content (newValue, oldValue) {
+      this.updateElement({
+        content: newValue
+      })
+    }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.btn {
+  padding: .8rem;
+}
 .btn-picker {
   display: block;
   width: 100%;

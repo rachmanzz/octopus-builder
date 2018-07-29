@@ -61,7 +61,7 @@ export default {
           sortable: true
         },
         publish: {
-          label: 'Publish'
+          label: 'Reload'
         },
         remove: {
           label: 'Remove'
