@@ -9,17 +9,10 @@ const serverStatus = async (server) => {
   const result = []
 
   await Promise.all(server.map(async (srv, index) => {
-    await isReachable(`http://${srv.host}:${srv.port}`).then(async (reachable) => {
-      if (reachable) {
-        result[index] = {
-          active: true,
-          server: `http://${srv.host}:${srv.port}`
-        }
-      } else {
-        result[index] = {
-          active: false,
-          server: `http://${srv.host}:${srv.port}`
-        }
+    await isReachable(`${srv.host}:${srv.port}`).then(alive => {
+      result[index] = {
+        active: alive,
+        ...srv
       }
     })
   }))
@@ -27,7 +20,6 @@ const serverStatus = async (server) => {
   return result
 }
 
-/* GET users listing. */
 router.get('/server', (req, res) => {
   config.read().then(data => {
     res.json(data)

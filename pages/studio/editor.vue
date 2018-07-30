@@ -62,7 +62,10 @@ export default {
   methods: {
     save () {
       Extractor.generateMap().then(mapping => {
-        axios.post('/api/render', mapping).then(result => {
+        axios.post('/api/render', {
+          clients: this.$store.state.settings.clients,
+          source: mapping
+        }).then(result => {
           this.$snotify.success('Generate page success')
         })
       })

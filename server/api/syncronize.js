@@ -1,28 +1,29 @@
 import { Router } from 'express'
 import axios from 'axios'
-import isReachable from 'is-reachable'
+import ping from 'ping'
 
 const router = Router()
 
-const syncAllServer = async (ports) => {
+const syncAllServer = async (clients) => {
   const result = []
 
-  await Promise.all(ports.map(async (port, index) => {
-    console.log(`Synchronize server ${port}`)
+  await Promise.all(clients.map(async (server, index) => {
+    const clientServer = `${server.host}:${server.port}`
+    console.log(`Synchronize server ${clientServer}`)
 
-    await isReachable(`http://localhost:${port}`).then(async (reachable) => {
+    await ping.promise.probe(`${clientServer}`).then(async (reachable) => {
       if (reachable) {
-        await axios.post(`http://localhost:${port}/api/sync`).then(res => {
+        await axios.post(`${clientServer}/api/sync`).then(res => {
           result[index] = {
             active: true,
-            server: `http://localhost:${port}`,
+            server: `${clientServer}`,
             data: res.data
           }
         })
       } else {
         result[index] = {
           active: false,
-          server: `http://localhost:${port}`,
+          server: `${clientServer}`,
           data: []
         }
       }
@@ -32,18 +33,19 @@ const syncAllServer = async (ports) => {
   return result
 }
 
-const renderAllServer = async (ports, source) => {
+const renderAllServer = async (clients, source) => {
   const result = []
 
-  await Promise.all(ports.map(async (port, index) => {
-    console.log(`Synchronize server ${port}`)
+  await Promise.all(clients.map(async (server, index) => {
+    const clientServer = `${server.host}:${server.port}`
+    console.log(`Synchronize server ${clientServer}`)
 
-    await axios.post(`http://localhost:${port}/api/render`, {
+    await axios.post(`${clientServer}/api/render`, {
       source: source
     }).then(res => {
       result[index] = {
         active: true,
-        server: `http://localhost:${port}`,
+        server: `${clientServer}`,
         data: res.data
       }
     })
@@ -55,9 +57,8 @@ const renderAllServer = async (ports, source) => {
 /* GET users listing. */
 router.post('/synchronize', (req, res) => {
   const { clients } = req.body
-  const port = clients.map(item => item.port)
 
-  syncAllServer(port).then(server => {
+  syncAllServer(clients).then(server => {
     console.log('Synchronization complete')
     res.json({
       server: server
@@ -66,9 +67,9 @@ router.post('/synchronize', (req, res) => {
 })
 
 router.post('/render', (req, res) => {
-  const source = req.body
+  const { clients, source } = req.body
 
-  renderAllServer([8010], source).then(result => {
+  renderAllServer(clients, source).then(result => {
     console.log('Synchronization complete')
     res.json({
       server: result

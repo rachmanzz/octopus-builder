@@ -106,14 +106,10 @@
 import axios from '~/plugins/axios'
 
 import Navbar from '~/components/global/Navbar.vue'
-import ServerSetting from '~/components/section/ServerSetting.vue'
-import ServerClients from '~/components/section/ServerClients.vue'
 
 export default {
   components: {
-    Navbar,
-    ServerSetting,
-    ServerClients
+    Navbar
   },
   data () {
     return {

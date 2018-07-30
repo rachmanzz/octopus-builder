@@ -5,7 +5,7 @@
       <div class="card card-table">
         <div class="card-body">
           <div class="mb-3">
-            <b-btn size="sm" variant="outline-success" @click="publish">Reload All Clients</b-btn>
+            <b-btn size="sm" variant="outline-success" @click="publish" v-bind:disabled="!isActive">Reload All Clients</b-btn>
           </div>
           <b-table
             hover
@@ -16,12 +16,12 @@
               <div v-html="formatStatus(data.value)"></div>
             </template>
             <template slot="publish" slot-scope="data">
-              <b-btn class="btn-icon" size="sm" variant="success" @click.stop="publish(data)">
+              <b-btn class="btn-icon" size="sm" variant="outline-success" @click.stop="publish(data)" v-bind:disabled="!data.item['active']">
                 <span class="ion-loop"></span>
               </b-btn>
             </template>
             <template slot="remove" slot-scope="data">
-              <b-btn class="btn-icon" size="sm" variant="danger" @click.stop="remove(data)">
+              <b-btn class="btn-icon" size="sm" variant="outline-danger" @click.stop="remove(data)">
                 <span class="ion-trash-b"></span>
               </b-btn>
             </template>
@@ -52,12 +52,20 @@ export default {
       },
       modalCreate: false,
       fields: {
-        server: {
+        name: {
           label: 'Server Name',
           sortable: true
         },
+        host: {
+          label: 'Server Host',
+          sortable: true
+        },
+        port: {
+          label: 'Server Port',
+          sortable: true
+        },
         active: {
-          label: 'Status',
+          label: 'Active',
           sortable: true
         },
         publish: {
@@ -67,7 +75,8 @@ export default {
           label: 'Remove'
         }
       },
-      serverList: []
+      serverList: [],
+      isActive: false
     }
   },
   mounted () {
@@ -86,12 +95,17 @@ export default {
       })
     },
     check (server) {
+      const clients = server.clients.filter(item => item.host !== null)
       axios.post('/api/server/status', {
-        server: server.clients
+        server: clients
       }).then(res => {
         const status = []
 
         res.data.map((item, index) => {
+          if (item.active) {
+            this.isActive = true
+          }
+
           const before = item
           before['publish'] = ''
           before['remove'] = ''
@@ -115,22 +129,26 @@ export default {
       return `<span class="comp-status comp-status-${stat}">${name}</span>`
     },
     publish (data) {
-      const message = data === 'all' ? 'Publish all clients' : `Publishing client ${data.item.name}`
+      const storeSetting = this.$store.state.settings
+      const message = !data.item ? 'Synchronizing all clients' : `Synchronizing client : ${data.item.name}`
 
       const sendPublish = () => {
         this.$snotify.info(message)
-        axios.post('/api/synchronize', this.$store.state.settings).then(res => {
+        axios.post('/api/synchronize', {
+          clients: storeSetting['server']
+        }).then(res => {
           this.$snotify.success('Success reloading any clients')
         })
       }
 
-      if (data !== 'all') {
-        if (!data.item.status) {
-          this.$snotify.success(`File ${data.item.name} already Published`)
-        } else {
-          this.$store.state.settings['file'] = data.item
-          sendPublish()
-        }
+      if (data.item) {
+        storeSetting['file'] = data.item
+        storeSetting['server'] = [{
+          host: data.item['host'],
+          name: data.item['name'],
+          port: data.item['port']
+        }]
+        sendPublish()
       } else {
         this.$swal({
           title: 'Are you sure?',
@@ -139,9 +157,11 @@ export default {
           showCancelButton: true,
           confirmButtonColor: '#17a2b8',
           cancelButtonColor: '#ababab',
-          confirmButtonText: 'Yes, Publish it!'
+          confirmButtonText: 'Yes, reload all!'
         }).then((result) => {
           if (result.value) {
+            const clients = storeSetting['clients'].filter(item => item.host !== null)
+            storeSetting['server'] = clients
             sendPublish()
           }
         })

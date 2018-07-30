@@ -2,14 +2,14 @@ name: Octopus
 repository: 'git@github.com:muhibbudins/octopus-repo.git'
 branch: master
 api:
-  endpoint: ''
+  endpoint: 'http://localhost:8080'
   token: ''
 clients:
   - name: Desktop
-    host: localhost
-    port: 8010
+    host: 'http://localhost'
+    port: '8010'
   - name: Mobile
-    host: localhost
+    host: 'http://localhost'
     port: 8020
   - name: null
     host: null
