@@ -8,26 +8,28 @@ const syncAllServer = async (clients) => {
   const result = []
 
   await Promise.all(clients.map(async (server, index) => {
-    const clientServer = `${server.host}:${server.port}`
-    console.log(`Synchronize server ${clientServer}`)
+    if (server.host !== null) {
+      const clientServer = `${server.host}:${server.port}`
+      console.log(`Synchronize server ${clientServer}`)
 
-    await ping.promise.probe(`${clientServer}`).then(async (reachable) => {
-      if (reachable) {
-        await axios.post(`${clientServer}/api/sync`).then(res => {
+      await ping.promise.probe(`${clientServer}`).then(async (reachable) => {
+        if (reachable) {
+          await axios.post(`${clientServer}/api/sync`).then(res => {
+            result[index] = {
+              active: true,
+              server: `${clientServer}`,
+              data: res.data
+            }
+          })
+        } else {
           result[index] = {
-            active: true,
+            active: false,
             server: `${clientServer}`,
-            data: res.data
+            data: []
           }
-        })
-      } else {
-        result[index] = {
-          active: false,
-          server: `${clientServer}`,
-          data: []
         }
-      }
-    })
+      })
+    }
   }))
 
   return result
@@ -37,18 +39,20 @@ const renderAllServer = async (clients, source) => {
   const result = []
 
   await Promise.all(clients.map(async (server, index) => {
-    const clientServer = `${server.host}:${server.port}`
-    console.log(`Synchronize server ${clientServer}`)
+    if (server.host !== null) {
+      const clientServer = `${server.host}:${server.port}`
+      console.log(`Synchronize server ${clientServer}`)
 
-    await axios.post(`${clientServer}/api/render`, {
-      source: source
-    }).then(res => {
-      result[index] = {
-        active: true,
-        server: `${clientServer}`,
-        data: res.data
-      }
-    })
+      await axios.post(`${clientServer}/api/render`, {
+        source: source
+      }).then(res => {
+        result[index] = {
+          active: true,
+          server: `${clientServer}`,
+          data: res.data
+        }
+      })
+    }
   }))
 
   return result
