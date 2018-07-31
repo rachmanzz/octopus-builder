@@ -2,9 +2,46 @@
   <div class="content">
     <Navbar :data="navbar" />
     <div class="container content-inner">
-      <div class="card card-table">
-        <div class="card-body">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+      <div class="row">
+        <div class="col-12 mb-4">
+          <div class="card card-table pb-3">
+            <div class="card-body text-center">
+              <div class="card-title">
+                Visitor
+              </div>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card card-table pb-3">
+            <div class="card-body text-center">
+              <div class="card-title">
+                Components
+              </div>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card card-table pb-3">
+            <div class="card-body text-center">
+              <div class="card-title">
+                Pages
+              </div>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card card-table pb-3">
+            <div class="card-body text-center">
+              <div class="card-title">
+                Components
+              </div>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -2,9 +2,9 @@
   <div class="content">
     <Navbar :data="navbar"/>
     <div class="container content-inner">
-      <div class="row">
-        <div class="col-8 mx-auto">
-          <b-card>
+      <b-card>
+        <div class="row">
+          <div class="col-6">
             <div class="title">General</div>
             <b-form-group
               label="Application Name"
@@ -38,6 +38,11 @@
                 required>
               </b-form-input>
             </b-form-group>
+            <div class="mt-4">
+              <b-btn size="sm" variant="outline-success" @click="saveSetting" class="mr-2">Save & Reload</b-btn>
+            </div>
+          </div>
+          <div class="col-6">
             <div class="title">API Authentication</div>
             <b-form-group
               label="API Endpoint"
@@ -59,7 +64,7 @@
                 required>
               </b-form-input>
             </b-form-group>
-            <div class="title">Clients Server</div>
+            <div class="title">Clients</div>
             <div class="row" v-for="(client, index) in config.clients" :key="index">
               <div class="col-4">
                 <b-form-group label="Name">
@@ -92,12 +97,9 @@
                 </b-form-group>
               </div>
             </div>
-            <div class="mt-4">
-              <b-btn size="sm" variant="outline-success" @click="saveSetting" class="mr-2">Save & Reload</b-btn>
-            </div>
-          </b-card>
+          </div>
         </div>
-      </div>
+      </b-card>
     </div>
   </div>
 </template>

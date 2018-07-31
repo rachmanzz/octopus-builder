@@ -2,7 +2,7 @@
   <div class="content">
     <Navbar :data="navbar" />
     <div class="container content-inner">
-      <div class="card mb-3">
+      <div class="card card-table mb-3 pb-3">
         <div class="card-body">
           <b-btn size="sm" variant="outline-success" @click="modalCreate = !modalCreate" class="mr-2">Create New</b-btn>
           <b-btn size="sm" variant="outline-primary" @click="publish('all')" class="mr-2">Publish All</b-btn>
