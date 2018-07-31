@@ -81,7 +81,6 @@ export default {
         fileName: '',
         filePath: '/global/'
       },
-      modalCreate: false,
       fields: {
         file: {
           label: 'File Name',
@@ -98,6 +97,7 @@ export default {
           label: 'Remove'
         }
       },
+      modalCreate: false,
       components: []
     }
   },

@@ -1,6 +1,7 @@
 const state = {
   settings: [],
   files: [],
+  page: {},
   properties: {
     type: '',
     payload: {}

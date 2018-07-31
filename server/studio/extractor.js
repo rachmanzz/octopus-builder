@@ -133,7 +133,7 @@ const extractComponent = (attr, element) => {
   return result
 }
 
-const generateMap = async () => {
+const generate = async () => {
   const mapping = {
     slug: 'page-1',
     root: 'share',
@@ -160,7 +160,7 @@ const generateMap = async () => {
 }
 
 export default {
-  generateMap,
+  generate,
   generatePropsValue,
   extractAttribute
 }

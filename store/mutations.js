@@ -10,6 +10,9 @@ const mutations = {
   },
   SET_SIDEBAR: (state, data) => {
     state.sidebar = data
+  },
+  SET_PAGE: (state, data) => {
+    state.page = data
   }
 }
 

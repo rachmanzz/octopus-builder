@@ -30,8 +30,9 @@
 <script>
 import axios from 'axios'
 import Builder from '~/server/studio/builder.js'
-import Source from '~/server/studio/source.js'
 import Extractor from '~/server/studio/extractor.js'
+import Importer from '~/server/studio/importer.js'
+import Source from '~/server/studio/source.js'
 import Navbar from '~/components/global/Navbar.vue'
 import Properties from '~/components/studio/Properties.vue'
 
@@ -49,24 +50,31 @@ export default {
       },
       source: [],
       target: [],
-      tabStep: 0
+      tabStep: 0,
+      page: {}
     }
   },
   mounted () {
     this.source = Source
+    this.page = this.$store.state.page
 
-    if (process.browser) {
-      new Builder() // eslint-disable-line
-    }
+    Importer.generate(JSON.parse(this.page['pages'])).then(result => {
+      document.querySelector('.studio-inner').innerHTML = result
+      this.$snotify.success('Generate page success')
+
+      if (process.browser) {
+        new Builder() // eslint-disable-line
+      }
+    })
   },
   methods: {
     save () {
-      Extractor.generateMap().then(mapping => {
-        axios.post('/core/client/render', {
-          clients: this.$store.state.settings.clients,
-          source: mapping
-        }).then(result => {
-          this.$snotify.success('Generate page success')
+      Extractor.generate().then(mapping => {
+        this.page['pages'] = JSON.stringify(mapping)
+
+        axios.put(`/core/page`, this.page).then(res => {
+          this.$snotify.success('Save page success')
+          this.$router.push(`/studio`)
         })
       })
     },

@@ -8,8 +8,9 @@ export default ({ store, isHMR }) => {
 
     createPersistedState({
       paths: [
-        'allFiles',
-        'sidebar'
+        'files',
+        'sidebar',
+        'page'
       ]
     })(store)
   })
