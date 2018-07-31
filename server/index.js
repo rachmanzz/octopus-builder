@@ -4,7 +4,7 @@ import { Nuxt, Builder } from 'nuxt'
 import config from '../nuxt.config.js'
 
 import core from './core'
-import api from './api'
+import api from '../api'
 
 const app = express()
 const host = process.env.HOST || '127.0.0.1'

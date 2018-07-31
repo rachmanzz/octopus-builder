@@ -53,16 +53,16 @@ export default {
       this.editor = editor
 
       const query = this.$route.query['file']
-      const path = this.$store.state.allFiles[query]
+      const file = this.$store.state.allFiles[query]
 
-      if (!path) {
+      if (!file) {
         this.$router.push('/components')
       } else {
         axios.post('/core/component', {
-          path: path['path']
+          path: file['path']
         }).then(res => {
-          this.file = path
-          this.navbar.title = path.fileName
+          this.file = file
+          this.navbar.title = file.fileName
           this.status['onLoading'] = false
 
           editor.setValue(res.data)
