@@ -6,27 +6,27 @@ const listComponents = [
   {
     name: 'Button',
     icon: 'far fa-image',
-    component: () => import('~/core/global/Button.vue')
+    component: () => import('~/share/global/Button.vue')
   },
   {
     name: 'Images',
     icon: 'far fa-image',
-    component: () => import('~/core/global/Images.vue')
+    component: () => import('~/share/global/Images.vue')
   },
   {
     name: 'Tagline',
     icon: 'far fa-image',
-    component: () => import('~/core/global/Tagline.vue')
+    component: () => import('~/share/global/Tagline.vue')
   },
   {
     name: 'ThreeColumn',
     icon: 'far fa-image',
-    component: () => import('~/core/global/ThreeColumn.vue')
+    component: () => import('~/share/global/ThreeColumn.vue')
   },
   {
     name: 'TwoColumn',
     icon: 'far fa-image',
-    component: () => import('~/core/global/TwoColumn.vue')
+    component: () => import('~/share/global/TwoColumn.vue')
   }
 ]
 export default listComponents

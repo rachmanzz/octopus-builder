@@ -2,7 +2,7 @@ name: Octopus
 repository: 'git@github.com:muhibbudins/octopus-repo.git'
 branch: master
 api:
-  endpoint: 'http://localhost:8080'
+  endpoint: 'http://localhost:3333'
   token: ''
 clients:
   - name: Desktop

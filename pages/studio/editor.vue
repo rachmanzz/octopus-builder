@@ -29,9 +29,9 @@
 
 <script>
 import axios from 'axios'
-import Builder from '~/lib/studioBuilder.js'
-import Source from '~/lib/studioSource.js'
-import Extractor from '~/lib/studioExtractor.js'
+import Builder from '~/server/builder.js'
+import Source from '~/server/source.js'
+import Extractor from '~/server/extractor.js'
 import Navbar from '~/components/global/Navbar.vue'
 import Properties from '~/components/studio/Properties.vue'
 
@@ -62,7 +62,7 @@ export default {
   methods: {
     save () {
       Extractor.generateMap().then(mapping => {
-        axios.post('/api/render', {
+        axios.post('/core/clients/render', {
           clients: this.$store.state.settings.clients,
           source: mapping
         }).then(result => {
@@ -71,7 +71,7 @@ export default {
       })
     },
     refresh () {
-      axios.get('/api/component/map').then(res => {
+      axios.get('/core/component/source').then(res => {
         this.$snotify.success('Mapping new components success')
         setTimeout(() => {
           window.location.reload()
@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     properties () {
-      return this.$store.state.properties
+      return this.$store.state.properties['type']
     }
   },
   watch: {

@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     save () {
-      axios.post('/api/component/create', this.form).then(res => {
+      axios.post('/core/component/create', this.form).then(res => {
         this.form = {
           fileName: '',
           filePath: '/global/'
@@ -94,10 +94,10 @@ export default {
         this.list()
       })
     },
-    check (server) {
-      const clients = server.clients.filter(item => item.host !== null)
-      axios.post('/api/server/status', {
-        server: clients
+    status ({ clients }) {
+      const client = clients.filter(item => item.host !== null)
+      axios.post('/core/clients/status', {
+        clients: client
       }).then(res => {
         const status = []
 
@@ -117,9 +117,9 @@ export default {
       })
     },
     list () {
-      axios.get('/api/server').then(res => {
+      axios.get('/core/clients').then(res => {
         this.config = res.data
-        this.check(res.data)
+        this.status(res.data)
       })
     },
     formatStatus (status) {
@@ -134,7 +134,7 @@ export default {
 
       const sendPublish = () => {
         this.$snotify.info(message)
-        axios.post('/api/synchronize', {
+        axios.post('/core/clients/sync', {
           clients: storeSetting['server']
         }).then(res => {
           this.$snotify.success('Success reloading any clients')

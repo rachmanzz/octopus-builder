@@ -7,30 +7,9 @@ import { Router } from 'express'
 
 const router = Router()
 
-const getComponents = () => {
-  return new Promise((resolve, reject) => {
-    glob('./core/**/*.vue', {}, async (er, files) => {
-      const allFiles = []
-
-      await files.map(item => {
-        const name = item.split('/').pop()
-        const file = name.split('.')
-
-        allFiles.push({
-          path: item,
-          file: name,
-          name: file[0],
-          type: file[1]
-        })
-      })
-
-      resolve(allFiles)
-    })
-  })
-}
 router.get('/component', (req, res) => {
   getComponents().then(allFiles => {
-    git('./core').status((err, gitFilter) => {
+    git('./share').status((err, gitFilter) => {
       if (err) {
         throw new Error(err)
       }
@@ -41,7 +20,7 @@ router.get('/component', (req, res) => {
         const filteredFile = gitFilter[item]
 
         allFiles.map(file => {
-          if (filteredFile.indexOf(file.path.replace('./core/', '')) > -1) {
+          if (filteredFile.indexOf(file.path.replace('./share/', '')) > -1) {
             file['status'] = item
           }
         })
@@ -84,8 +63,8 @@ router.put('/component', (req, res) => {
 
 router.post('/component/create', (req, res) => {
   const { fileName, filePath } = req.body
-  const path = `./core${filePath}`
-  const file = `./core${filePath + fileName}.vue`
+  const path = `./share${filePath}`
+  const file = `./share${filePath + fileName}.vue`
 
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path)
@@ -126,12 +105,12 @@ router.post('/component/remove', (req, res) => {
 
 router.post('/component/publish', (req, res) => {
   const { repository, branch, file } = req.body
-  const source = file ? file['path'].replace('/core', '') : './*'
+  const source = file ? file['path'].replace('/share', '') : './*'
   const message = file
     ? `Commit file ${file['file']} on branch ${branch} at ${new Date()} `
     : `Latest commit on branch ${branch} at ${new Date()} `
 
-  git('./core')
+  git('./share')
     .add(source)
     .commit(message)
     .push(repository, branch, () => {
@@ -144,13 +123,13 @@ router.post('/component/publish', (req, res) => {
 })
 
 router.get('/component/status', (req, res) => {
-  git('./core').status((err, status) => {
+  git('./share').status((err, status) => {
     if (err) throw new Error(err)
     res.json(status)
   })
 })
 
-router.get('/component/map', (req, res) => {
+router.get('/component/source', (req, res) => {
   getComponents().then(allFiles => {
     const listComponents = allFiles.map(item => {
       return `{
@@ -169,7 +148,7 @@ router.get('/component/map', (req, res) => {
       export default listComponents
     `
 
-    fs.writeFileSync('./lib/studioSource.js', prettier.format(string, {
+    fs.writeFileSync('./server/source.js', prettier.format(string, {
       semi: false,
       singleQuote: true,
       parser: 'babylon'
@@ -181,5 +160,27 @@ router.get('/component/map', (req, res) => {
     })
   })
 })
+
+const getComponents = () => {
+  return new Promise((resolve, reject) => {
+    glob('./share/**/*.vue', {}, async (er, files) => {
+      const allFiles = []
+
+      await files.map(item => {
+        const name = item.split('/').pop()
+        const file = name.split('.')
+
+        allFiles.push({
+          path: item,
+          file: name,
+          name: file[0],
+          type: file[1]
+        })
+      })
+
+      resolve(allFiles)
+    })
+  })
+}
 
 export default router

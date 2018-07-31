@@ -122,13 +122,13 @@ export default {
     }
   },
   mounted () {
-    axios.get('/api/settings').then(res => {
+    axios.get('/core/setting').then(res => {
       this.config = res.data
     })
   },
   methods: {
     saveSetting () {
-      axios.post('/api/settings', this.config).then(res => {
+      axios.post('/core/setting', this.config).then(res => {
         this.config = res.data
         this.$snotify.success('All settings already saved')
 

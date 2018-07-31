@@ -1,16 +1,15 @@
 import { Router } from 'express'
-import config from '../lib/config'
+import yaml from './yaml'
 
 const router = Router()
 
-/* GET users listing. */
-router.get('/settings', (req, res) => {
-  config.read().then(data => {
+router.get('/setting', (req, res) => {
+  yaml.read().then(data => {
     res.json(data)
   })
 })
 
-router.post('/settings', (req, res) => {
+router.post('/setting', (req, res) => {
   const content = req.body
 
   if (!content.repository || content.clients.length === 0) {
@@ -19,7 +18,7 @@ router.post('/settings', (req, res) => {
       data: 'Please send valid JSON of config'
     })
   } else {
-    config.write(content).then(data => {
+    yaml.write(content).then(data => {
       res.json(data)
     })
   }

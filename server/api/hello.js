@@ -1,9 +1,9 @@
 import { Router } from 'express'
 
-import hello from './hello'
-
 const router = Router()
 
-router.use(hello)
+router.get('/hello', (req, res) => {
+  res.send('Hello from Octopus')
+})
 
 export default router

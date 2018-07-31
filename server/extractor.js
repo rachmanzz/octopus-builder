@@ -136,6 +136,7 @@ const extractComponent = (attr, element) => {
 const generateMap = async () => {
   const mapping = {
     slug: 'page-1',
+    root: 'share',
     class: 'container',
     components: [],
     styles: {

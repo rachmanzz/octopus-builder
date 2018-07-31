@@ -58,7 +58,7 @@ export default {
       if (!path) {
         this.$router.push('/components')
       } else {
-        axios.post('/api/component', {
+        axios.post('/core/component', {
           path: path['path']
         }).then(res => {
           this.file = path
@@ -73,7 +73,7 @@ export default {
       this.contentChanged = editor.getValue()
     },
     onSave () {
-      axios.put('/api/component', {
+      axios.put('/core/component', {
         path: this.file['path'],
         string: this.contentChanged
       }).then(res => {

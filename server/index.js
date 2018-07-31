@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { Nuxt, Builder } from 'nuxt'
 
+import core from './core'
 import api from './api'
 
 const app = express()
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // Import API Routes
+app.use('/core', core)
 app.use('/api', api)
 
 // Import and Set Nuxt.js options

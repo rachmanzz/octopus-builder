@@ -109,7 +109,7 @@ export default {
       this.$router.push(`/components/editor?file=${file.toLowerCase()}`)
     },
     save () {
-      axios.post('/api/component/create', this.form).then(res => {
+      axios.post('/core/component/create', this.form).then(res => {
         this.form = {
           fileName: '',
           filePath: '/global/'
@@ -131,10 +131,10 @@ export default {
         confirmButtonText: 'Yes, remove it!'
       }).then((result) => {
         if (result.value) {
-          axios.post('/api/component/remove', {
+          axios.post('/core/component/remove', {
             filePath: item.path
           }).then(res => {
-            axios.get('/api/component/map').then(res => {
+            axios.get('/core/component/source').then(res => {
               this.$snotify.success('Mapping new components success')
             })
             this.$swal(
@@ -152,7 +152,7 @@ export default {
 
       const sendPublish = () => {
         this.$snotify.info(message)
-        axios.post('/api/component/publish', this.$store.state.settings).then(res => {
+        axios.post('/core/component/publish', this.$store.state.settings).then(res => {
           this.$snotify.success(message + ' success')
         })
       }
@@ -181,7 +181,7 @@ export default {
       }
     },
     list () {
-      axios.get('/api/component').then(res => {
+      axios.get('/core/component').then(res => {
         const files = {}
 
         this.components = res.data

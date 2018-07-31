@@ -1,6 +1,6 @@
 /* eslint-disable */
 import Sortable from 'sortablejs'
-import extractor from './studioExtractor.js'
+import extractor from './extractor.js'
 
 class Builder {
   constructor () {
