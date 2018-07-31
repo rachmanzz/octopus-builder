@@ -93,7 +93,7 @@ export default {
       if (content) {
         el.src = content
       }
-      console.log(style)
+
       if (style) {
         el.style[style.attr] = style.value
       }

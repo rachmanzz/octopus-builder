@@ -45,6 +45,14 @@ class Builder {
     })
   }
 
+  setTrigger (element) {
+    const parent = element.parentNode
+
+    parent.querySelector('.studio-toolbar_delete').addEventListener('click', () => {
+      parent.parentNode.removeChild(parent)
+    }, false)
+  }
+
   setListener (element) {
     element.querySelectorAll('[data-octopus]').forEach(item => {
       if (item.dataset['octopus'].indexOf('type:') > -1) {
@@ -81,7 +89,6 @@ class Builder {
 
         wrapper.classList.remove('studio-component')
         wrapper.classList.add('studio-canvas')
-        console.log('foo', element)
         if (element.classList.value.indexOf('octopus_') === -1) {
           element.classList.add(`octopus_${this.uniqueID()}`)
         }
@@ -123,7 +130,6 @@ class Builder {
 
         wrapper.classList.remove('studio-component')
         wrapper.classList.add('studio-canvas')
-        console.log('bar', wrapper)
         if (element.dataset['octopus'].indexOf('column') > -1) {
           wrapper.classList.add('studio-canvas_layout')
         }
@@ -146,6 +152,7 @@ class Builder {
         evt.item.parentNode.replaceChild(wrapper, evt.item)
         
         if (element.dataset['octopus'].indexOf('column') > -1) {
+          this.setTrigger(element)
           element.childNodes.forEach(item => {
             item.innerHTML = '<div class="column-inner"></div>'
             const inner = item.querySelector('.column-inner')
