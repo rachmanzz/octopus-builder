@@ -3,8 +3,10 @@ import Sortable from 'sortablejs'
 import extractor from './extractor.js'
 
 class Builder {
-  constructor () {
-    this.start()
+  constructor (fromImport) {
+    if (!fromImport) {
+      this.start()
+    }
   }
 
   uniqueID () {
@@ -79,7 +81,7 @@ class Builder {
 
         wrapper.classList.remove('studio-component')
         wrapper.classList.add('studio-canvas')
-
+        console.log('foo', element)
         if (element.classList.value.indexOf('octopus_') === -1) {
           element.classList.add(`octopus_${this.uniqueID()}`)
         }
@@ -121,7 +123,7 @@ class Builder {
 
         wrapper.classList.remove('studio-component')
         wrapper.classList.add('studio-canvas')
-
+        console.log('bar', wrapper)
         if (element.dataset['octopus'].indexOf('column') > -1) {
           wrapper.classList.add('studio-canvas_layout')
         }
@@ -142,7 +144,7 @@ class Builder {
         `)
 
         evt.item.parentNode.replaceChild(wrapper, evt.item)
-
+        
         if (element.dataset['octopus'].indexOf('column') > -1) {
           element.childNodes.forEach(item => {
             item.innerHTML = '<div class="column-inner"></div>'

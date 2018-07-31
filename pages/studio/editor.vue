@@ -13,7 +13,7 @@
                 <div class="studio-icon" :class="item.icon" :title="item.name"></div>
                 <div class="studio-name">{{ convertText(item.name) }}</div>
                 <div class="studio-component">
-                  <component :is="item.component"></component>
+                  <component :is="item.component" :title="item.name"></component>
                 </div>
               </div>
             </div>
@@ -58,14 +58,22 @@ export default {
     this.source = Source
     this.page = this.$store.state.page
 
-    Importer.generate(JSON.parse(this.page['pages'])).then(result => {
-      document.querySelector('.studio-inner').innerHTML = result
-      this.$snotify.success('Generate page success')
-
+    if (!this.page['pages']) {
+      this.$router.push(`/studio`)
+    } else {
       if (process.browser) {
         new Builder() // eslint-disable-line
       }
-    })
+
+      setTimeout(() => {
+        Importer.generate(JSON.parse(this.page['pages'])).then(result => {
+          console.log(result)
+          if (result) {
+            this.$snotify.success('Generate page success')
+          }
+        })
+      }, 2000)
+    }
   },
   methods: {
     save () {
