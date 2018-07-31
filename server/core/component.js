@@ -33,6 +33,7 @@ router.get('/component', (req, res) => {
 
 router.post('/component', (req, res) => {
   const { path } = req.body
+  console.log(path)
 
   fs.readFile(path, (err, data) => {
     if (err) {
@@ -148,7 +149,7 @@ router.get('/component/source', (req, res) => {
       export default listComponents
     `
 
-    fs.writeFileSync('../studio/source.js', prettier.format(string, {
+    fs.writeFileSync('./server/studio/source.js', prettier.format(string, {
       semi: false,
       singleQuote: true,
       parser: 'babylon'

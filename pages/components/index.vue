@@ -6,7 +6,8 @@
         <div class="card-body">
           <div class="mb-3">
             <b-btn size="sm" variant="outline-success" @click="modalCreate = !modalCreate" class="mr-2">Create New</b-btn>
-            <b-btn size="sm" variant="outline-info" @click="publish('all')">Publish All</b-btn>
+            <b-btn size="sm" variant="outline-primary" @click="publish('all')" class="mr-2">Publish All</b-btn>
+            <b-btn size="sm" variant="outline-info" @click="refresh">Refresh</b-btn>
           </div>
           <b-table
             hover
@@ -18,7 +19,7 @@
               <div v-html="formatStatus(data.value)"></div>
             </template>
             <template slot="publish" slot-scope="data">
-              <b-btn class="btn-icon" size="sm" variant="outline-info" @click.stop="publish(data)">
+              <b-btn class="btn-icon" size="sm" variant="outline-primary" @click.stop="publish(data)">
                 <span class="ion-share"></span>
               </b-btn>
             </template>
@@ -107,6 +108,14 @@ export default {
     openDetail (record, index) {
       const file = record.file.replace(/\..*$/g, '')
       this.$router.push(`/components/editor?file=${file.toLowerCase()}`)
+    },
+    refresh () {
+      axios.get('/core/component/source').then(res => {
+        this.$snotify.success('Mapping new components success')
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000)
+      })
     },
     save () {
       axios.post('/core/component/create', this.form).then(res => {

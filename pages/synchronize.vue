@@ -96,7 +96,7 @@ export default {
     },
     status ({ clients }) {
       const client = clients.filter(item => item.host !== null)
-      axios.post('/core/clients/status', {
+      axios.post('/core/client/status', {
         clients: client
       }).then(res => {
         const status = []
@@ -117,7 +117,7 @@ export default {
       })
     },
     list () {
-      axios.get('/core/clients').then(res => {
+      axios.get('/core/client').then(res => {
         this.config = res.data
         this.status(res.data)
       })
@@ -134,7 +134,7 @@ export default {
 
       const sendPublish = () => {
         this.$snotify.info(message)
-        axios.post('/core/clients/sync', {
+        axios.post('/core/client/sync', {
           clients: storeSetting['server']
         }).then(res => {
           this.$snotify.success('Success reloading any clients')

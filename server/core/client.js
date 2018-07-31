@@ -7,13 +7,13 @@ import { Router } from 'express'
 
 const router = Router()
 
-router.get('/clients', (req, res) => {
+router.get('/client', (req, res) => {
   yaml.read().then(data => {
     res.json(data)
   })
 })
 
-router.post('/clients/status', (req, res) => {
+router.post('/client/status', (req, res) => {
   const { clients } = req.body
 
   clientsStatus(clients).then(data => {
@@ -21,7 +21,7 @@ router.post('/clients/status', (req, res) => {
   })
 })
 
-router.post('/clients/sync', (req, res) => {
+router.post('/client/sync', (req, res) => {
   const { clients } = req.body
 
   syncAllServer(clients).then(server => {
@@ -32,7 +32,7 @@ router.post('/clients/sync', (req, res) => {
   })
 })
 
-router.post('/clients/render', (req, res) => {
+router.post('/client/render', (req, res) => {
   const { clients, source } = req.body
 
   renderAllServer(clients, source).then(result => {
@@ -97,7 +97,7 @@ const renderAllServer = async (clients, source) => {
       const clientServer = `${server.host}:${server.port}`
       console.log(`Synchronize server ${clientServer}`)
 
-      await axios.post(`${clientServer}/core/render`, {
+      await axios.post(`${clientServer}/api/render`, {
         source: source
       }).then(res => {
         result[index] = {

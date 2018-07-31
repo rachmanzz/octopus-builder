@@ -53,7 +53,7 @@ export default {
       this.editor = editor
 
       const query = this.$route.query['file']
-      const file = this.$store.state.allFiles[query]
+      const file = this.$store.state.files[query]
 
       if (!file) {
         this.$router.push('/components')

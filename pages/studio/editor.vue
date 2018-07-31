@@ -62,7 +62,7 @@ export default {
   methods: {
     save () {
       Extractor.generateMap().then(mapping => {
-        axios.post('/core/clients/render', {
+        axios.post('/core/client/render', {
           clients: this.$store.state.settings.clients,
           source: mapping
         }).then(result => {
