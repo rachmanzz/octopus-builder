@@ -29,9 +29,9 @@
 
 <script>
 import axios from 'axios'
-import Builder from '~/server/builder.js'
-import Source from '~/server/source.js'
-import Extractor from '~/server/extractor.js'
+import Builder from '~/app/builder.js'
+import Source from '~/app/source.js'
+import Extractor from '~/app/extractor.js'
 import Navbar from '~/components/global/Navbar.vue'
 import Properties from '~/components/studio/Properties.vue'
 

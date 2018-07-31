@@ -1,6 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import { Nuxt, Builder } from 'nuxt'
+import config from '../nuxt.config.js'
 
 import core from './core'
 import api from './api'
@@ -20,7 +21,6 @@ app.use('/core', core)
 app.use('/api', api)
 
 // Import and Set Nuxt.js options
-let config = require('../nuxt.config.js')
 config.dev = !(process.env.NODE_ENV === 'production')
 
 // Init Nuxt.js

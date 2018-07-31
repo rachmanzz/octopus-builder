@@ -148,7 +148,7 @@ router.get('/component/source', (req, res) => {
       export default listComponents
     `
 
-    fs.writeFileSync('./server/source.js', prettier.format(string, {
+    fs.writeFileSync('./app/source.js', prettier.format(string, {
       semi: false,
       singleQuote: true,
       parser: 'babylon'
