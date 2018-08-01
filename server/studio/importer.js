@@ -22,19 +22,21 @@ const create = (item, root) => {
 
   wrapper.appendChild(element)
   wrapper.insertAdjacentHTML('beforeend', `
-    <div class="studio-toolbar">
-      <span class="studio-toolbar_item studio-toolbar_handle">
-        <i class="ion-arrow-move"></i>
-      </span>
-      <span class="studio-toolbar_item studio-toolbar_delete">
-        <i class="ion-trash-b"></i>
-      </span>
-    </div>
+  <div class="studio-toolbar">
+  <span class="studio-toolbar_item studio-toolbar_handle">
+  <i class="ion-arrow-move"></i>
+  </span>
+  <span class="studio-toolbar_item studio-toolbar_delete">
+  <i class="ion-trash-b"></i>
+  </span>
+  </div>
   `)
 
   container.appendChild(wrapper)
 
   if (element.dataset['octopus'].indexOf('column') > -1) {
+    wrapper.classList.add('studio-canvas')
+    wrapper.classList.add('studio-canvas_layout')
     engine.setTrigger(element)
     element.childNodes.forEach(item => {
       item.innerHTML = '<div class="column-inner"></div>'
@@ -88,7 +90,6 @@ const create = (item, root) => {
 
 const generate = async (sources) => {
   const source = sources['components']
-  console.log(sources)
 
   source.map(item => {
     create(item)

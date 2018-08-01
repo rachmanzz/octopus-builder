@@ -62,7 +62,7 @@ export default {
           path: file['path']
         }).then(res => {
           this.file = file
-          this.navbar.title = file.fileName
+          this.navbar.title = file['file']
           this.status['onLoading'] = false
 
           editor.setValue(res.data)
@@ -77,7 +77,7 @@ export default {
         path: this.file['path'],
         string: this.contentChanged
       }).then(res => {
-        this.$snotify.success(`File ${this.file.fileName} saved`)
+        this.$snotify.success(`File ${this.file.name} saved`)
         setTimeout(() => this.$router.push('/components'), 500)
       })
     }

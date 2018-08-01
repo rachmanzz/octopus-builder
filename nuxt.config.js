@@ -34,8 +34,9 @@ module.exports = {
   // Plugins
   plugins: [
     { src: '~/plugins/vuex.js', ssr: false },
-    { src: '~/plugins/select.js', ssr: false },
     { src: '~/plugins/swal.js', ssr: false },
+    { src: '~/plugins/select.js', ssr: false },
+    { src: '~/plugins/checkbox.js', ssr: false },
     { src: '~/plugins/client-init.js', ssr: false }
   ],
   /*

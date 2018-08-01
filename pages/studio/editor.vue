@@ -7,6 +7,9 @@
       </div>
       <div class="properties">
         <b-tabs v-model="tabStep">
+          <b-tab title="General">
+            <General :page="page"/>
+          </b-tab>
           <b-tab title="Layout" active>
             <div class="studio-element">
               <div class="studio-source" v-for="(item, key) in source" :key="key">
@@ -34,12 +37,14 @@ import Extractor from '~/server/studio/extractor.js'
 import Importer from '~/server/studio/importer.js'
 import Source from '~/server/studio/source.js'
 import Navbar from '~/components/global/Navbar.vue'
+import General from '~/components/studio/General.vue'
 import Properties from '~/components/studio/Properties.vue'
 
 export default {
   components: {
     Navbar,
-    Properties
+    Properties,
+    General
   },
   data () {
     return {
@@ -61,6 +66,8 @@ export default {
     if (!this.page['pages']) {
       this.$router.push(`/studio`)
     } else {
+      this.navbar['title'] = this.page['name']
+
       if (process.browser) {
         new Builder() // eslint-disable-line
       }
@@ -109,7 +116,7 @@ export default {
   },
   watch: {
     properties (newValue, oldValue) {
-      this.tabStep = 1
+      this.tabStep = 2
     }
   }
 }

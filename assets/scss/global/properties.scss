@@ -15,16 +15,20 @@
       background-color: #f2f6ff;
       border: 0;
     }
+    .nav-item {
+      width: calc(100% / 3);
+    }
     .nav-link {
       border: 0;
       border-radius: 0;
       color: inherit;
       font-size: .8rem;
       text-transform: uppercase;
-      padding: 1rem 2rem;
+      padding: 1rem 1rem;
       font-weight: 600;
       background-color: #f2f6ff;
       box-shadow: none;
+      text-align: center;
 
       &:hover {
         background-color: #e8eefc;

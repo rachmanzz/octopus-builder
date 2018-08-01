@@ -33,7 +33,6 @@ router.get('/component', (req, res) => {
 
 router.post('/component', (req, res) => {
   const { path } = req.body
-  console.log(path)
 
   fs.readFile(path, (err, data) => {
     if (err) {
