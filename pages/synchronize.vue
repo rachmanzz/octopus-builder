@@ -6,14 +6,15 @@
         <div class="card-body">
           <div class="mb-3">
             <b-btn size="sm" variant="outline-success" @click="publish" v-bind:disabled="!isActive">Reload All Clients</b-btn>
+            <b-btn size="sm" variant="outline-primary" @click="refresh" class="ml-2">Refresh</b-btn>
           </div>
           <b-table
             hover
             :fields="fields"
             :items="serverList"
           >
-            <template slot="status" slot-scope="data">
-              <div v-html="formatStatus(data.value)"></div>
+            <template slot="active" slot-scope="data">
+              <div v-html="formatStatus(data)"></div>
             </template>
             <template slot="publish" slot-scope="data">
               <b-btn class="btn-icon" size="sm" variant="outline-success" @click.stop="publish(data)" v-bind:disabled="!data.item['active']">
@@ -65,7 +66,7 @@ export default {
           sortable: true
         },
         active: {
-          label: 'Active',
+          label: 'Status',
           sortable: true
         },
         publish: {
@@ -122,11 +123,15 @@ export default {
         this.status(res.data)
       })
     },
+    refresh () {
+      this.list()
+    },
     formatStatus (status) {
-      const stat = status || 'actived'
-      const name = stat.replace(/_/g, ' ')
-
-      return `<span class="comp-status comp-status-${stat}">${name}</span>`
+      if (status.value) {
+        return `<span class="comp-status"><i class="ion-arrow-up-c"></i> UP</span>`
+      } else {
+        return `<span class="comp-status comp-status-down"><i class="ion-arrow-down-c"></i> DOWN</span>`
+      }
     },
     publish (data) {
       const storeSetting = this.$store.state.settings
@@ -183,23 +188,8 @@ export default {
   font-weight: 600;
   font-size: .8rem;
 
-  &-not_added {
+  &-down {
     color: #f55656;
-  }
-  &-conflicted {
-    color: #ebcd4c;
-  }
-  &-created {
-    color: #8bd479;
-  }
-  &-deleted {
-    color: #af2727;
-  }
-  &-modified {
-    color: #d4b52a;
-  }
-  &-renamed {
-    color: #e7cc34;
   }
 }
 </style>

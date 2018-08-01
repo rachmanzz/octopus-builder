@@ -31,11 +31,12 @@
   }
   &-canvas {
     position: relative;
-    border: 1px dashed #b9bcc7;
+    border: 1px solid transparent;
     overflow: hidden;
     border-radius: 6px;
-    padding: .5rem;
+    // padding: .5rem;
     margin-bottom: .2rem;
+    transition: border .2s ease-in-out;
 
     &:hover > .studio-toolbar {
       opacity: 1;
@@ -44,18 +45,19 @@
       border-color: #527eff;
     }
     &_layout {
+      border-color: #e5e6e9;
       padding: 60px .5rem 20px .5rem;
     }
   }
   &-toolbar {
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     padding: .5rem;
     background-color: transparentize(#527eff, .2);
     z-index: 100;
-    border-top-left-radius: 8px;
-    border-bottom-right-radius: 8px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
     opacity: 0;
     transition: all .3s ease-in-out;
 
@@ -109,7 +111,7 @@
 
     &+ .studio-toolbar {
       opacity: 1;
-      border-radius: 4px;
+      // border-radius: 4px;
       background-color: transparentize(#1e945d, .2);
     }
   }
@@ -120,15 +122,15 @@
     min-height: 100px;
   }
   .column-inner {
-    border: 1px dashed #b9bcc7;
+    border: 1px solid #b9bcc7;
     padding: 1rem .3rem;
     overflow: hidden;
     border-radius: 6px;
     min-height: 100px;
 
     &> .studio-canvas {
-      border: 0;
-      padding: .2rem 0;
+      // border: 0;
+      // padding: .2rem 0;
       margin-bottom: .2rem;
     }
   }

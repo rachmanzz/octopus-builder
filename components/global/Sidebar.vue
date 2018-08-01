@@ -31,8 +31,8 @@ export default {
         url: '/',
         title: 'Dashboard'
       }, {
-        url: '/components/',
-        title: 'Components'
+        url: '/layout/',
+        title: 'Layout'
       }, {
         url: '/studio/',
         title: 'Studio'

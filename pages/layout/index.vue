@@ -7,7 +7,7 @@
           <div class="mb-3">
             <b-btn size="sm" variant="outline-success" @click="modalCreate = !modalCreate" class="mr-2">Create New</b-btn>
             <b-btn size="sm" variant="outline-primary" @click="publish('all')" class="mr-2">Publish All</b-btn>
-            <b-btn size="sm" variant="outline-info" @click="refresh">Refresh</b-btn>
+            <!-- <b-btn size="sm" variant="outline-info" @click="refresh">Refresh</b-btn> -->
           </div>
           <b-table
             hover
@@ -15,11 +15,14 @@
             :items="components"
             @row-clicked="openDetail"
           >
+            <template slot="name" slot-scope="data">
+              <div v-html="formatText(data.value)"></div>
+            </template>
             <template slot="status" slot-scope="data">
               <div v-html="formatStatus(data.value)"></div>
             </template>
             <template slot="publish" slot-scope="data">
-              <b-btn class="btn-icon" size="sm" variant="outline-primary" @click.stop="publish(data)">
+              <b-btn class="btn-icon" size="sm" variant="outline-primary" @click.stop="publish(data)" v-bind:disabled="!data.item['status']">
                 <span class="ion-share"></span>
               </b-btn>
             </template>
@@ -75,14 +78,14 @@ export default {
   data () {
     return {
       navbar: {
-        title: 'All Components'
+        title: 'Layout'
       },
       form: {
         fileName: '',
         filePath: '/global/'
       },
       fields: {
-        file: {
+        name: {
           label: 'File Name',
           sortable: true
         },
@@ -107,7 +110,7 @@ export default {
   methods: {
     openDetail (record, index) {
       const file = record.file.replace(/\..*$/g, '')
-      this.$router.push(`/components/editor?file=${file.toLowerCase()}`)
+      this.$router.push(`/layout/editor?file=${file.toLowerCase()}`)
     },
     refresh () {
       axios.get('/core/component/source').then(res => {
@@ -213,6 +216,13 @@ export default {
       const name = stat.replace(/_/g, ' ')
 
       return `<span class="comp-status comp-status-${stat}">${name}</span>`
+    },
+    formatText (string) {
+      if (!string) {
+        return
+      }
+
+      return string.replace(/([A-Z]+)/g, ' $1').replace(/^ /, '').trim()
     }
   }
 }

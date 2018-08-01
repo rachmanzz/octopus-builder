@@ -56,7 +56,7 @@ export default {
       const file = this.$store.state.files[query]
 
       if (!file) {
-        this.$router.push('/components')
+        this.$router.push('/layout')
       } else {
         axios.post('/core/component', {
           path: file['path']
