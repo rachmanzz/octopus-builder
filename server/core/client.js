@@ -33,7 +33,6 @@ router.post('/client/sync', (req, res) => {
 
 router.post('/client/render', (req, res) => {
   const { clients, source } = req.body
-
   renderAllServer(clients, source).then(result => {
     console.log('Synchronization complete')
     res.json({
@@ -67,7 +66,7 @@ const syncAllServer = async (clients) => {
 
       await isReachable(`${clientServer}`).then(async (reachable) => {
         if (reachable) {
-          await axios.post(`${clientServer}/core/sync`).then(res => {
+          await axios.post(`${clientServer}/api/sync`).then(res => {
             result[index] = {
               active: true,
               server: `${clientServer}`,
@@ -92,6 +91,7 @@ const renderAllServer = async (clients, source) => {
   const result = []
 
   await Promise.all(clients.map(async (server, index) => {
+    console.log(server, index)
     if (server.host !== null) {
       const clientServer = `${server.host}:${server.port}`
       console.log(`Synchronize server ${clientServer}`)

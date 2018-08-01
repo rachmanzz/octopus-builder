@@ -1,6 +1,6 @@
 <template>
   <div class="content content-editor">
-    <Navbar :data="navbar" :refresh="refresh" :save="save"/>
+    <Navbar :data="navbar" :refresh="refresh" :publish="publish" :save="save"/>
     <div class="content-flex">
       <div class="studio">
         <div class="studio-inner"></div>
@@ -54,6 +54,7 @@ export default {
       navbar: {
         title: 'Studio',
         save: true,
+        publish: true,
         refresh: true
       },
       source: [],
@@ -94,6 +95,14 @@ export default {
           this.$snotify.success('Save page success')
           this.$router.push(`/studio`)
         })
+      })
+    },
+    publish () {
+      axios.post('/core/client/render', {
+        clients: this.$store.state.settings['clients'],
+        source: this.page['pages']
+      }).then(res => {
+        this.$snotify.success('Publish page success')
       })
     },
     refresh () {
