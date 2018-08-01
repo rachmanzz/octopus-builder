@@ -1,9 +1,20 @@
 {
-  "name": "nuxt-express-template",
-  "version": "1.0.1",
-  "description": "Nuxt.js project",
-  "author": "Muhibbudin Suretno <muhibbudinsuretno1@gmail.com>",
+  "name": "octopus-builder",
+  "version": "1.0.0-dev",
+  "description": "Octopus page builder and components orchestra",
+  "author": "Muhibbudin Suretno <muhibbudinsuretno1@gmail.com> (https://muhibbudins.github.io/)",
   "private": true,
+  "keywords": [
+    "page builder",
+    "builder",
+    "vue",
+    "nuxt",
+    "nuxtjs"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/muhibbudins/octopus-cli/issues"
+  },
   "scripts": {
     "dev": "backpack dev",
     "build": "nuxt build && backpack build",
@@ -21,10 +32,8 @@
     "glob": "^7.1.2",
     "is-reachable": "^2.4.0",
     "monaco-editor-forvue": "^1.0.3",
-    "node-http-ping": "^0.3.1",
     "node-sass": "^4.9.2",
     "nuxt": "1.4.0",
-    "ping": "^0.2.2",
     "prettier": "1.13.7",
     "pretty-checkbox-vue": "^1.1.8",
     "read-yaml": "^1.1.0",
@@ -33,7 +42,6 @@
     "simple-git": "^1.96.0",
     "sortablejs": "^1.7.0",
     "source-map-support": "0.5.5",
-    "tcp-ping": "^0.1.1",
     "vue-color": "^2.4.6",
     "vue-loader": "13.7.2",
     "vue-multiselect": "^2.1.0",
@@ -56,5 +64,10 @@
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhibbudins/octopus-cli.git"
+  },
+  "homepage": "https://github.com/muhibbudins/octopus-cli#readme"
 }
