@@ -4,9 +4,12 @@
     <div class="container content-inner">
       <div class="card card-table">
         <div class="card-body">
-          <div class="mb-3">
-            <b-btn size="sm" variant="outline-success" @click="publish" v-bind:disabled="!isActive">Reload All Clients</b-btn>
-            <b-btn size="sm" variant="outline-primary" @click="refresh" class="ml-2">Refresh</b-btn>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+              <b-btn size="sm" variant="outline-success" @click="publish" v-bind:disabled="!isActive">Reload All Clients</b-btn>
+              <b-btn size="sm" variant="outline-primary" @click="refresh" class="ml-2">Refresh</b-btn>
+            </div>
+            <moon-loader :loading="loading" color="#29a818" size="30px"/>
           </div>
           <b-table
             hover
@@ -36,13 +39,16 @@
 <script>
 import axios from '~/plugins/axios'
 import Navbar from '~/components/global/Navbar.vue'
+import MoonLoader from 'vue-spinner/src/MoonLoader.vue'
 
 export default {
   components: {
-    Navbar
+    Navbar,
+    MoonLoader
   },
   data () {
     return {
+      loading: true,
       navbar: {
         title: 'Synchronize'
       },
@@ -115,15 +121,19 @@ export default {
         })
 
         this.serverList = status
+        this.loading = false
       })
     },
     list () {
+      this.loading = true
+
       axios.get('/core/client').then(res => {
         this.config = res.data
         this.status(res.data)
       })
     },
     refresh () {
+      this.serverList = []
       this.list()
     },
     formatStatus (status) {
