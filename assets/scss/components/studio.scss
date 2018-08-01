@@ -45,8 +45,16 @@
       border-color: #527eff;
     }
     &_layout {
-      border-color: #e5e6e9;
-      padding: 60px .5rem 20px .5rem;
+      border-color: #d5d6d8;
+      padding: .4rem .2rem;
+      transition: all .3s ease-in-out;
+
+      &:hover .row + .studio-toolbar {
+        top: 0;
+      }
+      &:hover {
+        padding: 60px .2rem .4rem .2rem;
+      }
     }
   }
   &-toolbar {
@@ -83,7 +91,7 @@
     width: calc(50% - 1rem);
     text-align: center;
     border-radius: 8px;
-    border: 1px solid #e5e6e9;
+    border: 1px solid #d5d6d8;
     cursor: all-scroll;
     padding: 1.5rem;
     transition: border .2s ease-in-out;
@@ -111,7 +119,11 @@
 
     &+ .studio-toolbar {
       opacity: 1;
-      // border-radius: 4px;
+      right: auto;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 0;
       background-color: transparentize(#1e945d, .2);
     }
   }
@@ -122,8 +134,8 @@
     min-height: 100px;
   }
   .column-inner {
-    border: 1px solid #b9bcc7;
-    padding: 1rem .3rem;
+    border: 1px solid #d5d6d8;
+    padding: .3rem;
     overflow: hidden;
     border-radius: 6px;
     min-height: 100px;

@@ -1,6 +1,5 @@
 import isReachable from 'is-reachable'
 import axios from 'axios'
-import ping from 'ping'
 import yaml from './yaml'
 
 import { Router } from 'express'
@@ -66,7 +65,7 @@ const syncAllServer = async (clients) => {
       const clientServer = `${server.host}:${server.port}`
       console.log(`Synchronize server ${clientServer}`)
 
-      await ping.promise.probe(`${clientServer}`).then(async (reachable) => {
+      await isReachable(`${clientServer}`).then(async (reachable) => {
         if (reachable) {
           await axios.post(`${clientServer}/core/sync`).then(res => {
             result[index] = {

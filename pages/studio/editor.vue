@@ -41,6 +41,9 @@ import General from '~/components/studio/General.vue'
 import Properties from '~/components/studio/Properties.vue'
 
 export default {
+  head: {
+    title: 'Editor - Octopus Builder'
+  },
   components: {
     Navbar,
     Properties,

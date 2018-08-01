@@ -21,6 +21,9 @@ import Navbar from '~/components/global/Navbar.vue'
 import Status from '~/components/global/Status.vue'
 
 export default {
+  head: {
+    title: 'Editor - Octopus Builder'
+  },
   components: {
     Monaco,
     Navbar,
@@ -78,7 +81,7 @@ export default {
         string: this.contentChanged
       }).then(res => {
         this.$snotify.success(`File ${this.file.name} saved`)
-        setTimeout(() => this.$router.push('/components'), 500)
+        setTimeout(() => this.$router.push('/layout'), 500)
       })
     }
   }

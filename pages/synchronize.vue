@@ -42,6 +42,9 @@ import Navbar from '~/components/global/Navbar.vue'
 import MoonLoader from 'vue-spinner/src/MoonLoader.vue'
 
 export default {
+  head: {
+    title: 'Synchronize - Octopus Builder'
+  },
   components: {
     Navbar,
     MoonLoader

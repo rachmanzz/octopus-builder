@@ -68,6 +68,9 @@ import axios from '~/plugins/axios'
 import Navbar from '~/components/global/Navbar.vue'
 
 export default {
+  head: {
+    title: 'Studio - Octopus Builder'
+  },
   components: {
     Navbar
   },

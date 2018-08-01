@@ -52,6 +52,9 @@
 import Navbar from '~/components/global/Navbar.vue'
 
 export default {
+  head: {
+    title: 'Dashboard - Octopus Builder'
+  },
   components: {
     Navbar
   },
