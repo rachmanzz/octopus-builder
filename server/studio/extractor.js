@@ -147,13 +147,22 @@ const generate = async () => {
   }
 
   const canvas = document.querySelector('.studio-inner').childNodes
+  const contain = []
 
-  canvas.forEach((element, index) => {
-    const canva = element.querySelector('section')
-    const attribute = extractAttribute(getData(canva))
-    const components = mapping['components']
+  canvas.forEach(item => {
+    if (item.nodeName === 'DIV') {
+      contain.push(item)
+    }
+  })
 
-    components[index] = extractComponent(attribute, canva)
+  contain.forEach((element, index) => {
+    if (element.nodeName !== '#comment') {
+      const canva = element.querySelector('section')
+      const attribute = extractAttribute(getData(canva))
+      const components = mapping['components']
+
+      components[index] = extractComponent(attribute, canva)
+    }
   })
 
   return mapping
