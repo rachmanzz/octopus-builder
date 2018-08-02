@@ -2,11 +2,12 @@ const state = {
   settings: [],
   files: [],
   page: {},
+  title: '',
   properties: {
     type: '',
     payload: {}
   },
-  sidebar: true
+  collapse: false
 }
 
 export default state

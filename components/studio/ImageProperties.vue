@@ -1,35 +1,20 @@
 <template>
   <section class="properties-item">
     <div v-if="editable">
-      <b-form-group label="Image URL">
-        <b-form-input
-          rows="4"
-          v-model="content"
-          type="text"
-          placeholder="Enter text">
-        </b-form-input>
-      </b-form-group>
-      <b-form-group label="Width" description="in pixels">
-        <b-form-input
-          rows="4"
-          v-model="style['width']"
-          @input="updateValue('width', $event)"
-          :formatter="formatAsNumber"
-          type="text"
-          placeholder="Enter text">
-        </b-form-input>
-      </b-form-group>
-      <b-form-group label="Height" description="in pixels">
-        <b-form-input
-          rows="4"
-          v-model="style['height']"
-          @input="updateValue('height', $event)"
-          :formatter="formatAsNumber"
-          type="text"
-          placeholder="Enter text">
-        </b-form-input>
-      </b-form-group>
-      <b-btn size="sm" variant="outline-primary" @click="setResponsive">Set Responsive</b-btn>
+      <el-form ref="form">
+        <el-form-item label="Image URL">
+          <el-input v-model="content"></el-input>
+        </el-form-item>
+        <el-form-item label="Width">
+          <el-input v-model="style['width']"></el-input>
+        </el-form-item>
+        <el-form-item label="Height">
+          <el-input v-model="style['height']"></el-input>
+        </el-form-item>
+        <el-form-item label=" ">
+          <el-button type="primary" plain @click="setResponsive">Set Responsive</el-button>
+        </el-form-item>
+      </el-form>
     </div>
     <div v-else>
       Click element to set properties

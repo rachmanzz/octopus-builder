@@ -1,78 +1,102 @@
 <template>
-  <div class="content">
-    <Navbar :data="navbar" />
+  <section>
     <div class="container content-inner">
-      <div class="card card-table mb-3 pb-3">
-        <div class="card-body">
-          <b-btn size="sm" variant="outline-success" @click="modalCreate = !modalCreate" class="mr-2">Create New</b-btn>
-          <b-btn size="sm" variant="outline-primary" @click="publish('all')" class="mr-2">Publish All</b-btn>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4 mb-3" v-for="item in pages" :key="item.key">
-          <div class="card card-link" @click="openBuilder(item)">
-            <div class="card-body">
-              {{ item.name }} 
-              {{ item.path }}
-            </div>
-          </div>
-        </div>
-      </div>
+      <el-card class="box-card" shadow="never">
+        <section slot="header" class="clearfix">
+          <el-row type="flex" class="row-bg" justify="space-between">
+            <el-col :span="8">
+              <el-input
+                placeholder="Type something"
+                prefix-icon="el-icon-search">
+              </el-input>
+            </el-col>
+            <el-col align="right">
+              <el-button type="success" plain @click="dialogOpen = !dialogOpen">Create New</el-button>
+              <el-button type="primary" plain @click="handlePublish">Publish All</el-button>
+            </el-col>
+          </el-row>
+        </section>
+        <el-table
+          :data="pages"
+          empty-text="Belum ada data"
+          style="width: 100%"
+          @row-dblclick="handleOpen">
+          <el-table-column label="Name">
+            <template slot-scope="scope">
+              {{ formatText(scope.row.name) }}
+            </template>
+          </el-table-column>
+          <el-table-column label="Path">
+            <template slot-scope="scope">
+              {{ scope.row.path }}
+            </template>
+          </el-table-column>
+          <el-table-column label="Clients">
+            <template slot-scope="scope">
+              {{ formatClients(scope.row.clients) }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Operations"
+            width="200px">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handlePublish(scope.$index, scope.row)">Publish</el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-card>
     </div>
 
-    <b-modal
-      v-model="modalCreate"
-      title="New Page"
-      centered hide-footer
-    >
-      <b-form-group
-        label="Page Name"
-        label-for="name">
-        <b-form-input
-          id="name"
-          type="text"
-          v-model="form.name"
-          placeholder="Enter Page Name">
-        </b-form-input>
-      </b-form-group>
-      <b-form-group
-        label="Page URL"
-        label-for="path">
-        <b-form-input
-          id="path"
-          type="text"
-          v-model="form.path"
-          placeholder="Enter Page URL">
-        </b-form-input>
-      </b-form-group>
-      <b-form-group
-        label="Description"
-        label-for="description">
-        <b-form-textarea
-          id="description"
-          rows="4"
-          v-model="form.description"
-          placeholder="Enter Description">
-        </b-form-textarea>
-      </b-form-group>
-      <b-form-group label="Clients">
-        <multiselect v-model="form.client" :options="clients" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true" :preserve-search="true" placeholder="Pick some" label="name" track-by="name" :preselect-first="true" />
-      </b-form-group>
-      <b-button variant="outline-primary" @click="save">Create Page</b-button>
-    </b-modal>
-  </div>
+    <el-dialog
+      title="Create File"
+      :visible.sync="dialogOpen"
+      width="40%">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="Name">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="Path">
+          <el-input v-model="form.path"></el-input>
+        </el-form-item>
+        <el-form-item label="Clients">
+          <el-select
+            v-model="form.client"
+            multiple
+            collapse-tags
+            placeholder="Select">
+            <el-option
+              v-for="(item, index) in clients"
+              :key="index"
+              :label="item.name"
+              :value="index">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Description">
+          <el-input type="textarea" v-model="form.description"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSave">Create</el-button>
+          <el-button @click="dialogOpen = !dialogOpen">Cancel</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </section>
 </template>
 
 <script>
 import axios from '~/plugins/axios'
-import Navbar from '~/components/global/Navbar.vue'
 
 export default {
   head: {
     title: 'Studio - Octopus Builder'
-  },
-  components: {
-    Navbar
   },
   data () {
     return {
@@ -85,35 +109,77 @@ export default {
         description: '-',
         client: []
       },
-      clients: [],
-      modalCreate: false,
+      clients: {},
+      dialogOpen: false,
       pages: []
     }
   },
   mounted () {
+    this.$store.commit('SET_TITLE', 'Studio')
     axios.get('/core/setting').then(res => {
       res.data['clients'].map(item => {
-        this.clients.push({
+        this.clients[item.name.toLowerCase()] = {
           name: item.name,
           value: item
-        })
+        }
       })
     })
 
-    this.list()
+    this.handleList()
   },
   methods: {
-    openBuilder (page) {
-      this.$store.commit('SET_PAGE', page)
+    handleMessage (message, type) {
+      this.$message({
+        message: message,
+        type: type
+      })
+    },
+    handlePublish (index, row) {
+      let clients = []
+      if (!row) {
+        clients = this.$store.state.settings.clients
+      } else {
+        clients = JSON.parse(row.clients).map(item => item.value)
+      }
+
+      axios.post('/core/client/render', {
+        clients: clients,
+        source: row.pages
+      }).then(result => {
+        this.handleMessage('Generate page success', 'success')
+      })
+    },
+    handleDelete (index, row) {
+      this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        axios.post('/core/page/delete', row).then(res => {
+          this.$message({
+            type: 'success',
+            message: `Page ${res.data['pages']['name']} already removed`
+          })
+          this.handleList()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        })
+      })
+    },
+    handleOpen (row, event, column) {
+      this.$store.commit('SET_PAGE', row)
       this.$router.push(`/studio/editor`)
     },
-    save () {
-      this.form['clients'] = this.form['client'].map(item => item.value)
+    handleSave () {
+      this.form['clients'] = this.form['client'].map((item, index) => this.clients[item])
 
       axios.post('/core/page', this.form).then(res => {
-        this.modalCreate = !this.modalCreate
-        this.$snotify.success('Create page success')
-        this.list()
+        this.dialogOpen = !this.dialogOpen
+        this.handleMessage('Create page success', 'success')
+        this.handleList()
         this.form = {
           name: '',
           path: '/',
@@ -122,46 +188,24 @@ export default {
         }
       })
     },
-    remove (data) {
-      const item = data.item
-      this.$swal({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#df4848',
-        cancelButtonColor: '#ababab',
-        confirmButtonText: 'Yes, remove it!'
-      }).then((result) => {
-        if (result.value) {
-          axios.post('/core/component/remove', {
-            filePath: item.path
-          }).then(res => {
-            axios.get('/core/component/source').then(res => {
-              this.$snotify.success('Mapping new components success')
-            })
-            this.$swal(
-              'Deleted!',
-              `File ${res.data.data} removed`,
-              'success'
-            )
-            this.list()
-          })
-        }
-      })
-    },
-    publish (data) {
-      //   axios.post('/core/client/render', {
-      //     clients: this.$store.state.settings.clients,
-      //     source: mapping
-      //   }).then(result => {
-      //     this.$snotify.success('Generate page success')
-      //   })
-    },
-    list () {
+    handleList () {
       axios.get('/core/page').then(res => {
         this.pages = res.data['pages']
       })
+    },
+    formatText (string) {
+      if (!string) {
+        return
+      }
+
+      return string.replace(/([A-Z]+)/g, ' $1').replace(/^ /, '').trim()
+    },
+    formatClients (string) {
+      if (!string) {
+        return
+      }
+
+      return JSON.parse(string).map(item => item.name).join(', ')
     }
   }
 }

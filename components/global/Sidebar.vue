@@ -1,26 +1,17 @@
 <template>
-  <div class="sidebar" v-bind:class="{ 'sidebar-hide': !$store.state.sidebar }">
-    <div class="sidebar-title">
-      {{ $store.state.settings.name || 'BUILDER' }}
-    </div>
-    <div class="sidebar-avatar">
-      <div class="avatar-image">
-        <img src="https://dummyimage.com/200x200/527eff/fff" alt="Avatar" class="rounded-circle">
-      </div>
-      <div class="avatar-name">
-        John Doe
-      </div>
-    </div>
-    <nuxt-link
+  <el-menu :router="true" :collapse="$store.state.collapse">
+    <el-menu-item index="/" class="sidebar-title">
+      <span slot="title">{{ $store.state.settings.name || 'BUILDER' }}</span>
+    </el-menu-item>
+    <el-menu-item
+      :index="item.url"
       v-for="item in sidebar"
       :key="item.key"
-      :to="item.url"
-      class="sidebar-link"
-      v-bind:class="{ 'sidebar-link_active': matchPage(item.url) }"
     >
-      {{ item.title }}
-    </nuxt-link>
-  </div>
+      <i :class="item.icon"></i>
+      <span slot="title">{{ item.title }}</span>
+    </el-menu-item>
+  </el-menu>
 </template>
 
 <script>
@@ -28,18 +19,23 @@ export default {
   data () {
     return {
       sidebar: [{
+        icon: 'el-icon-menu',
         url: '/',
         title: 'Dashboard'
       }, {
+        icon: 'el-icon-news',
         url: '/layout/',
         title: 'Layout'
       }, {
+        icon: 'el-icon-edit-outline',
         url: '/studio/',
         title: 'Studio'
       }, {
+        icon: 'el-icon-refresh',
         url: '/synchronize',
         title: 'Synchronize'
       }, {
+        icon: 'el-icon-setting',
         url: '/settings',
         title: 'Settings'
       }],

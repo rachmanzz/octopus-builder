@@ -1,4 +1,4 @@
-name: Octopus
+name: Builder
 repository: 'git@github.com:muhibbudins/octopus-repo.git'
 branch: master
 api:
@@ -10,4 +10,4 @@ clients:
     port: '8010'
   - name: Mobile
     host: 'http://localhost'
-    port: 8020
+    port: '8020'

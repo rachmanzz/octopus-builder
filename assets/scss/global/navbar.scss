@@ -1,34 +1,7 @@
-.navbar {
-  background-color: #638afd;
-  margin-left: 250px;
-  transition: margin-left .3s ease-in-out;
+.el-header {
+  padding: 0;
 
-  &-expand {
-    margin-left: 0
-  }
-  .nav {
-    &-title {
-      font-weight: 500;
-      text-transform: uppercase;
-      color: #ffffff;
-    }
-    &-link {
-      padding: .4rem;
-
-      span {
-        color: #ffffff;
-        font-size: 1.4rem;
-      }
-    }
-  }
-  &-bottom {
-    border-bottom: 0;
-    background-color: #ffffff;
-    z-index: 1030;
-  }
-  &-action .nav-item {
-    .btn:first-child {
-      margin-right: .5rem;
-    }
+  .el-menubar {
+    width: 100%;
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-bottom navbar-expand-md navbar-light fixed-bottom">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" v-if="data.onLoading">
+      <li class="nav-item" v-if="status.onLoading">
         <a class="nav-link" href="#">Loading ...</a>
       </li>
     </ul>
@@ -15,7 +15,16 @@
 
 <script>
 export default {
-  props: ['data']
+  data () {
+    return {
+      status: {
+        onLoading: false
+      }
+    }
+  },
+  mounted () {
+    // this.navbar = this.$store.state.navbar
+  }
 }
 </script>
 

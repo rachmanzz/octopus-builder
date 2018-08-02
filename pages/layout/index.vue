@@ -1,70 +1,81 @@
 <template>
-  <div class="content">
-    <Navbar :data="navbar"/>
+  <section>
     <div class="container content-inner">
-      <div class="card card-table">
-        <div class="card-body">
-          <div class="mb-3">
-            <b-btn size="sm" variant="outline-success" @click="modalCreate = !modalCreate" class="mr-2">Create New</b-btn>
-            <b-btn size="sm" variant="outline-primary" @click="publish('all')" class="mr-2">Publish All</b-btn>
-            <!-- <b-btn size="sm" variant="outline-info" @click="refresh">Refresh</b-btn> -->
-          </div>
-          <b-table
-            hover
-            :fields="fields"
-            :items="components"
-            @row-clicked="openDetail"
-          >
-            <template slot="name" slot-scope="data">
-              <div v-html="formatText(data.value)"></div>
+      <el-card class="box-card" shadow="never">
+        <section slot="header" class="clearfix">
+          <el-row type="flex" class="row-bg" justify="space-between">
+            <el-col :span="8">
+              <el-input
+                placeholder="Type something"
+                prefix-icon="el-icon-search">
+              </el-input>
+            </el-col>
+            <el-col align="right">
+              <el-button type="success" plain @click="dialogOpen = !dialogOpen">Create New</el-button>
+              <el-button type="primary" plain @click="handlePublish">Publish All</el-button>
+              <el-button plain @click="handleRefresh">Refresh</el-button>
+            </el-col>
+          </el-row>
+        </section>
+        <el-table
+          :data="layouts"
+          style="width: 100%"
+          @row-dblclick="handleOpen">
+          <el-table-column label="Name">
+            <template slot-scope="scope">
+              {{ formatText(scope.row.name) }}
             </template>
-            <template slot="status" slot-scope="data">
-              <div v-html="formatStatus(data.value)"></div>
+          </el-table-column>
+          <el-table-column label="Path">
+            <template slot-scope="scope">
+              {{ scope.row.path }}
             </template>
-            <template slot="publish" slot-scope="data">
-              <b-btn class="btn-icon" size="sm" variant="outline-primary" @click.stop="publish(data)" v-bind:disabled="!data.item['status']">
-                <span class="ion-share"></span>
-              </b-btn>
+          </el-table-column>
+          <el-table-column
+            label="Name"
+            width="200px">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.status === 'not_added'" size="medium" type="danger">Not Added</el-tag>
+              <el-tag v-else-if="scope.row.status === 'modified'" size="medium" type="warning">Modified</el-tag>
+              <el-tag v-else size="medium" type="success">Active</el-tag>
             </template>
-            <template slot="remove" slot-scope="data">
-              <b-btn class="btn-icon" size="sm" variant="outline-danger" @click.stop="remove(data)">
-                <span class="ion-trash-b"></span>
-              </b-btn>
+          </el-table-column>
+          <el-table-column
+            label="Operations"
+            width="200px">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handlePublish(scope.$index, scope.row)">Publish</el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
             </template>
-          </b-table>
-        </div>
-      </div>
+          </el-table-column>
+        </el-table>
+      </el-card>
     </div>
-    <b-modal
-      v-model="modalCreate"
-      title="New Components"
-      centered hide-footer
-    >
-      <b-form-group
-        label="File Name:"
-        label-for="fileName">
-        <b-form-input
-          id="fileName"
-          type="text"
-          v-model="form.fileName"
-          required
-          placeholder="Enter file name">
-        </b-form-input>
-      </b-form-group>
-      <b-form-group
-        label="File Path:"
-        label-for="filePath">
-        <b-form-input
-          id="filePath"
-          type="text"
-          v-model="form.filePath"
-          required
-          placeholder="Enter file Path">
-        </b-form-input>
-      </b-form-group>
-      <b-button variant="outline-primary" @click="save">Create File</b-button>
-    </b-modal>
-  </div>
+
+    <el-dialog
+      title="Create File"
+      :visible.sync="dialogOpen"
+      width="40%">
+      <el-form ref="form" :model="form" label-width="50px">
+        <el-form-item label="Name">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="Group">
+          <el-input v-model="form.path"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSave">Create</el-button>
+          <el-button @click="dialogOpen = !dialogOpen">Cancel</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </section>
 </template>
 
 <script>
@@ -84,129 +95,31 @@ export default {
         title: 'Layout'
       },
       form: {
-        fileName: '',
-        filePath: '/global/'
+        name: '',
+        path: '/global/'
       },
-      fields: {
-        name: {
-          label: 'File Name',
-          sortable: true
-        },
-        status: {
-          label: 'Status',
-          sortable: true
-        },
-        publish: {
-          label: 'Publish'
-        },
-        remove: {
-          label: 'Remove'
-        }
-      },
-      modalCreate: false,
-      components: []
+      dialogOpen: false,
+      layouts: []
     }
   },
   mounted () {
-    this.list()
+    this.$store.commit('SET_TITLE', 'Layouts')
+    this.handleList()
   },
   methods: {
-    openDetail (record, index) {
-      const file = record.file.replace(/\..*$/g, '')
-      this.$router.push(`/layout/editor?file=${file.toLowerCase()}`)
-    },
-    refresh () {
-      axios.get('/core/component/source').then(res => {
-        this.$snotify.success('Mapping new components success')
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000)
+    handleMessage (message, type) {
+      this.$message({
+        message: message,
+        type: type
       })
     },
-    save () {
-      axios.post('/core/component/create', this.form).then(res => {
-        this.form = {
-          fileName: '',
-          filePath: '/global/'
-        }
-        this.modalCreate = !this.modalCreate
-        this.$snotify.success(`File ${res.data.data} created`)
-        this.list()
-      })
-    },
-    remove (data) {
-      const item = data.item
-      this.$swal({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#df4848',
-        cancelButtonColor: '#ababab',
-        confirmButtonText: 'Yes, remove it!'
-      }).then((result) => {
-        if (result.value) {
-          axios.post('/core/component/remove', {
-            filePath: item.path
-          }).then(res => {
-            axios.get('/core/component/source').then(res => {
-              this.$snotify.success('Mapping new components success')
-            })
-            this.$swal(
-              'Deleted!',
-              `File ${res.data.data} removed`,
-              'success'
-            )
-            this.list()
-          })
-        }
-      })
-    },
-    publish (data) {
-      const message = data === 'all' ? 'Publish all components' : `Publishing component ${data.item.name}`
-
-      const sendPublish = () => {
-        this.$snotify.info(message)
-        axios.post('/core/component/publish', this.$store.state.settings).then(res => {
-          this.$snotify.success(message + ' success')
-        })
-      }
-
-      if (data !== 'all') {
-        if (!data.item.status) {
-          this.$snotify.success(`File ${data.item.name} already published`)
-        } else {
-          this.$store.state.settings['file'] = data.item
-          sendPublish()
-        }
-      } else {
-        this.$swal({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#17a2b8',
-          cancelButtonColor: '#ababab',
-          confirmButtonText: 'Yes, publish it!'
-        }).then((result) => {
-          if (result.value) {
-            sendPublish()
-          }
-        })
-      }
-    },
-    list () {
+    handleList () {
       axios.get('/core/component').then(res => {
         const files = {}
-
-        this.components = res.data
+        this.layouts = res.data
 
         res.data.map((item, index) => {
-          const before = item
-          before['publish'] = ''
-          before['remove'] = ''
-
-          files[item.name.toLowerCase()] = before
+          files[item.name.toLowerCase()] = item
         })
 
         this.$store.commit('SET_FILES', {
@@ -214,11 +127,86 @@ export default {
         })
       })
     },
-    formatStatus (status) {
-      const stat = status || 'actived'
-      const name = stat.replace(/_/g, ' ')
+    handleOpen (row, event, column) {
+      this.$router.push(`/layout/editor?file=${row.name.toLowerCase()}`)
+    },
+    handlePublish (index, row) {
+      const message = !row ? 'Publish all layout' : `Publishing layout ${row.name}`
 
-      return `<span class="comp-status comp-status-${stat}">${name}</span>`
+      const showAlert = () => {
+        this.$confirm('You won\'t be able to revert this action.', 'Warning', {
+          confirmButtonText: 'Publish',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          sendPublish()
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Publish canceled'
+          })
+        })
+      }
+
+      const sendPublish = () => {
+        this.handleMessage(message, 'info')
+        axios.post('/core/component/publish', this.$store.state.settings).then(res => {
+          this.handleMessage(message + ' success', 'success')
+          this.handleList()
+        })
+      }
+
+      if (row) {
+        if (!row.status) {
+          this.handleMessage(`File ${row.name} is already published`, 'success')
+        } else {
+          this.$store.state.settings['file'] = row
+          showAlert()
+        }
+      } else {
+        showAlert()
+      }
+    },
+    handleDelete (index, row) {
+      this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        axios.post('/core/component/remove', {
+          filePath: row.path
+        }).then(res => {
+          this.$message({
+            type: 'success',
+            message: `File ${res.data.data} removed`
+          })
+          this.handleList()
+
+          axios.get('/core/component/source').then(res => {})
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        })
+      })
+    },
+    handleRefresh () {
+      axios.get('/core/component/source').then(res => {
+        this.handleMessage('Mapping new components success', 'success')
+        this.handleList()
+      })
+    },
+    handleSave () {
+      axios.post('/core/component/create', this.form).then(res => {
+        this.form = {
+          name: '',
+          path: '/global/'
+        }
+        this.dialogOpen = !this.dialogOpen
+        this.handleMessage(`File ${res.data.data} created`, 'success')
+        this.handleList()
+      })
     },
     formatText (string) {
       if (!string) {
@@ -230,36 +218,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.card {
-  table tr th:not(.sorting) {
-    width: 100px;
-  }
-}
-.comp-status {
-  color: #29a818;
-  text-transform: uppercase;
-  font-weight: 600;
-  font-size: .8rem;
-
-  &-not_added {
-    color: #f55656;
-  }
-  &-conflicted {
-    color: #ebcd4c;
-  }
-  &-created {
-    color: #8bd479;
-  }
-  &-deleted {
-    color: #af2727;
-  }
-  &-modified {
-    color: #d4b52a;
-  }
-  &-renamed {
-    color: #e7cc34;
-  }
-}
-</style>

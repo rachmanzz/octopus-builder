@@ -1,33 +1,47 @@
 <template>
-  <div class="content content-editor">
-    <Navbar :data="navbar" :refresh="refresh" :publish="publish" :save="save"/>
-    <div class="content-flex">
-      <div class="studio">
-        <div class="studio-inner"></div>
-      </div>
-      <div class="properties">
-        <b-tabs v-model="tabStep">
-          <b-tab title="General">
-            <General :page="page"/>
-          </b-tab>
-          <b-tab title="Layout" active>
-            <div class="studio-element">
-              <div class="studio-source" v-for="(item, key) in source" :key="key">
-                <div class="studio-icon" :class="item.icon" :title="item.name"></div>
-                <div class="studio-name">{{ formatText(item.name) }}</div>
-                <div class="studio-component">
-                  <component :is="item.component" :title="item.name"></component>
-                </div>
-              </div>
+  <section>
+    <div class="content">
+      <div class="content-flex">
+        <div class="studio" v-loading="loading">
+          <div class="studio-inner">
+            <div v-if="empty" class="studio-empty">
+              Create your page here, drag layout on sidebar to this area.
             </div>
-          </b-tab>
-          <b-tab title="Design">
-            <Properties />
-          </b-tab>
-        </b-tabs>
+          </div>
+        </div>
+        <div class="properties">
+          <el-row style="margin: 20px;" type="flex" class="row-bg">
+            <el-col align="center">
+              <el-button type="primary" plain @click="handleRefresh">Refresh Layout</el-button>
+              <el-button type="success" plain @click="handleSave">Save Page</el-button>
+            </el-col>
+          </el-row>
+          <el-tabs v-model="activeTab" type="border-card">
+            <el-tab-pane name="general">
+              <span slot="label"><i class="el-icon-edit-outline"></i> General</span>
+              <General :page="page"/>
+            </el-tab-pane>
+            <el-tab-pane name="layout">
+              <span slot="label"><i class="el-icon-news"></i> Layout</span>
+              <div class="studio-element">
+                <el-card shadow="never" class="studio-source" v-for="(item, key) in source" :key="key">
+                  <div class="studio-icon" :class="item.icon" :title="item.name"></div>
+                  <div class="studio-name">{{ formatText(item.name) }}</div>
+                  <div class="studio-component">
+                    <component :is="item.component" :title="item.name"></component>
+                  </div>
+                </el-card>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane name="design">
+              <span slot="label"><i class="el-icon-edit"></i> Design</span>
+              <Properties />
+            </el-tab-pane>
+          </el-tabs>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -36,21 +50,24 @@ import Builder from '~/server/studio/builder.js'
 import Extractor from '~/server/studio/extractor.js'
 import Importer from '~/server/studio/importer.js'
 import Source from '~/server/studio/source.js'
-import Navbar from '~/components/global/Navbar.vue'
 import General from '~/components/studio/General.vue'
 import Properties from '~/components/studio/Properties.vue'
 
 export default {
   head: {
-    title: 'Editor - Octopus Builder'
+    title: 'Editor - Octopus Builder',
+    bodyAttrs: {
+      class: 'content-editor'
+    }
   },
   components: {
-    Navbar,
     Properties,
     General
   },
   data () {
     return {
+      empty: true,
+      loading: true,
       navbar: {
         title: 'Studio',
         save: true,
@@ -59,55 +76,62 @@ export default {
       },
       source: [],
       target: [],
-      tabStep: 0,
+      activeTab: 'general',
       page: {}
     }
   },
   mounted () {
+    this.$store.commit('SET_COLLAPSE', true)
     this.source = Source
     this.page = this.$store.state.page
 
     if (!this.page['pages']) {
       this.$router.push(`/studio`)
     } else {
-      this.navbar['title'] = this.page['name']
+      this.$store.commit('SET_TITLE', this.page['name'])
 
       if (process.browser) {
         new Builder() // eslint-disable-line
       }
 
-      setTimeout(() => {
-        Importer.generate(JSON.parse(this.page['pages'])).then(result => {
-          console.log(result)
-          if (result) {
-            this.$snotify.success('Generate page success')
-          }
-        })
-      }, 2000)
+      if (!JSON.parse(this.page['pages'])['slug']) {
+        this.loading = false
+      } else {
+        this.empty = false
+        setTimeout(() => {
+          Importer.generate(JSON.parse(this.page['pages'])).then(result => {
+            if (result) {
+              this.$message({
+                message: 'Generate page success',
+                type: 'success'
+              })
+              this.loading = false
+            }
+          })
+        }, 1500)
+      }
     }
   },
   methods: {
-    save () {
+    handleSave () {
       Extractor.generate().then(mapping => {
         this.page['pages'] = JSON.stringify(mapping)
 
-        axios.put(`/core/page`, this.page).then(res => {
-          this.$snotify.success('Save page success')
+        axios.put('/core/page', this.page).then(res => {
+          this.$message({
+            message: 'Save page success',
+            type: 'success'
+          })
           this.$router.push(`/studio`)
         })
       })
     },
-    publish () {
-      axios.post('/core/client/render', {
-        clients: this.$store.state.settings['clients'],
-        source: this.page['pages']
-      }).then(res => {
-        this.$snotify.success('Publish page success')
-      })
-    },
-    refresh () {
+    handleRefresh () {
       axios.get('/core/component/source').then(res => {
-        this.$snotify.success('Mapping new components success')
+        this.$message({
+          message: 'Mapping new components success',
+          type: 'success'
+        })
         setTimeout(() => {
           window.location.reload()
         }, 2000)
@@ -128,8 +152,13 @@ export default {
   },
   watch: {
     properties (newValue, oldValue) {
-      this.tabStep = 2
+      this.activeTab = 'design'
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.commit('SET_COLLAPSE', false)
+    next()
   }
 }
 </script>
+

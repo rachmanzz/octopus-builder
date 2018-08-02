@@ -9,6 +9,11 @@ const listComponents = [
     component: () => import('~/share/global/Button.vue')
   },
   {
+    name: 'Hero',
+    icon: 'far fa-image',
+    component: () => import('~/share/global/Hero.vue')
+  },
+  {
     name: 'Images',
     icon: 'far fa-image',
     component: () => import('~/share/global/Images.vue')

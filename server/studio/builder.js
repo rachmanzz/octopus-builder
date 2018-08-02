@@ -163,7 +163,7 @@ class Builder {
         }
       }
     })
-
+    
     Sortable.create(BuilderElement, {
       sort: false,
       draggable: '.studio-source',
@@ -172,7 +172,13 @@ class Builder {
         pull: 'clone',
         put: false
       },
-      animation: 150
+      animation: 150,
+      onStart: () => {
+        const emptySpace = document.querySelector('.studio-empty')
+        if (emptySpace) {
+          emptySpace.remove()
+        }
+      }
     })
   }
 }

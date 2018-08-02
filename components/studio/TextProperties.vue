@@ -1,52 +1,57 @@
 <template>
   <section class="properties-item">
     <div v-if="editable">
-      <b-form-group label="Alignment">
-        <b-button-group>
-          <b-button size="sm" variant="outline-primary" @click="updateValue('text-align', 'left')">Left</b-button>
-          <b-button size="sm" variant="outline-primary" @click="updateValue('text-align', 'center')">Center</b-button>
-          <b-button size="sm" variant="outline-primary" @click="updateValue('text-align', 'right')">Right</b-button>
-          <b-button size="sm" variant="outline-primary" @click="updateValue('text-align', 'justify')">Justify</b-button>
-        </b-button-group>
-      </b-form-group>
-      <b-form-group label="Content">
-        <b-form-textarea
-          rows="4"
-          v-model="content"
-          type="text"
-          placeholder="Enter text">
-        </b-form-textarea>
-      </b-form-group>
-      <b-form-group label="Color">
-        <b-btn class="btn-picker" id="popoverButton-disableevent" variant="default">{{ style['color'] }}</b-btn>
-        <b-popover ref="popover" target="popoverButton-disableevent" placement="bottom">
-          <Sketch :value="picker" @input="updateValue('color', $event)" />
-        </b-popover>
-      </b-form-group>
-      <b-form-group label="Font Size">
-        <b-form-select
-          v-model="sizeSelected"
-          :options="size"
-          @change="updateValue('size', $event)"
-        >
-        </b-form-select>
-      </b-form-group>
+      <el-form ref="form">
+        <el-form-item label="Alignment">
+          <el-button-group>
+            <el-button type="primary" @click="updateValue('text-align', 'left')">Left</el-button>
+            <el-button type="primary" @click="updateValue('text-align', 'center')">Center</el-button>
+            <el-button type="primary" @click="updateValue('text-align', 'right')">Right</el-button>
+            <el-button type="primary" @click="updateValue('text-align', 'justify')">Justify</el-button>
+          </el-button-group>
+        </el-form-item>
+        <el-form-item label="Content">
+          <el-input type="textarea" rows="4" v-model="content"></el-input>
+        </el-form-item>
+        <el-form-item label="Text Fill">
+          <el-color-picker
+            v-model="picker"
+            :predefine="predefineColors">
+          </el-color-picker>
+        </el-form-item>
+        <el-form-item label="Background Fill">
+          <el-color-picker
+            v-model="picker"
+            :predefine="predefineColors">
+          </el-color-picker>
+        </el-form-item>
+        <el-form-item label="Font Size">
+          <el-select v-model="value" placeholder="Select">
+            <el-option
+              v-model="sizeSelected"
+              v-for="(item, index) in size"
+              :key="index"
+              :label="item.text"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
       <div v-if="hasEvent">
-        <b-form-group label="Event">
-          <b-form-select
-            v-model="eventSelected"
-            :options="event"
-          >
-          </b-form-select>
-        </b-form-group>
-        <b-form-group label="Event Payload">
-          <b-form-textarea
-            rows="4"
-            v-model="eventPayload"
-            type="text"
-            placeholder="Enter text">
-          </b-form-textarea>
-        </b-form-group>
+        <el-form-item label="Event">
+          <el-select v-model="value" placeholder="Select">
+            <el-option
+              v-model="eventSelected"
+              v-for="(item, index) in event"
+              :key="index"
+              :label="item.text"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Event Payload">
+          <el-input type="textarea" rows="4" v-model="eventPayload"></el-input>
+        </el-form-item>
       </div>
     </div>
     <div v-else>
@@ -56,16 +61,6 @@
 </template>
 
 <script>
-import { Sketch } from 'vue-color'
-
-let defaultProps = {
-  hex: '#194d33',
-  hsl: { h: 150, s: 0.5, l: 0.2, a: 1 },
-  hsv: { h: 150, s: 0.66, v: 0.30, a: 1 },
-  rgba: { r: 25, g: 77, b: 51, a: 1 },
-  a: 1
-}
-
 let fontSize = [
   { text: '12', value: '12px' },
   { text: '14', value: '14px' },
@@ -82,13 +77,26 @@ let fontSize = [
 ]
 
 export default {
-  components: {
-    Sketch
-  },
   data () {
     return {
       editable: false,
-      picker: defaultProps,
+      picker: '#ff4500',
+      predefineColors: [
+        '#ff4500',
+        '#ff8c00',
+        '#ffd700',
+        '#90ee90',
+        '#00ced1',
+        '#1e90ff',
+        '#c71585',
+        'rgba(255, 69, 0, 0.68)',
+        'rgb(255, 120, 0)',
+        'hsv(51, 100, 98)',
+        'hsva(120, 40, 94, 0.5)',
+        'hsl(181, 100%, 37%)',
+        'hsla(209, 100%, 56%, 0.73)',
+        '#c7158577'
+      ],
       props: '',
       element: '',
       content: '',

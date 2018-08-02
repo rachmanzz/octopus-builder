@@ -1,53 +1,70 @@
 <template>
-  <div class="content">
-    <Navbar :data="navbar"/>
+
+  <section>
     <div class="container content-inner">
-      <div class="card card-table">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <div>
-              <b-btn size="sm" variant="outline-success" @click="publish" v-bind:disabled="!isActive">Reload All Clients</b-btn>
-              <b-btn size="sm" variant="outline-primary" @click="refresh" class="ml-2">Refresh</b-btn>
-            </div>
-            <moon-loader :loading="loading" color="#29a818" size="30px"/>
-          </div>
-          <b-table
-            hover
-            :fields="fields"
-            :items="serverList"
-          >
-            <template slot="active" slot-scope="data">
-              <div v-html="formatStatus(data)"></div>
+      <el-card class="box-card" shadow="never">
+        <section slot="header" class="clearfix">
+          <el-row type="flex" class="row-bg" justify="space-between">
+            <el-col :span="8">
+              <el-input
+                placeholder="Type something"
+                prefix-icon="el-icon-search">
+              </el-input>
+            </el-col>
+            <el-col align="right">
+              <el-button type="primary" plain @click="handlePublish">Reload All</el-button>
+              <el-button plain @click="handleReload">Refresh List</el-button>
+            </el-col>
+          </el-row>
+        </section>
+        <el-table
+          v-loading="loading"
+          :data="servers"
+          empty-text="Belum ada data"
+          style="width: 100%">
+          <el-table-column label="Name">
+            <template slot-scope="scope">
+              {{ scope.row.name }}
             </template>
-            <template slot="publish" slot-scope="data">
-              <b-btn class="btn-icon" size="sm" variant="outline-success" @click.stop="publish(data)" v-bind:disabled="!data.item['active']">
-                <span class="ion-loop"></span>
-              </b-btn>
+          </el-table-column>
+          <el-table-column label="Host">
+            <template slot-scope="scope">
+              {{ scope.row.host }}
             </template>
-            <template slot="remove" slot-scope="data">
-              <b-btn class="btn-icon" size="sm" variant="outline-danger" @click.stop="remove(data)">
-                <span class="ion-trash-b"></span>
-              </b-btn>
+          </el-table-column>
+          <el-table-column label="Port">
+            <template slot-scope="scope">
+              {{ scope.row.port }}
             </template>
-          </b-table>
-        </div>
-      </div>
+          </el-table-column>
+          <el-table-column label="Status">
+            <template slot-scope="scope">
+              <el-tag v-if="!scope.row.active" size="medium" type="danger">Down</el-tag>
+              <el-tag v-else size="medium" type="success">Active</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Operations"
+            width="200px">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handlePublish(scope.$index, scope.row)">Reload</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-card>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
 import axios from '~/plugins/axios'
-import Navbar from '~/components/global/Navbar.vue'
-import MoonLoader from 'vue-spinner/src/MoonLoader.vue'
 
 export default {
   head: {
     title: 'Synchronize - Octopus Builder'
-  },
-  components: {
-    Navbar,
-    MoonLoader
   },
   data () {
     return {
@@ -55,116 +72,67 @@ export default {
       navbar: {
         title: 'Synchronize'
       },
-      server: {
-        name: '',
-        host: '',
-        port: ''
-      },
-      modalCreate: false,
-      fields: {
-        name: {
-          label: 'Server Name',
-          sortable: true
-        },
-        host: {
-          label: 'Server Host',
-          sortable: true
-        },
-        port: {
-          label: 'Server Port',
-          sortable: true
-        },
-        active: {
-          label: 'Status',
-          sortable: true
-        },
-        publish: {
-          label: 'Reload'
-        },
-        remove: {
-          label: 'Remove'
-        }
-      },
-      serverList: [],
+      servers: [],
       isActive: false
     }
   },
   mounted () {
-    this.list()
+    this.$store.commit('SET_TITLE', 'Synchronize')
+    this.handleList()
   },
   methods: {
-    save () {
-      axios.post('/core/component/create', this.form).then(res => {
-        this.form = {
-          fileName: '',
-          filePath: '/global/'
-        }
-        this.modalCreate = !this.modalCreate
-        this.$snotify.success(`File ${res.data.data} created`)
-        this.list()
+    handleMessage (message, type) {
+      this.$message({
+        message: message,
+        type: type
       })
     },
-    status ({ clients }) {
+    handleStatus ({ clients }) {
       const client = clients.filter(item => item.host !== null)
       axios.post('/core/client/status', {
         clients: client
       }).then(res => {
-        const status = []
-
         res.data.map((item, index) => {
           if (item.active) {
             this.isActive = true
           }
-
-          const before = item
-          before['publish'] = ''
-          before['remove'] = ''
-
-          status[index] = before
         })
 
-        this.serverList = status
+        this.servers = res.data
         this.loading = false
       })
     },
-    list () {
+    handleList () {
       this.loading = true
 
       axios.get('/core/client').then(res => {
         this.config = res.data
-        this.status(res.data)
+        this.handleStatus(res.data)
       })
     },
-    refresh () {
-      this.serverList = []
-      this.list()
+    handleReload () {
+      this.servers = []
+      this.handleList()
     },
-    formatStatus (status) {
-      if (status.value) {
-        return `<span class="comp-status"><i class="ion-arrow-up-c"></i> UP</span>`
-      } else {
-        return `<span class="comp-status comp-status-down"><i class="ion-arrow-down-c"></i> DOWN</span>`
-      }
-    },
-    publish (data) {
+    handlePublish (index, row) {
       const storeSetting = this.$store.state.settings
-      const message = !data.item ? 'Synchronizing all clients' : `Synchronizing client : ${data.item.name}`
+      const message = !row ? 'Reloading all clients' : `Reloading client : ${row.name}`
 
       const sendPublish = () => {
-        this.$snotify.info(message)
+        this.handleMessage(message, 'info')
         axios.post('/core/client/sync', {
           clients: storeSetting['server']
         }).then(res => {
-          this.$snotify.success('Success reloading any clients')
+          this.handleMessage('Success reloading client', 'success')
         })
       }
 
-      if (data.item) {
-        storeSetting['file'] = data.item
+      if (row) {
+        storeSetting['file'] = row
         storeSetting['server'] = [{
-          host: data.item['host'],
-          name: data.item['name'],
-          port: data.item['port']
+          host: row['host'],
+          name: row['name'],
+          port: row['port']
         }]
         sendPublish()
       } else {
@@ -188,21 +156,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.card {
-  table tr th:not(.sorting) {
-    width: 100px;
-  }
-}
-.comp-status {
-  color: #29a818;
-  text-transform: uppercase;
-  font-weight: 600;
-  font-size: .8rem;
-
-  &-down {
-    color: #f55656;
-  }
-}
-</style>

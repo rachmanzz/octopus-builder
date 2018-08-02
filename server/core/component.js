@@ -62,12 +62,12 @@ router.put('/component', (req, res) => {
 })
 
 router.post('/component/create', (req, res) => {
-  const { fileName, filePath } = req.body
-  const path = `./share${filePath}`
-  const file = `./share${filePath + fileName}.vue`
+  const { name, path } = req.body
+  const dest = `./share${path}`
+  const file = `./share${path + name}.vue`
 
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path)
+  if (!fs.existsSync(dest)) {
+    fs.mkdirSync(dest)
   }
 
   fs.writeFile(file, `<template>\n<section>\n<!-- Do Stuff -->\n</section>\n</template>`, (err) => {

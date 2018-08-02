@@ -22,7 +22,7 @@
         top: 50%;
         left: 0;
         transform: translateY(-50%);
-        background-color: #527eff;
+        background-color: #409EFF;
       }
       &> * {
         display: none;
@@ -42,10 +42,10 @@
       opacity: 1;
     }
     &:hover {
-      border-color: #527eff;
+      border-color: #409EFF;
     }
     &_layout {
-      border-color: #d5d6d8;
+      border-color: #dcdfe6;
       padding: .4rem .2rem;
       transition: all .3s ease-in-out;
 
@@ -62,7 +62,7 @@
     top: 0;
     right: 0;
     padding: .5rem;
-    background-color: transparentize(#527eff, .2);
+    background-color: transparentize(#409EFF, .2);
     z-index: 100;
     border-top-right-radius: 4px;
     border-bottom-left-radius: 4px;
@@ -90,14 +90,12 @@
     margin: .5rem;
     width: calc(50% - 1rem);
     text-align: center;
-    border-radius: 8px;
-    border: 1px solid #d5d6d8;
+    border-radius: 4px;
     cursor: all-scroll;
-    padding: 1.5rem;
     transition: border .2s ease-in-out;
 
     &:hover {
-      border-color: #527eff;
+      border-color: #409EFF;
     }
   }
   &-icon {
@@ -134,7 +132,7 @@
     min-height: 100px;
   }
   .column-inner {
-    border: 1px solid #d5d6d8;
+    border: 1px solid #dcdfe6;
     padding: .3rem;
     overflow: hidden;
     border-radius: 6px;

@@ -1,3 +1,4 @@
+@import 'element-ui/lib/theme-chalk/index.css';
 @import
   // Section
   './global/content',
@@ -8,13 +9,6 @@
 
   // Components
   './components/avatar',
-  './components/button',
   './components/card',
-  './components/form',
-  './components/studio',
-  './components/table'
-
+  './components/studio'
 ;
-
-@import "~vue-snotify/styles/material";
-@import '~pretty-checkbox/src/pretty-checkbox.scss';

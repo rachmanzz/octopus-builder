@@ -1,69 +1,50 @@
 <template>
-  <div class="content">
-    <Navbar :data="navbar" />
+  <section>
     <div class="container content-inner">
-      <div class="row">
-        <div class="col-12 mb-4">
-          <div class="card card-table pb-3">
-            <div class="card-body text-center">
-              <div class="card-title">
-                Visitor
-              </div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+      <el-row gutter="20">
+        <el-col span="24">
+          <el-card class="box-card" shadow="never">
+            <div slot="header" class="clearfix">
+              <span>Visitor</span>
             </div>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="card card-table pb-3">
-            <div class="card-body text-center">
-              <div class="card-title">
-                Components
-              </div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row gutter="20">
+        <el-col span="8">
+          <el-card class="box-card" shadow="never">
+            <div slot="header" class="clearfix">
+              <span>Components</span>
             </div>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="card card-table pb-3">
-            <div class="card-body text-center">
-              <div class="card-title">
-                Pages
-              </div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+          </el-card>
+        </el-col>
+        <el-col span="8">
+          <el-card class="box-card" shadow="never">
+            <div slot="header" class="clearfix">
+              <span>Pages</span>
             </div>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="card card-table pb-3">
-            <div class="card-body text-center">
-              <div class="card-title">
-                Components
-              </div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+          </el-card>
+        </el-col>
+        <el-col span="8">
+          <el-card class="box-card" shadow="never">
+            <div slot="header" class="clearfix">
+              <span>Components</span>
             </div>
-          </div>
-        </div>
-      </div>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate expedita laboriosam, possimus placeat nam nesciunt vel repellendus voluptatem reiciendis. Atque natus sint quis nulla aut, perferendis placeat cupiditate blanditiis rem.
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
-import Navbar from '~/components/global/Navbar.vue'
-
 export default {
   head: {
     title: 'Dashboard - Octopus Builder'
-  },
-  components: {
-    Navbar
-  },
-  data () {
-    return {
-      navbar: {
-        title: 'Home'
-      }
-    }
   }
 }
 </script>

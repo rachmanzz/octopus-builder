@@ -48,14 +48,14 @@ router.put('/page', (req, res) => {
   })
 })
 
-router.delete('/page', (req, res) => {
+router.post('/page/delete', (req, res) => {
   const page = req.body
 
-  axios.delete(`${api.endpoint}/pages/${page.id}`, page).then(result => {
+  axios.delete(`${api.endpoint}/pages/${page.id}`).then(result => {
     res.json({
       status: 'success',
       source: `${api.endpoint}/pages`,
-      pages: result.data
+      pages: page
     })
   })
 })

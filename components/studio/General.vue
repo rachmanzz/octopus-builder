@@ -1,42 +1,23 @@
 <template>
   <section class="properties-item">
-    <b-form-group label="Page Name">
-      <b-form-input
-        rows="4"
-        v-model="page.name"
-        type="text"
-        placeholder="Enter text">
-      </b-form-input>
-    </b-form-group>
-    <b-form-group label="Route Path">
-      <b-form-input
-        rows="4"
-        v-model="page.path"
-        type="text"
-        placeholder="Enter text">
-      </b-form-input>
-    </b-form-group>
-    <b-form-group label="Published">
-      <p-check
-        class="p-default p-curve"
-        color="success"
-        off-color="default"
-        v-model="publish"
-        @change="change"
-        toggle
-      >
-        Publish
-        <label slot="off-label">Draft</label>
-      </p-check>
-    </b-form-group>
-    <b-form-group label="Custom Code">
-      <b-form-textarea
-        rows="6"
-        v-model="page.meta"
-        type="text"
-        placeholder="Enter text">
-      </b-form-textarea>
-    </b-form-group>
+    <el-form ref="form">
+      <el-form-item label="Name">
+        <el-input v-model="page.name"></el-input>
+      </el-form-item>
+      <el-form-item label="Path">
+        <el-input v-model="page.path"></el-input>
+      </el-form-item>
+      <el-form-item label="Status">
+        <el-switch
+          v-model="publish"
+          active-text="Publish"
+          inactive-text="Draft">
+        </el-switch>
+      </el-form-item>
+      <el-form-item label="Custom Code">
+        <el-input type="textarea" rows="4" v-model="page.meta"></el-input>
+      </el-form-item>
+    </el-form>
   </section>
 </template>
 
