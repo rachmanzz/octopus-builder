@@ -85,6 +85,10 @@ export default {
     this.source = Source
     this.page = this.$store.state.page
 
+    if (this.page['meta']) {
+      this.page['meta'] = JSON.parse(this.page['meta'])
+    }
+
     if (!this.page['pages']) {
       this.$router.push(`/studio`)
     } else {
@@ -114,7 +118,7 @@ export default {
   },
   methods: {
     handleSave () {
-      Extractor.generate().then(mapping => {
+      Extractor.generate(this.page).then(mapping => {
         this.page['pages'] = JSON.stringify(mapping)
 
         axios.put('/core/page', this.page).then(res => {

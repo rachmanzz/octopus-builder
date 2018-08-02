@@ -14,8 +14,8 @@
           inactive-text="Draft">
         </el-switch>
       </el-form-item>
-      <el-form-item label="Custom Code">
-        <el-input type="textarea" rows="4" v-model="page.meta"></el-input>
+      <el-form-item label="Custom CSS">
+        <el-input type="textarea" rows="4" v-model="styles" @input="updateMeta('styles', $event)"></el-input>
       </el-form-item>
     </el-form>
   </section>
@@ -26,7 +26,8 @@ export default {
   props: ['page'],
   data () {
     return {
-      publish: 0
+      publish: 0,
+      styles: ''
     }
   },
   computed: {
@@ -42,6 +43,13 @@ export default {
   methods: {
     change (evt) {
       this.page['published'] = this.publish + 0
+    },
+    updateMeta (style, content) {
+      if (!this.page['meta'][style]) {
+        this.page['meta'][style] = ''
+      }
+
+      this.page['meta'][style] = content
     }
   }
 }

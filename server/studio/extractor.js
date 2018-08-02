@@ -133,16 +133,16 @@ const extractComponent = (attr, element) => {
   return result
 }
 
-const generate = async () => {
+const generate = async (page) => {
   const mapping = {
-    slug: 'page-1',
-    root: 'share',
+    path: page['path'] || '/',
+    root: page['root'] || 'share',
     class: 'container',
     components: [],
     styles: {
       scoped: false,
       lang: 'css',
-      content: ''
+      content: page['meta']['styles'] || ''
     }
   }
 
