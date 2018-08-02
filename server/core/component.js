@@ -3,6 +3,7 @@ import glob from 'glob'
 import rm from 'rimraf'
 import git from 'simple-git'
 import prettier from 'prettier'
+import fx from 'mkdir-recursive'
 import { Router } from 'express'
 
 const router = Router()
@@ -64,10 +65,10 @@ router.put('/component', (req, res) => {
 router.post('/component/create', (req, res) => {
   const { name, path } = req.body
   const dest = `./share${path}`
-  const file = `./share${path + name}.vue`
+  const file = `./share${path + '/' + name}.vue`
 
   if (!fs.existsSync(dest)) {
-    fs.mkdirSync(dest)
+    fx.mkdirSync(dest)
   }
 
   fs.writeFile(file, `<template>\n<section>\n<!-- Do Stuff -->\n</section>\n</template>`, (err) => {

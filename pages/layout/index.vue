@@ -32,7 +32,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="Name"
+            label="Status"
             width="200px">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.status === 'not_added'" size="medium" type="danger">Not Added</el-tag>
