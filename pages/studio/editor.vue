@@ -98,7 +98,7 @@ export default {
         new Builder() // eslint-disable-line
       }
 
-      if (!JSON.parse(this.page['pages'])['slug']) {
+      if (!JSON.parse(this.page['pages'])['path']) {
         this.loading = false
       } else {
         this.empty = false
@@ -119,6 +119,7 @@ export default {
   methods: {
     handleSave () {
       Extractor.generate(this.page).then(mapping => {
+        this.page['meta'] = JSON.stringify(this.page['meta'])
         this.page['pages'] = JSON.stringify(mapping)
 
         axios.put('/core/page', this.page).then(res => {

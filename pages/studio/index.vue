@@ -11,7 +11,7 @@
               </el-input>
             </el-col>
             <el-col align="right">
-              <el-button type="success" plain @click="dialogOpen = !dialogOpen">Create New</el-button>
+              <el-button type="success" plain @click="dialogCreate = !dialogCreate">Create New</el-button>
               <el-button type="primary" plain @click="handlePublish">Publish All</el-button>
             </el-col>
           </el-row>
@@ -56,7 +56,7 @@
 
     <el-dialog
       title="Create File"
-      :visible.sync="dialogOpen"
+      :visible.sync="dialogCreate"
       width="40%">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="Name">
@@ -84,7 +84,35 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSave">Create</el-button>
-          <el-button @click="dialogOpen = !dialogOpen">Cancel</el-button>
+          <el-button @click="dialogCreate = !dialogCreate">Cancel</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+    <el-dialog
+      title="Select Server"
+      :visible.sync="dialogServer"
+      :before-close="handleClose"
+      width="80%">
+      <Server />
+      <br>
+      <el-form ref="form" :inline="true" :model="form" label-width="120px">
+        <el-form-item label="Choose Clients">
+          <el-select
+            v-model="reload.client"
+            multiple
+            collapse-tags
+            placeholder="Select">
+            <el-option
+              v-for="(item, index) in reloadableClients"
+              :key="index"
+              :label="item.name"
+              :value="index">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleReload">Reload</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -93,10 +121,14 @@
 
 <script>
 import axios from '~/plugins/axios'
+import Server from '~/components/global/Server.vue'
 
 export default {
   head: {
     title: 'Studio - Octopus Builder'
+  },
+  components: {
+    Server
   },
   data () {
     return {
@@ -110,8 +142,14 @@ export default {
         client: []
       },
       clients: {},
-      dialogOpen: false,
-      pages: []
+      reloadableClients: {},
+      dialogCreate: false,
+      dialogServer: false,
+      pages: [],
+      reload: {
+        client: [],
+        sources: []
+      }
     }
   },
   mounted () {
@@ -134,17 +172,34 @@ export default {
         type: type
       })
     },
-    handlePublish (index, row) {
-      let clients = []
-      if (!row) {
-        clients = this.$store.state.settings.clients
-      } else {
-        clients = JSON.parse(row.clients).map(item => item.value)
+    handleClose (next) {
+      this.reload = {
+        client: [],
+        sources: []
       }
+      next()
+    },
+    handlePublish (index, row) {
+      this.dialogServer = !this.dialogServer
 
+      if (!row) {
+        this.pages.map(item => this.reload['sources'].push(item.pages))
+        this.reloadableClients = this.clients
+      } else {
+        this.reload['sources'].push(row.pages)
+        this.reloadableClients = {}
+        JSON.parse(row.clients).map(item => {
+          this.reloadableClients[item.name.toLowerCase()] = item
+        })
+      }
+    },
+    handleReload () {
+      this.reload['clients'] = this.reload['client'].map((item, index) => this.clients[item]['value'])
+      delete this.reload['client']
+      console.log(this.reload)
       axios.post('/core/client/render', {
-        clients: clients,
-        source: row.pages
+        clients: this.reload['clients'],
+        sources: this.reload['sources']
       }).then(result => {
         this.handleMessage('Generate page success', 'success')
       })
@@ -177,7 +232,7 @@ export default {
       this.form['clients'] = this.form['client'].map((item, index) => this.clients[item])
 
       axios.post('/core/page', this.form).then(res => {
-        this.dialogOpen = !this.dialogOpen
+        this.dialogCreate = !this.dialogCreate
         this.handleMessage('Create page success', 'success')
         this.handleList()
         this.form = {

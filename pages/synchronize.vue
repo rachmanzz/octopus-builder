@@ -1,5 +1,4 @@
 <template>
-
   <section>
     <div class="container content-inner">
       <el-card class="box-card" shadow="never">
