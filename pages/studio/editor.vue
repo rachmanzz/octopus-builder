@@ -86,7 +86,11 @@ export default {
     this.page = this.$store.state.page
 
     if (this.page['meta']) {
-      this.page['meta'] = JSON.parse(this.page['meta'])
+      try {
+        this.page['meta'] = JSON.parse(this.page['meta'])
+      } catch (e) {
+        this.$router.push(`/studio`)
+      }
     }
 
     if (!this.page['pages']) {

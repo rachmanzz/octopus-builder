@@ -15,18 +15,20 @@
         </el-form-item>
         <el-form-item label="Text Fill">
           <el-color-picker
-            v-model="picker"
-            :predefine="predefineColors">
+            v-model="textFill"
+            :predefine="predefineFill"
+            @change="updateValue('color', $event)">
           </el-color-picker>
         </el-form-item>
         <el-form-item label="Background Fill">
           <el-color-picker
-            v-model="picker"
-            :predefine="predefineColors">
+            v-model="backgroundFill"
+            :predefine="predefineFill"
+            @change="updateValue('background-color', $event)">
           </el-color-picker>
         </el-form-item>
         <el-form-item label="Font Size">
-          <el-select v-model="value" placeholder="Select">
+          <el-select v-model="sizeSelected" placeholder="Select">
             <el-option
               v-model="sizeSelected"
               v-for="(item, index) in size"
@@ -39,7 +41,7 @@
       </el-form>
       <div v-if="hasEvent">
         <el-form-item label="Event">
-          <el-select v-model="value" placeholder="Select">
+          <el-select v-model="eventSelected" placeholder="Select">
             <el-option
               v-model="eventSelected"
               v-for="(item, index) in event"
@@ -61,7 +63,7 @@
 </template>
 
 <script>
-let fontSize = [
+let sizeOptions = [
   { text: '12', value: '12px' },
   { text: '14', value: '14px' },
   { text: '16', value: '16px' },
@@ -76,34 +78,41 @@ let fontSize = [
   { text: '114', value: '114px' }
 ]
 
+let eventOptions = [
+  { text: 'Click', value: 'click' }
+]
+
+let fillOptions = [
+  '#ff4500',
+  '#ff8c00',
+  '#ffd700',
+  '#90ee90',
+  '#00ced1',
+  '#1e90ff',
+  '#c71585',
+  'rgba(255, 69, 0, 0.68)',
+  'rgb(255, 120, 0)',
+  'hsv(51, 100, 98)',
+  'hsva(120, 40, 94, 0.5)',
+  'hsl(181, 100%, 37%)',
+  'hsla(209, 100%, 56%, 0.73)',
+  '#c7158577'
+]
+
 export default {
   data () {
     return {
       editable: false,
-      picker: '#ff4500',
-      predefineColors: [
-        '#ff4500',
-        '#ff8c00',
-        '#ffd700',
-        '#90ee90',
-        '#00ced1',
-        '#1e90ff',
-        '#c71585',
-        'rgba(255, 69, 0, 0.68)',
-        'rgb(255, 120, 0)',
-        'hsv(51, 100, 98)',
-        'hsva(120, 40, 94, 0.5)',
-        'hsl(181, 100%, 37%)',
-        'hsla(209, 100%, 56%, 0.73)',
-        '#c7158577'
-      ],
+      textFill: '',
+      backgroundFill: '',
+      predefineFill: fillOptions,
       props: '',
       element: '',
       content: '',
       style: '',
-      size: fontSize,
+      size: sizeOptions,
       sizeSelected: '16px',
-      event: [{ text: 'Click', value: 'click' }],
+      event: eventOptions,
       eventSelected: 'click',
       eventPayload: '',
       hasEvent: false
@@ -120,12 +129,21 @@ export default {
     },
     updateValue (type, value) {
       if (type === 'color') {
-        this.picker = value
-        this.style['color'] = value.hex
+        this.style['color'] = value
         this.updateElement({
           style: {
             attr: 'color',
-            value: value.hex
+            value: value
+          }
+        })
+      }
+
+      if (type === 'background-color') {
+        this.style['backgroundColor'] = value
+        this.updateElement({
+          style: {
+            attr: 'backgroundColor',
+            value: value
           }
         })
       }
@@ -156,6 +174,7 @@ export default {
       if (content) {
         el.innerHTML = content
       }
+
       if (style) {
         el.style[style.attr] = style.value
       }

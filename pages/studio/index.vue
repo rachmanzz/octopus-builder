@@ -195,8 +195,6 @@ export default {
     },
     handleReload () {
       this.reload['clients'] = this.reload['client'].map((item, index) => this.clients[item]['value'])
-      delete this.reload['client']
-      console.log(this.reload)
       axios.post('/core/client/render', {
         clients: this.reload['clients'],
         sources: this.reload['sources']
