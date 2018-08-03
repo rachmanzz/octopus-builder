@@ -12,7 +12,7 @@
             </el-col>
             <el-col align="right">
               <el-button type="success" plain @click="dialogCreate = !dialogCreate">Create New</el-button>
-              <el-button type="primary" plain @click="handlePublish">Publish All</el-button>
+              <el-button type="primary" plain @click="handlePublish" v-bind:disabled="!haveModified">Publish All</el-button>
             </el-col>
           </el-row>
         </section>
@@ -37,12 +37,21 @@
             </template>
           </el-table-column>
           <el-table-column
+            label="Status"
+            width="200px">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.published === 0" size="medium" type="warning">Modified</el-tag>
+              <el-tag v-else size="medium" type="success">Published</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
             label="Operations"
             width="200px">
             <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="primary"
+                v-bind:disabled="scope.row.published === 1"
                 @click="handlePublish(scope.$index, scope.row)">Publish</el-button>
               <el-button
                 size="mini"
@@ -93,7 +102,7 @@
       title="Select Server"
       :visible.sync="dialogServer"
       :before-close="handleClose"
-      width="80%">
+      width="60%">
       <Server />
       <br>
       <el-form ref="form" :inline="true" :model="form" label-width="120px">
@@ -132,6 +141,7 @@ export default {
   },
   data () {
     return {
+      haveModified: false,
       navbar: {
         title: 'Studio'
       },
@@ -141,11 +151,12 @@ export default {
         description: '-',
         client: []
       },
+      pages: [],
       clients: {},
+      reloadablePages: [],
       reloadableClients: {},
       dialogCreate: false,
       dialogServer: false,
-      pages: [],
       reload: {
         client: [],
         sources: []
@@ -185,12 +196,14 @@ export default {
       if (!row) {
         this.pages.map(item => this.reload['sources'].push(item.pages))
         this.reloadableClients = this.clients
+        this.reloadablePages = this.pages
       } else {
         this.reload['sources'].push(row.pages)
         this.reloadableClients = {}
         JSON.parse(row.clients).map(item => {
           this.reloadableClients[item.name.toLowerCase()] = item
         })
+        this.reloadablePages.push(row)
       }
     },
     handleReload () {
@@ -199,7 +212,15 @@ export default {
         clients: this.reload['clients'],
         sources: this.reload['sources']
       }).then(result => {
-        this.handleMessage('Generate page success', 'success')
+        this.reloadablePages.map(page => {
+          page['published'] = 1
+
+          axios.put('/core/page', page).then(res => {
+            this.dialogServer = false
+            this.handleMessage('Generate page success', 'success')
+            this.handleList()
+          })
+        })
       })
     },
     handleDelete (index, row) {
@@ -243,6 +264,12 @@ export default {
     },
     handleList () {
       axios.get('/core/page').then(res => {
+        res.data['pages'].map(item => {
+          if (item.published === 0) {
+            this.haveModified = true
+          }
+        })
+
         this.pages = res.data['pages']
       })
     },

@@ -125,6 +125,7 @@ export default {
       Extractor.generate(this.page).then(mapping => {
         this.page['meta'] = JSON.stringify(this.page['meta'])
         this.page['pages'] = JSON.stringify(mapping)
+        this.page['published'] = 0
 
         axios.put('/core/page', this.page).then(res => {
           this.$message({
