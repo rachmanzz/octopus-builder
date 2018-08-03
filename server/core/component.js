@@ -1,9 +1,11 @@
 import fs from 'fs'
-import glob from 'glob'
 import rm from 'rimraf'
+import glob from 'glob'
+import axios from 'axios'
 import git from 'simple-git'
 import prettier from 'prettier'
 import fx from 'mkdir-recursive'
+import isReachable from 'is-reachable'
 import { Router } from 'express'
 
 const router = Router()
@@ -105,7 +107,7 @@ router.post('/component/remove', (req, res) => {
 })
 
 router.post('/component/publish', (req, res) => {
-  const { repository, branch, file } = req.body
+  const { repository, branch, file, clients } = req.body
   const source = file ? file['path'].replace('/share', '') : './*'
   const message = file
     ? `Commit file ${file['file']} on branch ${branch} at ${new Date()} `
@@ -115,10 +117,14 @@ router.post('/component/publish', (req, res) => {
     .add(source)
     .commit(message)
     .push(repository, branch, () => {
-      res.send({
-        success: true,
-        repository: repository,
-        branch: branch
+      syncAllServer(clients).then(server => {
+        console.log('Synchronization complete')
+        res.send({
+          success: true,
+          repository: repository,
+          server: clients,
+          branch: branch
+        })
       })
     })
 })
@@ -182,6 +188,37 @@ const getComponents = () => {
       resolve(allFiles)
     })
   })
+}
+
+const syncAllServer = async (clients) => {
+  const result = []
+
+  await Promise.all(clients.map(async (server, index) => {
+    if (server.host !== null) {
+      const clientServer = `${server.host}:${server.port}`
+      console.log(`Synchronize server ${clientServer}`)
+
+      await isReachable(`${clientServer}`).then(async (reachable) => {
+        if (reachable) {
+          await axios.post(`${clientServer}/api/sync`).then(res => {
+            result[index] = {
+              active: true,
+              server: `${clientServer}`,
+              data: res.data
+            }
+          })
+        } else {
+          result[index] = {
+            active: false,
+            server: `${clientServer}`,
+            data: []
+          }
+        }
+      })
+    }
+  }))
+
+  return result
 }
 
 export default router

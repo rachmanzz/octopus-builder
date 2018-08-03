@@ -31,10 +31,6 @@ export default {
         url: '/studio/',
         title: 'Studio'
       }, {
-        icon: 'el-icon-refresh',
-        url: '/synchronize',
-        title: 'Synchronize'
-      }, {
         icon: 'el-icon-setting',
         url: '/settings',
         title: 'Settings'

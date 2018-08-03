@@ -12,7 +12,7 @@
             </el-col>
             <el-col align="right">
               <el-button type="success" plain @click="dialogOpen = !dialogOpen">Create New</el-button>
-              <el-button type="primary" plain @click="handlePublish">Publish All</el-button>
+              <el-button type="primary" plain @click="handlePublish">Share All</el-button>
               <el-button plain @click="handleRefresh">Refresh</el-button>
             </el-col>
           </el-row>
@@ -47,7 +47,7 @@
               <el-button
                 size="mini"
                 type="primary"
-                @click="handlePublish(scope.$index, scope.row)">Publish</el-button>
+                @click="handlePublish(scope.$index, scope.row)">Share</el-button>
               <el-button
                 size="mini"
                 type="danger"
@@ -133,6 +133,14 @@ export default {
     handlePublish (index, row) {
       const message = !row ? 'Publish all layout' : `Publishing layout ${row.name}`
 
+      const sendPublish = () => {
+        this.handleMessage(message, 'info')
+        axios.post('/core/component/publish', this.$store.state.settings).then(res => {
+          this.handleMessage(message + ' success', 'success')
+          this.handleList()
+        })
+      }
+
       const showAlert = () => {
         this.$confirm('You won\'t be able to revert this action.', 'Warning', {
           confirmButtonText: 'Publish',
@@ -145,14 +153,6 @@ export default {
             type: 'info',
             message: 'Publish canceled'
           })
-        })
-      }
-
-      const sendPublish = () => {
-        this.handleMessage(message, 'info')
-        axios.post('/core/component/publish', this.$store.state.settings).then(res => {
-          this.handleMessage(message + ' success', 'success')
-          this.handleList()
         })
       }
 
