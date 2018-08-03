@@ -18,7 +18,6 @@
         </section>
         <el-table
           :data="pages"
-          empty-text="Belum ada data"
           style="width: 100%"
           @row-dblclick="handleOpen">
           <el-table-column label="Name">

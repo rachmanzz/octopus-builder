@@ -34,31 +34,7 @@ export default {
         icon: 'el-icon-setting',
         url: '/settings',
         title: 'Settings'
-      }],
-      currentURL: ''
-    }
-  },
-  mounted () {
-    if (process.browser) {
-      this.currentURL = window.location.pathname
-    }
-  },
-  methods: {
-    matchPage (url) {
-      if (this.currentURL === '/' && url === '/') {
-        return true
-      }
-
-      if (url !== '/' && this.currentURL.replace('/', '').indexOf(url.replace('/', '')) > -1) {
-        return true
-      }
-
-      return false
-    }
-  },
-  watch: {
-    $route (to, from) {
-      this.currentURL = to.path
+      }]
     }
   }
 }

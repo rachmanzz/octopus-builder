@@ -1,9 +1,9 @@
-name: Builder
+name: Octopus
 repository: 'git@github.com:muhibbudins/octopus-repo.git'
 branch: master
 api:
   endpoint: 'http://localhost:3333/api/v1'
-  token: ''
+  token: '-'
 clients:
   - name: Desktop
     host: 'http://localhost'
@@ -11,3 +11,4 @@ clients:
   - name: Mobile
     host: 'http://localhost'
     port: '8020'
+description: '-'
