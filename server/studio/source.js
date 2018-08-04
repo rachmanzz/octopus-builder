@@ -19,9 +19,19 @@ const listComponents = [
     component: () => import('~/share/global/Images.vue')
   },
   {
-    name: 'Tagline',
+    name: 'Link',
     icon: 'far fa-image',
-    component: () => import('~/share/global/Tagline.vue')
+    component: () => import('~/share/global/Link.vue')
+  },
+  {
+    name: 'Slider',
+    icon: 'far fa-image',
+    component: () => import('~/share/global/Slider.vue')
+  },
+  {
+    name: 'Text',
+    icon: 'far fa-image',
+    component: () => import('~/share/global/Text.vue')
   },
   {
     name: 'ThreeColumn',
