@@ -1,6 +1,10 @@
 <template>
   <section>
-    <div class="container content-inner">
+    <div
+      class="container content-inner"
+      v-loading="dialogLoading"
+      :element-loading-text="dialogLoadingText"
+      >
       <el-card class="box-card" shadow="never">
         <section slot="header" class="clearfix">
           <el-row type="flex" class="row-bg" justify="space-between">
@@ -156,6 +160,8 @@ export default {
       reloadableClients: {},
       dialogCreate: false,
       dialogServer: false,
+      dialogLoading: false,
+      dialogLoadingText: '',
       reload: {
         client: [],
         sources: []
@@ -206,17 +212,29 @@ export default {
       }
     },
     handleReload () {
+      this.dialogServer = false
+      this.dialogLoading = true
+      this.dialogLoadingText = 'Generating page on clients'
+
+      setTimeout(() => {
+        this.dialogLoadingText = 'Rebuild page on clients'
+      }, 6000)
+
+      setTimeout(() => {
+        this.dialogLoadingText = 'Restarting server'
+      }, 8000)
+
       this.reload['clients'] = this.reload['client'].map((item, index) => this.clients[item]['value'])
       axios.post('/core/client/render', {
         clients: this.reload['clients'],
         sources: this.reload['sources']
       }).then(result => {
+        this.dialogLoading = false
         this.reloadablePages.map(page => {
           page['published'] = 1
 
           axios.put('/core/page', page).then(res => {
-            this.dialogServer = false
-            this.handleMessage('Generate page success', 'success')
+            this.handleMessage('Synchronizing page success', 'success')
             this.handleList()
           })
         })

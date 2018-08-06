@@ -57,9 +57,8 @@ const renderAllServer = async (clients, sources) => {
         sources: sources
       }).then(res => {
         result[index] = {
-          success: true,
           server: `${clientServer}`,
-          data: res.data
+          ...res.data
         }
       })
     }
