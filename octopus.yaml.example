@@ -1,0 +1,14 @@
+name:
+repository:
+branch:
+api:
+  endpoint:
+  token:
+clients:
+  - name:
+    host:
+    port:
+  - name:
+    host:
+    port:
+description:
