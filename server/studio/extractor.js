@@ -122,8 +122,7 @@ const extractElement = (parent) => {
 const extractComponent = (attr, element) => {
   const result = {
     name: attr['component'],
-    class: extractClass(element.classList),
-    path: attr['path'] || 'global'
+    class: extractClass(element.classList)
   }
 
   if (attr['property'] === 'row') {
