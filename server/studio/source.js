@@ -28,10 +28,10 @@ const listComponents = [
     manifest: require('~/share/oct-text/manifest.json')
   },
   {
-    name: 'oct-three-column',
+    name: 'oct-two-column',
     icon: 'far fa-image',
-    component: () => import('~/share/oct-three-column/index.vue'),
-    manifest: require('~/share/oct-three-column/manifest.json')
+    component: () => import('~/share/oct-two-column/index.vue'),
+    manifest: require('~/share/oct-two-column/manifest.json')
   },
   {
     name: 'oct-three-column',
