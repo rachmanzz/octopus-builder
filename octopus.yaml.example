@@ -1,4 +1,5 @@
 name:
+description:
 repository:
 branch:
 api:
@@ -11,4 +12,8 @@ clients:
   - name:
     host:
     port:
-description:
+unsplash:
+  access: ''
+  secret: ''
+  callback: ''
+  token: ''
