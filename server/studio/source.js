@@ -6,42 +6,38 @@ const listComponents = [
   {
     name: 'Button',
     icon: 'far fa-image',
-    component: () => import('~/share/global/Button.vue')
-  },
-  {
-    name: 'Hero',
-    icon: 'far fa-image',
-    component: () => import('~/share/global/Hero.vue')
+    component: () => import('~/share/Button/index.vue'),
+    manifest: require('~/share/Button/manifest.json')
   },
   {
     name: 'Images',
     icon: 'far fa-image',
-    component: () => import('~/share/global/Images.vue')
+    component: () => import('~/share/Images/index.vue'),
+    manifest: require('~/share/Images/manifest.json')
   },
   {
     name: 'Link',
     icon: 'far fa-image',
-    component: () => import('~/share/global/Link.vue')
-  },
-  {
-    name: 'Slider',
-    icon: 'far fa-image',
-    component: () => import('~/share/global/Slider.vue')
+    component: () => import('~/share/Link/index.vue'),
+    manifest: require('~/share/Link/manifest.json')
   },
   {
     name: 'Text',
     icon: 'far fa-image',
-    component: () => import('~/share/global/Text.vue')
+    component: () => import('~/share/Text/index.vue'),
+    manifest: require('~/share/Text/manifest.json')
   },
   {
     name: 'ThreeColumn',
     icon: 'far fa-image',
-    component: () => import('~/share/global/ThreeColumn.vue')
+    component: () => import('~/share/ThreeColumn/index.vue'),
+    manifest: require('~/share/ThreeColumn/manifest.json')
   },
   {
     name: 'TwoColumn',
     icon: 'far fa-image',
-    component: () => import('~/share/global/TwoColumn.vue')
+    component: () => import('~/share/TwoColumn/index.vue'),
+    manifest: require('~/share/TwoColumn/manifest.json')
   }
 ]
 export default listComponents

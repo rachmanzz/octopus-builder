@@ -67,7 +67,7 @@ export default {
   data () {
     return {
       empty: true,
-      loading: true,
+      loading: false,
       navbar: {
         title: 'Studio',
         save: true,
@@ -85,42 +85,72 @@ export default {
     this.source = Source
     this.page = this.$store.state.page
 
-    if (this.page['meta']) {
-      try {
-        this.page['meta'] = JSON.parse(this.page['meta'])
-      } catch (e) {
+    this.generate().then(() => {
+      if (this.page['meta']) {
+        try {
+          this.page['meta'] = JSON.parse(this.page['meta'])
+        } catch (e) {
+          this.$router.push(`/studio`)
+        }
+      }
+
+      if (!this.page['pages']) {
         this.$router.push(`/studio`)
-      }
-    }
-
-    if (!this.page['pages']) {
-      this.$router.push(`/studio`)
-    } else {
-      this.$store.commit('SET_TITLE', this.page['name'])
-
-      if (process.browser) {
-        new Builder() // eslint-disable-line
-      }
-
-      if (!JSON.parse(this.page['pages'])['path']) {
-        this.loading = false
       } else {
-        this.empty = false
-        setTimeout(() => {
-          Importer.generate(JSON.parse(this.page['pages'])).then(result => {
-            if (result) {
-              this.$message({
-                message: 'Generate page success',
-                type: 'success'
-              })
-              this.loading = false
-            }
-          })
-        }, 1500)
+        this.$store.commit('SET_TITLE', this.page['name'])
+
+        if (process.browser) {
+          new Builder() // eslint-disable-line
+        }
+
+        if (!JSON.parse(this.page['pages'])['path']) {
+          this.loading = false
+        } else {
+          this.empty = false
+          setTimeout(() => {
+            Importer.generate(JSON.parse(this.page['pages'])).then(result => {
+              if (result) {
+                this.$message({
+                  message: 'Generate page success',
+                  type: 'success'
+                })
+                this.loading = false
+              }
+            })
+          }, 2000)
+        }
       }
-    }
+    })
   },
   methods: {
+    async generate () {
+      const attribute = (item, key, value) => {
+        if (!item) return
+        item.setAttribute(`data-o-${key}`, value)
+      }
+      setTimeout(() => {
+        this.source.map(({ manifest }) => {
+          const { name, property, value, components } = manifest
+          const comp = document.querySelector(`section[title="${name}"]`)
+
+          attribute(comp, 'component', name)
+          attribute(comp, 'property', property)
+          attribute(comp, 'value', value)
+
+          components.map((item, index) => {
+            const child = comp.childNodes[index]
+            attribute(child, 'property', item['property'])
+            attribute(child, 'type', item['type'])
+
+            if (item['event']) {
+              attribute(child, 'event', item['event'])
+            }
+          })
+        })
+      }, 2000)
+
+      return []
+    },
     handleSave () {
       Extractor.generate(this.page).then(mapping => {
         this.page['meta'] = JSON.stringify(this.page['meta'])
@@ -171,4 +201,3 @@ export default {
   }
 }
 </script>
-

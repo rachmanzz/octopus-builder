@@ -5,19 +5,22 @@ const uniqueID = () => {
   return `${S4() + S4()}`
 }
 
-const extractAttribute = (string) => {
+const extractAttribute = (domString) => {
   const attributes = {}
+  const mapping = {
+    name: 'oName',
+    value: 'oValue',
+    component: 'oComponent',
+    property: 'oProperty',
+    type: 'oType',
+    event: 'oEvent'
+  }
 
-  string.split('|').map(item => {
-    const attr = item.split(':')
-    attributes[attr[0]] = attr[1]
+  Object.keys(mapping).map(key => {
+    attributes[key] = domString[mapping[key]]
   })
 
   return attributes
-}
-
-const getData = (element) => {
-  return element.dataset['octopus']
 }
 
 const generatePropsValue = (element, type) => {
@@ -38,14 +41,14 @@ const generatePropsValue = (element, type) => {
 
 const generateProps = (parent, child) => {
   const props = {
-    key: parent.attr,
-    data: `${parent.prop}_${uniqueID()}`,
+    property: parent['property'],
+    value: `${parent['value']}_${uniqueID()}`,
     payload: {}
   }
 
   child.forEach(item => {
-    const attrs = extractAttribute(item.dataset['octopus'])
-    props['payload'][attrs.attr] = generatePropsValue(item, attrs.type)
+    const attrs = extractAttribute(item.dataset)
+    props['payload'][attrs['property']] = generatePropsValue(item, attrs['type'])
   })
 
   return props
@@ -93,7 +96,7 @@ const extractSubElement = (section) => {
   const result = []
 
   section.forEach((item, index) => {
-    const attr = extractAttribute(item.dataset['octopus'])
+    const attr = extractAttribute(item.dataset)
     result[index] = extractComponent(attr, item)
   })
 
@@ -123,7 +126,7 @@ const extractComponent = (attr, element) => {
     path: attr['path'] || 'global'
   }
 
-  if (attr['type'] && attr['type'] === 'column') {
+  if (attr['property'] === 'row') {
     result['rows'] = extractElement(element)
   } else {
     result['props'] = generateProps(attr, element.childNodes)
@@ -142,7 +145,7 @@ const generate = async (page) => {
     styles: {
       scoped: false,
       lang: 'css',
-      content: page['meta']['styles'] || ''
+      content: page['meta'] ? page['meta']['styles'] : ''
     }
   }
 
@@ -158,7 +161,7 @@ const generate = async (page) => {
   contain.forEach((element, index) => {
     if (element.nodeName !== '#comment') {
       const canva = element.querySelector('section')
-      const attribute = extractAttribute(getData(canva))
+      const attribute = extractAttribute(canva.dataset)
       const components = mapping['components']
 
       components[index] = extractComponent(attribute, canva)

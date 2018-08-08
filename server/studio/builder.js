@@ -17,7 +17,7 @@ class Builder {
   }
 
   setProperties (parent, element) {
-    const attrs = extractor.extractAttribute(element.dataset['octopus'])
+    const attrs = extractor.extractAttribute(element.dataset)
     const allowStyle = ['color', 'fontSize', 'textAlign', 'width', 'height']
     const filterStyle = (propStyle) => {
       return Object.keys(propStyle).filter(key => allowStyle.includes(key)).reduce((obj, key) => {
@@ -37,10 +37,9 @@ class Builder {
       payload: {
         tag: element.nodeName,
         element: getClass(element.classList.value),
-        option: element.dataset['octopus'],
+        option: attrs,
         content: extractor.generatePropsValue(element, attrs.type),
-        style: JSON.stringify(filterStyle(window.getComputedStyle(element))),
-        protoStyle: element.dataset['octopusStyle']
+        style: JSON.stringify(filterStyle(window.getComputedStyle(element)))
       }
     })
   }
@@ -54,20 +53,22 @@ class Builder {
   }
 
   setListener (element) {
-    element.querySelectorAll('[data-octopus]').forEach(item => {
-      if (item.dataset['octopus'].indexOf('type:') > -1) {
-        if (item.dataset['octopus'].indexOf('type:text') > -1) {
-          item.setAttribute('contenteditable', true)
+    element.querySelectorAll('[data-o-component]').forEach(parent => {
+      parent.childNodes.forEach(item => {
+        if (item.dataset.oType) {
+          if (item.dataset.oType === 'text') {
+            item.setAttribute('contenteditable', true)
+          }
+  
+          if (element.classList.value.indexOf('octopus_') === -1) {
+            item.classList.add(`octopus_${this.uniqueID()}`)
+          }
+  
+          item.addEventListener('click', () => {
+            this.setProperties(item.parentNode, item)
+          }, false)
         }
-
-        if (element.classList.value.indexOf('octopus_') === -1) {
-          item.classList.add(`octopus_${this.uniqueID()}`)
-        }
-
-        item.addEventListener('click', () => {
-          this.setProperties(item.parentNode, item)
-        }, false)
-      }
+      })
     })
 
     element.querySelector('.studio-toolbar_delete').addEventListener('click', () => {
@@ -130,7 +131,7 @@ class Builder {
 
         wrapper.classList.remove('studio-component')
         wrapper.classList.add('studio-canvas')
-        if (element.dataset['octopus'].indexOf('column') > -1) {
+        if (element.dataset.oProperty === 'row') {
           wrapper.classList.add('studio-canvas_layout')
         }
 
@@ -151,7 +152,7 @@ class Builder {
 
         evt.item.parentNode.replaceChild(wrapper, evt.item)
         
-        if (element.dataset['octopus'].indexOf('column') > -1) {
+        if (element.dataset.oProperty === 'row') {
           this.setTrigger(element)
           element.childNodes.forEach(item => {
             item.innerHTML = '<div class="column-inner"></div>'
