@@ -4,40 +4,40 @@
  */
 const listComponents = [
   {
-    name: 'Button',
+    name: 'oct-button',
     icon: 'far fa-image',
-    component: () => import('~/share/Button/index.vue'),
-    manifest: require('~/share/Button/manifest.json')
+    component: () => import('~/share/oct-button/index.vue'),
+    manifest: require('~/share/oct-button/manifest.json')
   },
   {
-    name: 'Images',
+    name: 'oct-image',
     icon: 'far fa-image',
-    component: () => import('~/share/Images/index.vue'),
-    manifest: require('~/share/Images/manifest.json')
+    component: () => import('~/share/oct-image/index.vue'),
+    manifest: require('~/share/oct-image/manifest.json')
   },
   {
-    name: 'Link',
+    name: 'oct-link',
     icon: 'far fa-image',
-    component: () => import('~/share/Link/index.vue'),
-    manifest: require('~/share/Link/manifest.json')
+    component: () => import('~/share/oct-link/index.vue'),
+    manifest: require('~/share/oct-link/manifest.json')
   },
   {
-    name: 'Text',
+    name: 'oct-text',
     icon: 'far fa-image',
-    component: () => import('~/share/Text/index.vue'),
-    manifest: require('~/share/Text/manifest.json')
+    component: () => import('~/share/oct-text/index.vue'),
+    manifest: require('~/share/oct-text/manifest.json')
   },
   {
-    name: 'ThreeColumn',
+    name: 'oct-three-column',
     icon: 'far fa-image',
-    component: () => import('~/share/ThreeColumn/index.vue'),
-    manifest: require('~/share/ThreeColumn/manifest.json')
+    component: () => import('~/share/oct-three-column/index.vue'),
+    manifest: require('~/share/oct-three-column/manifest.json')
   },
   {
-    name: 'TwoColumn',
+    name: 'oct-three-column',
     icon: 'far fa-image',
-    component: () => import('~/share/TwoColumn/index.vue'),
-    manifest: require('~/share/TwoColumn/manifest.json')
+    component: () => import('~/share/oct-three-column/index.vue'),
+    manifest: require('~/share/oct-three-column/manifest.json')
   }
 ]
 export default listComponents
