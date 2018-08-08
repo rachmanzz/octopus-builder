@@ -13,31 +13,44 @@
         <el-form-item label="Content">
           <el-input type="textarea" rows="4" v-model="content"></el-input>
         </el-form-item>
-        <el-form-item label="Text Fill">
-          <el-color-picker
-            v-model="textFill"
-            :predefine="predefineFill"
-            @change="updateValue('color', $event)">
-          </el-color-picker>
-        </el-form-item>
-        <el-form-item label="Background Fill">
-          <el-color-picker
-            v-model="backgroundFill"
-            :predefine="predefineFill"
-            @change="updateValue('background-color', $event)">
-          </el-color-picker>
-        </el-form-item>
-        <el-form-item label="Font Size">
-          <el-select v-model="sizeSelected" placeholder="Select">
-            <el-option
-              v-model="sizeSelected"
-              v-for="(item, index) in size"
-              :key="index"
-              :label="item.text"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
+        <b-row>
+          <b-col :cols="5">
+            <el-form-item style="display: flex; margin-top: 1rem;" label="Text Fill">
+              <el-color-picker
+                v-model="textFill"
+                :predefine="predefineFill"
+                @change="updateValue('color', $event)">
+              </el-color-picker>
+            </el-form-item>
+          </b-col>
+          <b-col :cols="7">
+            <el-form-item style="display: flex; margin-top: 1rem;" label="Background Fill">
+              <el-color-picker
+                v-model="backgroundFill"
+                :predefine="predefineFill"
+                @change="updateValue('background-color', $event)">
+              </el-color-picker>
+            </el-form-item>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col :cols="7">
+            <el-form-item style="display: flex; margin-top: 1rem;" label="Font Size">
+              <el-select
+                v-model="sizeSelected"
+                placeholder="Select"
+                @change="updateValue('font-size', $event)"
+                >
+                <el-option
+                  v-for="(item, index) in size"
+                  :key="index"
+                  :label="item.text"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </b-col>
+        </b-row>
       </el-form>
       <div v-if="hasEvent">
         <el-form-item label="Event">
@@ -64,18 +77,25 @@
 
 <script>
 let sizeOptions = [
-  { text: '12', value: '12px' },
-  { text: '14', value: '14px' },
-  { text: '16', value: '16px' },
-  { text: '20', value: '20px' },
-  { text: '24', value: '24px' },
-  { text: '28', value: '28px' },
-  { text: '30', value: '32px' },
-  { text: '36', value: '36px' },
-  { text: '48', value: '48px' },
-  { text: '64', value: '64px' },
-  { text: '72', value: '72px' },
-  { text: '114', value: '114px' }
+  { text: '12', value: 12 },
+  { text: '14', value: 14 },
+  { text: '16', value: 16 },
+  { text: '18', value: 18 },
+  { text: '20', value: 20 },
+  { text: '22', value: 22 },
+  { text: '24', value: 24 },
+  { text: '26', value: 26 },
+  { text: '28', value: 28 },
+  { text: '30', value: 30 },
+  { text: '32', value: 32 },
+  { text: '34', value: 34 },
+  { text: '36', value: 36 },
+  { text: '42', value: 42 },
+  { text: '48', value: 48 },
+  { text: '64', value: 64 },
+  { text: '72', value: 72 },
+  { text: '96', value: 96 },
+  { text: '114', value: 114 }
 ]
 
 let eventOptions = [
@@ -111,7 +131,7 @@ export default {
       content: '',
       style: '',
       size: sizeOptions,
-      sizeSelected: '16px',
+      sizeSelected: 16,
       event: eventOptions,
       eventSelected: 'click',
       eventPayload: '',
@@ -128,6 +148,8 @@ export default {
       this.hasEvent = payload.tag === 'BUTTON'
     },
     updateValue (type, value) {
+      console.log(type, value)
+
       if (type === 'color') {
         this.style['color'] = value
         this.updateElement({
@@ -148,12 +170,12 @@ export default {
         })
       }
 
-      if (type === 'size') {
-        this.style['size'] = value
+      if (type === 'font-size') {
+        this.style['font-size'] = value
         this.updateElement({
           style: {
             attr: 'fontSize',
-            value: value
+            value: value + 'px'
           }
         })
       }
