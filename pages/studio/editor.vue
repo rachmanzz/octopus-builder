@@ -67,7 +67,7 @@ export default {
   data () {
     return {
       empty: true,
-      loading: false,
+      loading: true,
       navbar: {
         title: 'Studio',
         save: true,
@@ -81,6 +81,7 @@ export default {
     }
   },
   mounted () {
+    this.page = {}
     this.$store.commit('SET_COLLAPSE', true)
     this.source = Source
     this.page = this.$store.state.page

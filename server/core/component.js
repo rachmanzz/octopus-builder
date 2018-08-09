@@ -140,9 +140,10 @@ router.get('/component/source', (req, res) => {
   getComponents().then(allFiles => {
     const listComponents = allFiles.map(item => {
       return `{
-        name: ${JSON.stringify(item.name)},
+        name: ${JSON.stringify(item.file)},
         icon: 'far fa-image',
-        component: () => import(${JSON.stringify(item.path.replace('./', '~/'))})
+        component: () => import(${JSON.stringify(item.path.replace('./', '~/'))}),
+        manifest: require(${JSON.stringify(item.path.replace('./', '~/').replace('index.vue', 'manifest.json'))})
       }`
     }).join(',\n')
 
@@ -174,8 +175,9 @@ const getComponents = () => {
       const allFiles = []
 
       await files.map(item => {
-        const name = item.split('/').pop()
-        const file = name.split('.')
+        const splits = item.split('/')
+        const name = splits[splits.length - 2]
+        const file = splits.pop().split('.')
 
         allFiles.push({
           path: item,
