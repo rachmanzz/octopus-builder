@@ -1,21 +1,17 @@
 <template>
   <section class="properties-item">
     <div v-if="editable">
+      <ImagePixabay :picked="setImage" />
       <el-form ref="form">
-        <el-form-item label="Image URL">
+        <el-form-item label="Custom URL">
           <el-input v-model="content"></el-input>
-        </el-form-item>
-        <el-form-item label="Width">
-          <el-input v-model="style['width']"></el-input>
-        </el-form-item>
-        <el-form-item label="Height">
-          <el-input v-model="style['height']"></el-input>
         </el-form-item>
         <el-form-item label=" ">
           <el-button type="primary" plain @click="setResponsive">Set Responsive</el-button>
         </el-form-item>
       </el-form>
     </div>
+    
     <div v-else>
       Click element to set properties
     </div>
@@ -23,7 +19,12 @@
 </template>
 
 <script>
+import ImagePixabay from './ImagePixabay.vue'
+
 export default {
+  components: {
+    ImagePixabay
+  },
   computed: {
     payload () {
       return this.$store.state.properties
@@ -49,6 +50,11 @@ export default {
     }
   },
   methods: {
+    setImage (image) {
+      this.updateElement({
+        content: image['largeImageURL']
+      })
+    },
     createProperties ({ payload }) {
       this.editable = true
       this.props = payload

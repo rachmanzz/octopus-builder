@@ -12,8 +12,5 @@ clients:
   - name:
     host:
     port:
-unsplash:
-  access: ''
-  secret: ''
-  callback: ''
-  token: ''
+pixabay:
+  key: 
