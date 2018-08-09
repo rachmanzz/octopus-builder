@@ -23,7 +23,7 @@
           @row-dblclick="handleOpen">
           <el-table-column label="Name">
             <template slot-scope="scope">
-              {{ formatText(scope.row.name) }}
+              {{ formatText(scope.row.file) }}
             </template>
           </el-table-column>
           <el-table-column label="Path">
@@ -119,7 +119,7 @@ export default {
         this.layouts = res.data
 
         res.data.map((item, index) => {
-          files[item.name.toLowerCase()] = item
+          files[item.file] = item
         })
 
         this.$store.commit('SET_FILES', {
@@ -128,7 +128,7 @@ export default {
       })
     },
     handleOpen (row, event, column) {
-      this.$router.push(`/layout/editor?file=${row.name.toLowerCase()}`)
+      this.$router.push(`/layout/editor?file=${row.file}`)
     },
     handlePublish (index, row) {
       const message = !row ? 'Publish all layout' : `Publishing layout ${row.name}`
@@ -213,7 +213,7 @@ export default {
         return
       }
 
-      return string.replace(/([A-Z]+)/g, ' $1').replace(/^ /, '').trim()
+      return string.replace(/oct|-/g, ' ').trim()
     }
   }
 }
