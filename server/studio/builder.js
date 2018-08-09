@@ -76,6 +76,10 @@ class Builder {
           }
   
           item.addEventListener('click', () => {
+            document.querySelectorAll('.octopus_active').forEach(actived => {
+              actived.classList.remove('octopus_active')
+            })
+            element.classList.add('octopus_active')
             this.setProperties(item.parentNode, item)
           }, false)
         }
