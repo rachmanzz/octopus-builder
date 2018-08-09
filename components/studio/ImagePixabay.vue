@@ -1,7 +1,7 @@
 <template>
-  <section class="properties-item">
+  <section class="properties-item pixabay">
     <div v-if="editable">
-      <el-input placeholder="Please input" v-model="pixabay['query']" class="input-with-select">
+      <el-input placeholder="Search keyword .." v-model="pixabay['query']" class="input-with-select">
         <el-select v-model="pixabay['category']" slot="prepend" placeholder="Select">
           <el-option
             v-for="item in select"
@@ -75,6 +75,7 @@ export default {
   methods: {
     findImage () {
       this.loading = true
+      this.results = []
 
       axios.post('/core/photos', {
         query: this.pixabay['query'],
@@ -92,38 +93,40 @@ export default {
 </script>
 
 <style lang="scss">
-.el-select .el-input {
-  width: 100px;
-}
-.el-wrapper {
-  margin: 1rem 0;
-
-  &__inner {
-    height: 300px;
-    overflow-x: hidden;
-    overflow-y: scroll;
+.pixabay {
+  .el-select .el-input {
+    width: 100px;
   }
-  .el-logo {
-    display: inline-block;
-    font-size: 12px;
-    float: right;
+  .el-wrapper {
+    margin: 1rem 0;
 
-    img {
-      width: 50px;
+    &__inner {
+      height: 300px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+    .el-logo {
+      display: inline-block;
+      font-size: 12px;
+      float: right;
+
+      img {
+        width: 50px;
+      }
     }
   }
-}
-.el-card {
-  margin: .5rem 0;
-  max-height: 80px;
-  cursor: pointer;
-  
-  &__body {
-    padding: 0;
-  }
-  img {
-    width: 100%;
-    height: auto;
+  .el-card {
+    margin: .5rem 0;
+    max-height: 80px;
+    cursor: pointer;
+    
+    &__body {
+      padding: 0;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 }
 </style>
