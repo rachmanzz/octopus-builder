@@ -58,22 +58,6 @@
           </b-col>
         </b-row>
       </el-form>
-      <div v-if="hasEvent">
-        <el-form-item label="Event">
-          <el-select v-model="eventSelected" placeholder="Select">
-            <el-option
-              v-model="eventSelected"
-              v-for="(item, index) in event"
-              :key="index"
-              :label="item.text"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Event Payload">
-          <el-input type="textarea" rows="4" v-model="eventPayload"></el-input>
-        </el-form-item>
-      </div>
     </div>
     <div v-else>
       Click element to set properties
