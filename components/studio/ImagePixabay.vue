@@ -99,7 +99,7 @@ export default {
   margin: 1rem 0;
 
   &__inner {
-    height: 400px;
+    height: 300px;
     overflow-x: hidden;
     overflow-y: scroll;
   }

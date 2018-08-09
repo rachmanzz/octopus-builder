@@ -1,13 +1,19 @@
 <template>
   <section class="properties-item">
     <div v-if="editable">
-      <ImagePixabay :picked="setImage" />
       <el-form ref="form">
+        <el-form-item label="Transform">
+          <el-button-group>
+            <el-button type="primary" @click="updateValue('transform', 'horizontal')">Mirror X</el-button>
+            <el-button type="primary" @click="updateValue('transform', 'vertical')">Mirror Y</el-button>
+            <el-button type="primary" @click="setResponsive">Auto Width</el-button>
+          </el-button-group>
+        </el-form-item>
+        <el-form-item label="Image Gallery">
+          <ImagePixabay :picked="setImage" />
+        </el-form-item>
         <el-form-item label="Custom URL">
           <el-input v-model="content"></el-input>
-        </el-form-item>
-        <el-form-item label=" ">
-          <el-button type="primary" plain @click="setResponsive">Set Responsive</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -63,14 +69,6 @@ export default {
       this.style = JSON.parse(payload.style)
     },
     updateValue (type, value) {
-      if (value !== 'auto' && !value.match(/%/g)) {
-        value = value.replace(/[^0-9,.]+/g, '')
-      }
-      if (type === 'width' || type === 'height') {
-        if (value.match(/^[0-9]*$/g)) {
-          value = value + 'px'
-        }
-      }
       this.updateElement({
         style: {
           attr: type,
@@ -86,7 +84,32 @@ export default {
       }
 
       if (style) {
-        el.style[style.attr] = style.value
+        if (style.attr === 'transform') {
+          const currentScale = el.style['transform']
+          let value = 'scale(1, 1)'
+
+          switch (style.value) {
+            case 'vertical':
+              if (currentScale === 'scale(1, -1)') {
+                value = 'scale(1, 1)'
+              } else {
+                value = 'scale(1, -1)'
+              }
+              break
+
+            default:
+              if (currentScale === 'scale(-1, 1)') {
+                value = 'scale(1, 1)'
+              } else {
+                value = 'scale(-1, 1)'
+              }
+              break
+          }
+
+          el.style[style.attr] = value
+        } else {
+          el.style[style.attr] = style.value
+        }
       }
     },
     formatAsNumber (value) {

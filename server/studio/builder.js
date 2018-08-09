@@ -18,7 +18,18 @@ class Builder {
 
   setProperties (parent, element) {
     const attrs = extractor.extractAttribute(element.dataset)
-    const allowStyle = ['color', 'fontSize', 'textAlign', 'width', 'height']
+    const allowStyle = [
+      'color',
+      'fontSize',
+      'textAlign',
+      'width',
+      'height',
+      'paddingTop',
+      'paddingRight',
+      'paddingBottom',
+      'paddingLeft',
+      'transform'
+    ]
     const filterStyle = (propStyle) => {
       return Object.keys(propStyle).filter(key => allowStyle.includes(key)).reduce((obj, key) => {
         obj[key] = propStyle[key]

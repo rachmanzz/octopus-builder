@@ -2,6 +2,12 @@
   <section class="properties-item">
     <div v-if="editable">
       <el-form ref="form">
+        <el-form-item label="Padding" class="margin-form">
+          <el-input v-model="style['paddingTop']" @blur="updateValue('padding-top', $event)" value="0" placeholder="Top" />
+          <el-input v-model="style['paddingRight']" @blur="updateValue('padding-right', $event)" value="0" placeholder="Right" />
+          <el-input v-model="style['paddingBottom']" @blur="updateValue('padding-bottom', $event)" value="0" placeholder="Bottom" />
+          <el-input v-model="style['paddingLeft']" @blur="updateValue('padding-left', $event)" value="0" placeholder="Left" />
+        </el-form-item>
         <el-form-item label="Alignment">
           <el-button-group>
             <el-button type="primary" @click="updateValue('text-align', 'left')">Left</el-button>
@@ -148,8 +154,6 @@ export default {
       this.hasEvent = payload.tag === 'BUTTON'
     },
     updateValue (type, value) {
-      console.log(type, value)
-
       if (type === 'color') {
         this.style['color'] = value
         this.updateElement({
@@ -186,6 +190,15 @@ export default {
           style: {
             attr: 'textAlign',
             value: value
+          }
+        })
+      }
+
+      if (type.indexOf('padding') > -1) {
+        this.updateElement({
+          style: {
+            attr: type,
+            value: (value.target['value']) + 'px'
           }
         })
       }
@@ -241,5 +254,16 @@ export default {
 }
 .popover-body .vc-sketch {
   box-shadow: none;
+}
+.margin-form {
+
+  .el-form-item__content {
+    display: flex;
+
+    .el-input {
+      width: 70px;
+      margin: 0 .3rem;
+    }
+  }
 }
 </style>

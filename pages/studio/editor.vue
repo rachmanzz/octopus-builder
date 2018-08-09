@@ -154,6 +154,7 @@ export default {
     },
     handleSave () {
       Extractor.generate(this.page).then(mapping => {
+        console.log(mapping)
         this.page['meta'] = JSON.stringify(this.page['meta'])
         this.page['pages'] = JSON.stringify(mapping)
         this.page['published'] = 0
