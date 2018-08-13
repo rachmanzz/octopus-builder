@@ -1,5 +1,6 @@
 .sidebar {
   transition: width .3s ease-in-out;
+  width: 250px !important;
 
   &-collapse {
     width: 64px !important;
